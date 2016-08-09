@@ -12,27 +12,26 @@
  * Output: result of the validation: 'ok' if successful; 'bad structure' otherwise.
  */
 #include <stdio.h>
-#include <stdbool.h>
+#include <stdlib.h>
 
 #define MAX_SIZE 5000 // max parenthesis count
+#define TRUE 1
+#define FALSE 0
 
-#define ERROR_MSG "bad structure\n"
-#define SUCCESS_MSG "ok\n"
-#define ARG_ERROR "Please supply a file!\nusage: CheckParenthesis <file name>\n"
-#define IO_ERROR "Error! trying to open the file <file name>\n"
-
-#define ERROR_CODE -1
+#define ERROR_MSG "bad structure"
+#define SUCCESS_MSG "ok"
+#define ARG_ERROR "Please supply a file!\nusage: CheckParenthesis <file name>"
+#define IO_ERROR "Error! trying to open the file"
 
 /**
  * Reads the given file char-by-char and checks the balancing of parenthesis expressions.
  * @param pFile the file to scan.
- * @return 0 if successful; -1 otherwise.
  */
-int parenthesisCounter(FILE *pFile)
+void parenthesisCounter(FILE *pFile)
 {
     int top = -1; // initial topmost index in the stack
     char c, s[MAX_SIZE]; // c is for current char and s is our bracket stack
-    bool error = false;
+    int error = FALSE;
 
     /* while not end-of-file we check if we are getting an openning bracket or closing one.
      * If we get openning bracket we add it to the end of our "stack" and if its a closing bracket we do the following:
@@ -42,37 +41,52 @@ int parenthesisCounter(FILE *pFile)
     while ((c = (char) fgetc(pFile)) != EOF && !error)
     {
         if(c == '(' || c == '[' || c == '{' || c == '<')
+        {
             s[++top] = c;
+        }
 
         else
         {
-            switch(c) {
+            switch(c)
+            {
                 case ')':
                     if (s[top] == '(')
+                    {
                         top--;
-                    else {
-                        error = true;
+                    }
+                    else
+                    {
+                        error = TRUE;
                     }
                     break;
                 case ']':
                     if (s[top] == '[')
+                    {
                         top--;
-                    else {
-                        error = true;
+                    }
+                    else
+                    {
+                        error = TRUE;
                     }
                     break;
                 case '}':
                     if (s[top] == '{')
+                    {
                         top--;
-                    else {
-                        error = true;
+                    }
+                    else
+                    {
+                        error = TRUE;
                     }
                     break;
                 case '>':
                     if (s[top] == '<')
+                    {
                         top--;
-                    else {
-                        error = true;
+                    }
+                    else
+                    {
+                        error = TRUE;
                     }
                     break;
                 default:
@@ -87,6 +101,7 @@ int parenthesisCounter(FILE *pFile)
     if (error)
     {
         printf("%s\n", ERROR_MSG);
+        return;
     }
 
     // print success message and return success code.
@@ -105,7 +120,7 @@ int main(int argc, char* argv[])
     if (argc != 2)
     {
         printf("%s\n", ARG_ERROR);
-        return ERROR_CODE;
+        return EXIT_FAILURE;
     }
 
     FILE* pFile;
@@ -113,11 +128,11 @@ int main(int argc, char* argv[])
 
     if (pFile == NULL)
     {
-        printf("%s\n", IO_ERROR);
-        return ERROR_CODE;
+        printf("%s %s\n", IO_ERROR, argv[1]);
+        return EXIT_FAILURE;
     }
 
     parenthesisCounter(pFile);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
