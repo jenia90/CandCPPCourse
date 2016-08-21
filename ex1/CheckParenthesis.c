@@ -33,8 +33,8 @@ void parenthesisCounter(FILE *pFile)
     char c, s[MAX_SIZE]; // c is for current char and s is our bracket stack
     int error = FALSE;
 
-    /* while not end-of-file we check if we are getting an openning bracket or closing one.
-     * If we get openning bracket we add it to the end of our "stack" and if its a closing bracket we do the following:
+    /* while not end-of-file we check if we are getting an opening bracket or closing one.
+     * If we get opening bracket we add it to the end of our "stack" and if its a closing bracket we do the following:
      * Check if last inserted bracket was of same type, if yes we decrement the "stack" size.
      * In case of no, we set the error variable to 'true' which will end the program with a 'bad structure' code.
      */
