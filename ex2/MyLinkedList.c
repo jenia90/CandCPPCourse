@@ -4,57 +4,85 @@
 #include <stdlib.h>
 #include "MyLinkedList.h"
 
-typedef struct {
-    double data;
-    Node *next;
-} Node;
+#define EMPTY_LIST_MSG "Empty!\n"
 
-typedef struct {
-    Node *head;
-    unsigned int size;
-} _MyLinkedList;
-
-Node* createNode(doule data, Node* next)
+typedef struct Node
 {
-    Node *pNode = (Node*)malloc(sizeof(Node));
+    char data;
+    struct Node *next;
+} *NodeP;
+
+struct _MyLinkedList
+{
+    NodeP head;
+    unsigned int size;
+} *MyLinkedListP;
+
+NodeP createNode(char data, NodeP next)
+{
+    NodeP pNode = (NodeP)malloc(sizeof(struct Node));
+    if(!pNode)
+    {
+        return NULL;
+    }
+
     pNode->data = data;
     pNode->next = next;
 
-    return p;
+    return pNode;
 }
 
 MyLinkedListP createList()
 {
-    MyLinkedListP pList = (MyLinkedListP)malloc(sizeof(List));
-    pList->head = NULL;
-    pList->size = 0;
-    return pList;
-}
-
-void insertFirst(MyLinkedListP pList, double data)
-{
-    pList->head = createNode(data, pList->head);
-    pList->size++;
-}
-
-void printList(MyLinkedListP pList)
-{
-    Node *pNode = pList->head;
-
-    while (pNode)
+    MyLinkedListP l = (MyLinkedListP) malloc(sizeof(struct _MyLinkedList));
+    if (l == NULL)
     {
-        printf("(%f)->", pNode->data);
-        pNode = pNode->next;
+        return NULL;
     }
-    printf("|| size: %u \n", pList->size);
+    l->head = NULL;
+    l->size = 0;
+    return l;
 }
 
-MyLinkedListP cloneList(MyLinkedListP pList)
+bool insertFirst(MyLinkedListP pList, char *data)
 {
-    _MyLinkedList *newList = createList();
+    pList->head = createNode(*data, pList->head);
+    if (!pList->head)
+    {
+        return false;
+    }
 
-    Node *old = pList->head, **copy = &(newList->head);
-    newList->size = pList->size;
+    pList->size++;
+
+    return true;
+}
+
+void printList(MyLinkedListP l)
+{
+    if(l->size == 0)
+    {
+        printf(EMPTY_LIST_MSG);
+    }
+
+    else
+    {
+        NodeP pNode = l->head;
+
+        while (pNode)
+        {
+            printf("(%c)->", pNode->data);
+            pNode = pNode->next;
+        }
+        printf("|| size: %u \n", l->size);
+    }
+}
+
+MyLinkedListP cloneList(MyLinkedListP l)
+{
+    MyLinkedListP newList = createList();
+
+    NodeP old = l->head, *copy = &(newList->head);
+    newList->size = l->size;
 
     while (old)
     {
@@ -66,9 +94,9 @@ MyLinkedListP cloneList(MyLinkedListP pList)
     return newList;
 }
 
-void freeList(MyLinkedListP pList)
+void freeList(MyLinkedListP l)
 {
-    Node *pNode = pList->head, *pNode2;
+    NodeP pNode = l->head, pNode2;
     while (pNode)
     {
         pNode2 = pNode;
@@ -76,6 +104,53 @@ void freeList(MyLinkedListP pList)
         free(pNode2);
     }
 
-    free(pList);
+    free(l);
 }
 
+int removeData(MyLinkedListP l, char *val)
+{
+    int count = 0;
+
+    NodeP pNode = l->head, rmNode;
+
+    while(pNode)
+    {
+        rmNode = pNode;
+        pNode = pNode->next;
+
+        if(rmNode->data == *val)
+        {
+            free(rmNode);
+            count++;
+        }
+    }
+
+    return count;
+}
+
+int isInList(MyLinkedListP l, char *val)
+{
+    int count = 0;
+
+    NodeP pNode = l->head;
+
+    while(pNode)
+    {
+        if(pNode->data == *val)
+        {
+            count++;
+        }
+
+        pNode = pNode->next;
+    }
+}
+
+int getSize(MyLinkedListP l)
+{
+    return l->size;
+}
+
+int getSizeOf(MyLinkedListP l)
+{
+    return l->size * sizeof(struct Node);
+}

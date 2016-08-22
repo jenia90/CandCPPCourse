@@ -62,7 +62,7 @@ MyLinkedListP createList();
  * RETURN VALUE:
  *   @return a pointer to the new LinkedList, or NULL if the allocation failed.
  */
-MyLinkedListP cloneList(/*TODO change here */);
+MyLinkedListP cloneList(MyLinkedListP l);
 
 /**
  * @brief Frees the memory and resources allocated to LinkedList l.
@@ -84,7 +84,7 @@ void printList(MyLinkedListP l);
  * RETURN VALUE:
  *   @return number of elements that were removed. or MYLIST_ERROR_CODE if error occured 
  */
-int removeData(MyLinkedListP l, char* val);
+int removeData(MyLinkedListP l, char *val);
 
 /**
  * @brief add val to the beginning of the list(the List may contain duplicates) 
@@ -94,7 +94,7 @@ int removeData(MyLinkedListP l, char* val);
  * RETURN VALUE:
  *   @return true iff succeed 
  */
-bool insertFirst(MyLinkedListP l, char* val);
+bool insertFirst(MyLinkedListP l, char *val);
 
 /**
  * @brief search val in the list 
@@ -103,7 +103,7 @@ bool insertFirst(MyLinkedListP l, char* val);
  * RETURN VALUE:
  *   @return the number of val ocuurences in the list.  or MYLIST_ERROR_CODE if error occured 
  */
-int isInList(MyLinkedListP l, char val);
+int isInList(MyLinkedListP l, char *val);
 
 /**
  * @brief get list size 
