@@ -44,7 +44,6 @@ typedef struct _MyLinkedList *MyLinkedListP;
 
 // ------------------------------ functions -----------------------------
 
-
 /**
  * @brief Allocates a new empty LinkedList
  * 			It is the caller's responsibility to free the returned LinkedList.

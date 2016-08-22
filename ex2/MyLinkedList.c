@@ -6,6 +6,8 @@
 #include "MyLinkedList.h"
 
 #define EMPTY_LIST_MSG "Empty!\n"
+#define FINISHING_STRING "|| size: %u \n"
+#define NODE_STRING "(%s)->"
 
 typedef struct Node
 {
@@ -69,10 +71,10 @@ void printList(MyLinkedListP l)
 
         while (pNode)
         {
-            printf("(%c)->", *pNode->data);
+            printf(NODE_STRING, pNode->data);
             pNode = pNode->next;
         }
-        printf("|| size: %u \n", l->size);
+        printf(FINISHING_STRING, l->size);
     }
 }
 
@@ -86,6 +88,10 @@ void printList(MyLinkedListP l)
 MyLinkedListP cloneList(MyLinkedListP l)
 {
     MyLinkedListP newList = createList();
+    if(!newList)
+    {
+        return NULL;
+    }
 
     NodeP old = l->head, *copy = &(newList->head);
     newList->size = l->size;
@@ -107,15 +113,20 @@ MyLinkedListP cloneList(MyLinkedListP l)
  */
 void freeList(MyLinkedListP l)
 {
-    NodeP pNode = l->head, pNode2;
-    while (pNode)
+    if(l)
     {
-        pNode2 = pNode;
-        pNode = pNode->next;
-        free(pNode2);
-    }
+        NodeP pNode = l->head, pNode2 = NULL;
+        while (pNode)
+        {
+            pNode2 = pNode;
+            pNode = pNode->next;
+            free(pNode2->data);
+            free(pNode2);
 
-    free(l);
+        }
+        free(l->head);
+        free(l);
+    }
 }
 
 /**
@@ -127,21 +138,45 @@ void freeList(MyLinkedListP l)
  */
 int removeData(MyLinkedListP l, char *val)
 {
+    if (!l)
+    {
+        return MYLIST_ERROR_CODE;
+    }
+
+    if (l->size == 0)
+    {
+        return 0;
+    }
+
     int count = 0;
 
-    NodeP pNode = l->head, rmNode;
+    NodeP currNode = l->head, prevNode = NULL;
 
-    while(pNode)
+    do
     {
-        rmNode = pNode;
-        pNode = pNode->next;
-
-        if(strcmp(rmNode->data, val))
+        if(strcmp(currNode->data, val) == 0)
         {
-            free(rmNode);
+            if(prevNode)
+            {
+                prevNode->next = currNode->next;
+            }
+            else
+            {
+                prevNode = currNode->next;
+            }
+
+            free(currNode->data);
+            free(currNode);
+            currNode = prevNode->next;
+            l->size--;
             count++;
         }
-    }
+        else
+        {
+            prevNode = currNode;
+            currNode = currNode->next;
+        }
+    } while(currNode);
 
     return count;
 }
@@ -182,13 +217,15 @@ int isInList(MyLinkedListP l, char *val)
 
     while(pNode)
     {
-        if(strcmp(pNode->data, val))
+        if(strcmp(pNode->data, val) == 0)
         {
             count++;
         }
 
         pNode = pNode->next;
     }
+
+    return count;
 }
 
 /**
@@ -217,9 +254,9 @@ int getSizeOf(MyLinkedListP l)
 
     while(pNode)
     {
-        size += strlen(pNode->data) + 1;
+        size += strlen(pNode->data) + 1 + sizeof(NodeP);
         pNode = pNode->next;
     }
 
-    return size;
+    return size + sizeof(MyLinkedListP);
 }
