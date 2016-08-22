@@ -17,7 +17,7 @@ struct _MyLinkedList
 {
     NodeP head;
     unsigned int size;
-} *MyLinkedListP;
+};
 
 NodeP createNode(char *data, NodeP next)
 {
@@ -33,6 +33,13 @@ NodeP createNode(char *data, NodeP next)
     return pNode;
 }
 
+/**
+ * @brief Allocates a new empty LinkedList
+ * 			It is the caller's responsibility to free the returned LinkedList.
+ *
+ * RETURN VALUE:
+ * @return a pointer to the new LinkedList, or NULL if the allocation failed.
+ */
 MyLinkedListP createList()
 {
     MyLinkedListP l = (MyLinkedListP) malloc(sizeof(struct _MyLinkedList));
@@ -45,19 +52,10 @@ MyLinkedListP createList()
     return l;
 }
 
-bool insertFirst(MyLinkedListP pList, char *data)
-{
-    pList->head = createNode(data, pList->head);
-    if (!pList->head)
-    {
-        return false;
-    }
-
-    pList->size++;
-
-    return true;
-}
-
+/**
+ * @brief print LinkedList l and it's contents- see school solution for the exact format.
+ * @param l the LinkedList to print.
+ */
 void printList(MyLinkedListP l)
 {
     if(l->size == 0)
@@ -78,6 +76,13 @@ void printList(MyLinkedListP l)
     }
 }
 
+/**
+ * @brief Allocates a new MyLinkedList with the same values as l. It is the caller's
+ * 			responsibility to free the returned LinkedList.
+ * @param l the MyLinkedListP to clone.
+ * RETURN VALUE:
+ *   @return a pointer to the new LinkedList, or NULL if the allocation failed.
+ */
 MyLinkedListP cloneList(MyLinkedListP l)
 {
     MyLinkedListP newList = createList();
@@ -95,6 +100,11 @@ MyLinkedListP cloneList(MyLinkedListP l)
     return newList;
 }
 
+/**
+ * @brief Frees the memory and resources allocated to LinkedList l.
+ * @param l the LinkedList to free.
+ * If l is NULL, no operation is performed.
+ */
 void freeList(MyLinkedListP l)
 {
     NodeP pNode = l->head, pNode2;
@@ -108,6 +118,13 @@ void freeList(MyLinkedListP l)
     free(l);
 }
 
+/**
+ * @brief remove all the ocuurences of val in l
+ * @param l the LinkedList
+ * @param val the value - char *
+ * RETURN VALUE:
+ *   @return number of elements that were removed. or MYLIST_ERROR_CODE if error occured
+ */
 int removeData(MyLinkedListP l, char *val)
 {
     int count = 0;
@@ -129,6 +146,34 @@ int removeData(MyLinkedListP l, char *val)
     return count;
 }
 
+/**
+ * @brief add val to the beginning of the list(the List may contain duplicates)
+ * UPDATE -- val may be changed /deleted and your list should bot be effected by that.
+ * @param l the LinkedList
+ * @param val the value - char *
+ * RETURN VALUE:
+ *   @return true iff succeed
+ */
+bool insertFirst(MyLinkedListP pList, char *data)
+{
+    pList->head = createNode(data, pList->head);
+    if (!pList->head)
+    {
+        return false;
+    }
+
+    pList->size++;
+
+    return true;
+}
+
+/**
+ * @brief search val in the list
+ * @param l the LinkedList
+ * @param val the value to add
+ * RETURN VALUE:
+ *   @return the number of val ocuurences in the list.  or MYLIST_ERROR_CODE if error occured
+ */
 int isInList(MyLinkedListP l, char *val)
 {
     int count = 0;
@@ -146,11 +191,24 @@ int isInList(MyLinkedListP l, char *val)
     }
 }
 
+/**
+ * @brief get list size
+ * @param l the LinkedList
+ * RETURN VALUE:
+ *   @return number of elements in the list.  or MYLIST_ERROR_CODE if error occured
+ */
 int getSize(MyLinkedListP l)
 {
     return l->size;
 }
 
+/**
+ * @brief Returns size in bytes of l and all it's contents
+ *			eqvuilant to sum of sizeof for all the list contents
+ * @param l the LinkedList
+ * RETURN VALUE:
+ *   @return the allocated size for l
+ */
 int getSizeOf(MyLinkedListP l)
 {
     int size = 0;

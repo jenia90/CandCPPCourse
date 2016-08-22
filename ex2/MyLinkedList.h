@@ -111,7 +111,6 @@ int isInList(MyLinkedListP l, char *val);
  * RETURN VALUE:
  *   @return number of elements in the list.  or MYLIST_ERROR_CODE if error occured 
  */
-
 int getSize(MyLinkedListP l);
 
 /**

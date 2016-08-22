@@ -26,10 +26,12 @@
 #define MAX_FILENAME 255
 #define MAX_CONNECTED_FILES 100
 
+#define DELIMITER ","
+
 typedef struct
 {
     char filename[MAX_FILENAME];
-    int connectedFiles[MAX_CONNECTED_FILES * MAX_FILENAME];
+    int connectedFiles[MAX_CONNECTED_FILES];
 } dependency;
 
 void parseFile(FILE *fp)
@@ -37,14 +39,14 @@ void parseFile(FILE *fp)
     assert(fp != NULL);
     char line[MAX_LINE_LENGTH];
     char fileNames[MAX_CONNECTED_FILES * MAX_FILENAME];
+    char *token;
+
     int i = 0;
     dependency dependencies[MAX_LINES];
 
     do
     {
-        fscanf(fp, "%s: %d", dependencies[i].filename, dependencies[i].connectedFiles);
-        assert(dependencies[i].filename);
-        assert(dependencies[i].connectedFiles);
+
     } while (*line != EOF);
 }
 
@@ -64,6 +66,8 @@ int main(int argc, char* argv[])
     }
 
     parseFile(fp);
+
+    fclose(fp);
 
     return 0;
 }
