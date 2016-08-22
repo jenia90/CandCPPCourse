@@ -2,13 +2,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "MyLinkedList.h"
 
 #define EMPTY_LIST_MSG "Empty!\n"
 
 typedef struct Node
 {
-    char data;
+    char *data;
     struct Node *next;
 } *NodeP;
 
@@ -18,7 +19,7 @@ struct _MyLinkedList
     unsigned int size;
 } *MyLinkedListP;
 
-NodeP createNode(char data, NodeP next)
+NodeP createNode(char *data, NodeP next)
 {
     NodeP pNode = (NodeP)malloc(sizeof(struct Node));
     if(!pNode)
@@ -46,7 +47,7 @@ MyLinkedListP createList()
 
 bool insertFirst(MyLinkedListP pList, char *data)
 {
-    pList->head = createNode(*data, pList->head);
+    pList->head = createNode(data, pList->head);
     if (!pList->head)
     {
         return false;
@@ -70,7 +71,7 @@ void printList(MyLinkedListP l)
 
         while (pNode)
         {
-            printf("(%c)->", pNode->data);
+            printf("(%c)->", *pNode->data);
             pNode = pNode->next;
         }
         printf("|| size: %u \n", l->size);
@@ -118,7 +119,7 @@ int removeData(MyLinkedListP l, char *val)
         rmNode = pNode;
         pNode = pNode->next;
 
-        if(rmNode->data == *val)
+        if(strcmp(rmNode->data, val))
         {
             free(rmNode);
             count++;
@@ -136,7 +137,7 @@ int isInList(MyLinkedListP l, char *val)
 
     while(pNode)
     {
-        if(pNode->data == *val)
+        if(strcmp(pNode->data, val))
         {
             count++;
         }
@@ -152,5 +153,15 @@ int getSize(MyLinkedListP l)
 
 int getSizeOf(MyLinkedListP l)
 {
-    return l->size * sizeof(struct Node);
+    int size = 0;
+
+    NodeP pNode = l->head;
+
+    while(pNode)
+    {
+        size += strlen(pNode->data) + 1;
+        pNode = pNode->next;
+    }
+
+    return size;
 }
