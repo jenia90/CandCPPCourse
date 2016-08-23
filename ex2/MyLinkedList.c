@@ -1,6 +1,16 @@
+/**
+* @file MyLinkedList.c
+* @author jenia90
+* @version 1.0
+* @date 25 Aug 2016
+*
+* @brief Implementation of LinkedList data structure
+* @section DESCRIPTION:
+* This is a basic implemenation of a LinkedList data structure for storing
+* data as strings (char arrays).
+*/
 
-
-//#define NDEBUG
+#define NDEBUG
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,6 +30,9 @@ typedef struct Node
     struct Node *next;
 } *NodeP;
 
+/**
+ * @brief A LinkedList struct which defines the head Node of the list and its size.
+ */
 struct _MyLinkedList
 {
     NodeP head;
@@ -187,7 +200,7 @@ int removeData(MyLinkedListP l, char *val)
             }
             else
             {
-                assert(prevNode);
+                //assert(prevNode);
                 // link previous Node next pointer to next Node of current Node
                 prevNode->next = currNode->next;
                 freeNode(currNode); // free obsolete Node memory

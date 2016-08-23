@@ -1,0 +1,2 @@
+file.h: file2.h,file3.h,file5.cpp
+file3.h: file.h,test-file.cpp
