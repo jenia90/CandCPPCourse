@@ -1,5 +1,7 @@
 
 
+//#define NDEBUG
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,6 +11,9 @@
 #define FINISHING_STRING "|| size: %u \n"
 #define NODE_STRING "(%s)->"
 
+/**
+ * @brief A LinkedList node structure and pointer type definition
+ */
 typedef struct Node
 {
     char *data;
@@ -21,6 +26,12 @@ struct _MyLinkedList
     unsigned int size;
 };
 
+/**
+ * @brief Allocates a new LinkedList node
+ * @param data the data to be stored in the Node
+ * @param next pointer to the next node
+ * @return pointer to the new allocated Node if successful; null otherwise
+ */
 NodeP createNode(char *data, NodeP next)
 {
     NodeP pNode = (NodeP)malloc(sizeof(struct Node));
@@ -33,6 +44,16 @@ NodeP createNode(char *data, NodeP next)
     pNode->next = next;
 
     return pNode;
+}
+
+/**
+ * @brief Frees memory allocated to a given Node.
+ * @param n Node pointer to free.
+ */
+void freeNode(NodeP n)
+{
+    free(n->data);
+    free(n);
 }
 
 /**
@@ -120,9 +141,7 @@ void freeList(MyLinkedListP l)
         {
             pNode2 = pNode;
             pNode = pNode->next;
-            free(pNode2->data);
-            free(pNode2);
-
+            freeNode(pNode2);
         }
         free(l->head);
         free(l);
@@ -149,35 +168,40 @@ int removeData(MyLinkedListP l, char *val)
     }
 
     int count = 0;
-
     NodeP currNode = l->head, prevNode = NULL;
 
-    do
+    // Iterate over each Node in the list.
+    while(currNode)
     {
+        // if we found the required node we check if its the list head or not
+        // and deal with each case separately.
         if(strcmp(currNode->data, val) == 0)
         {
-            if(prevNode)
+            if(currNode == l->head)
             {
-                prevNode->next = currNode->next;
+                l->head = currNode->next; // assign new head
+                freeNode(currNode); // free obsolete Node memory
+                currNode = l->head; // get next Node to check
+                count++;
+                l->size--;
             }
             else
             {
-                prevNode = currNode->next;
+                assert(prevNode);
+                // link previous Node next pointer to next Node of current Node
+                prevNode->next = currNode->next;
+                freeNode(currNode); // free obsolete Node memory
+                currNode = prevNode->next; // get next Node to check
+                l->size--;
+                count++;
             }
-
-            free(currNode->data);
-            free(currNode);
-            currNode = prevNode->next;
-            l->size--;
-            count++;
         }
         else
         {
             prevNode = currNode;
             currNode = currNode->next;
         }
-    } while(currNode);
-
+    }
     return count;
 }
 
@@ -189,15 +213,15 @@ int removeData(MyLinkedListP l, char *val)
  * RETURN VALUE:
  *   @return true iff succeed
  */
-bool insertFirst(MyLinkedListP pList, char *data)
+bool insertFirst(MyLinkedListP l, char *data)
 {
-    pList->head = createNode(data, pList->head);
-    if (!pList->head)
+    l->head = createNode(data, l->head);
+    if (!l->head)
     {
         return false;
     }
 
-    pList->size++;
+    l->size++;
 
     return true;
 }
@@ -212,17 +236,16 @@ bool insertFirst(MyLinkedListP pList, char *data)
 int isInList(MyLinkedListP l, char *val)
 {
     int count = 0;
+    NodeP currNode = l->head;
 
-    NodeP pNode = l->head;
-
-    while(pNode)
+    while(currNode)
     {
-        if(strcmp(pNode->data, val) == 0)
+        if(strcmp(currNode->data, val) == 0)
         {
             count++;
         }
 
-        pNode = pNode->next;
+        currNode = currNode->next;
     }
 
     return count;
@@ -248,15 +271,16 @@ int getSize(MyLinkedListP l)
  */
 int getSizeOf(MyLinkedListP l)
 {
-    int size = 0;
+    // init the size variable with the memory allocated for the linkedlist itself
+    int size = sizeof(MyLinkedListP);
+    NodeP currNode = l->head;
 
-    NodeP pNode = l->head;
-
-    while(pNode)
+    // foreach node in the list we get its allocated size and the size of the data it holds
+    while(currNode)
     {
-        size += strlen(pNode->data) + 1 + sizeof(NodeP);
-        pNode = pNode->next;
+        size += sizeof(NodeP) + strlen(currNode->data) + 1;
+        currNode = currNode->next;
     }
 
-    return size + sizeof(MyLinkedListP);
+    return size;
 }
