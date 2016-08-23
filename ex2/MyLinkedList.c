@@ -248,6 +248,11 @@ bool insertFirst(MyLinkedListP l, char *data)
  */
 int isInList(MyLinkedListP l, char *val)
 {
+    if (!l)
+    {
+        return MYLIST_ERROR_CODE;
+    }
+
     int count = 0;
     NodeP currNode = l->head;
 

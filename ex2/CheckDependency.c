@@ -34,24 +34,25 @@
 
 typedef struct _dependency
 {
-    char filename[MAX_FILENAME];
+    char fileName[MAX_FILENAME];
     int connectedFiles[MAX_CONNECTED_FILES];
 } *dependencyP;
+
+dependencyP dependencies[MAX_LINES];
 
 void parseFile(FILE* fp)
 {
     assert(fp);
-    char fileNames[MAX_LINES][MAX_FILENAME];
     char connectedFiles[MAX_CONNECTED_FILE_STRING];
+    char cFileList[MAX_CONNECTED_FILES][MAX_FILENAME]; //TODO: finish implementing this shit.
     char *token;
-    dependencyP dependencies[MAX_LINES];
     MyLinkedListP lists[MAX_LINES];
 
     int i = 0;
-    while (fscanf(fp, "%[^:]: %s%*[\n]", *&fileNames[i], connectedFiles) != EOF)
+    while (fscanf(fp, "%[^:]: %s%*[\n]", dependencies[i]->fileName, connectedFiles) != EOF)
     {
         lists[i] = createList();
-        printf("\nfilename: %s\nconnected files: %s\n", fileNames[i], connectedFiles);
+        printf("\nfilename: %s\nconnected files: %s\n", dependencies[i]->fileName, connectedFiles);
         token = strtok(connectedFiles, DELIMITER);
 
         while (token)
@@ -66,6 +67,8 @@ void parseFile(FILE* fp)
         i++;
     }
 
+
+
 }
 
 int main(int argc, char* argv[])
@@ -74,6 +77,12 @@ int main(int argc, char* argv[])
     {
         fprintf(stderr, INV_ARG_ERROR);
         exit(-1);
+    }
+
+    int i;
+    for (i = 0; i < MAX_LINES; i++)
+    {
+        dependencies[i] = (dependencyP)malloc(sizeof(struct _dependency));
     }
 
     FILE* fp;
@@ -89,6 +98,11 @@ int main(int argc, char* argv[])
     parseFile(fp);
 
     fclose(fp);
+
+    for (i = 0; i < MAX_LINES; i++)
+    {
+        free(dependencies[i]);
+    }
 
     return 0;
 }
