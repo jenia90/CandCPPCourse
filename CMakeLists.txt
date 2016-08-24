@@ -8,6 +8,5 @@ add_executable(ListExample ex2/ListExample.c)
 target_link_libraries(ListExample MyLinkedList)
 
 add_executable(CheckDependency ex2/CheckDependency.c)
-target_link_libraries(CheckDependency MyLinkedList)
 
 add_executable(ReadDependency ex2/ReadDependency.c)
