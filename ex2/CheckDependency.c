@@ -4,20 +4,20 @@
  * @version 1.0
  * @date 25 Aug 2016
  *
- * @brief
+ * @brief Program for detection of circular dependencies in specially formated description files
  * @section DESCRIPTION:
- *
- * Input:
- * Process:
- * Output:
+ *  This program scans the given description file and after parsing it, checks if the soursce
+ *  files described there contain circular dependencies.
+ * Input: formated dependency file
+ * Process: using DFS algorithm checks if it contains circular dependencies
+ * Output: result of the check "Cyclic Dependency" or "No Cyclic Dependency"
  */
+#define NDEBUG
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-
-//#define DEBUG // remove for production.
 
 #define CYCLIC_DEPEND "Cyclic Dependency\n"
 #define NO_CYCLIC_DEPEND "No Cyclic Dependency\n"
@@ -31,7 +31,9 @@
 
 #define NO_FILE_ERROR "Unable to access specified file!\n"
 #define INV_ARG_ERROR "Invalid number of arguments!\nPlease use: CheckDependency <file_name>\n"
+
 #define DELIMITER ","
+#define LINE_PARSE_STRING "%[^:]: %s%*[\n]"
 
 typedef struct _Dependency
 {
@@ -43,7 +45,12 @@ typedef struct _Dependency
 } *DependencyP;
 
 #ifdef DEBUG
-// TODO: REMOVE THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/**
+* @brief function used for debugging. It prints  each filename and the list of connected
+* files it has
+* @param dp array of dependency struct pointers
+* @param lCount number of lines in the scanned file also the number of structs in the array.
+*/
 void printDependencyList(DependencyP dp[], int lCount)
 {
     int i, j;
@@ -111,10 +118,12 @@ int parseFile(FILE* fp, DependencyP dp[])
     char fileName[MAX_FILENAME], connectedFiles[MAX_LINE_LENGTH];
     int lineCount = 0, index;
 
-    while (fscanf(fp, "%[^:]: %s%*[\n]", fileName, connectedFiles) != EOF)
+    // each is spit into 2 variables: filename and the lit of connected files
+    while (fscanf(fp, LINE_PARSE_STRING, fileName, connectedFiles) != EOF)
     {
-        assert(lineCount <= MAX_LINES);
+        assert(lineCount <= MAX_LINES); // check that we don't exceed array size.
 
+        // if this file already exists in the list we merge their arrays; create new one otherwise
         if((index = indexOf(dp, fileName, lineCount)) == -1)
         {
             strcpy(dp[lineCount]->fileName, fileName);
@@ -143,6 +152,7 @@ void updateConnectedFileIndexes(DependencyP dp[], int lineCount)
         int j;
         for(j = 0; j < dp[i]->connectedFileCount; j++)
         {
+            // gets the index of each file name in the list
             dp[i]->connectedFilesIndexes[j] = indexOf(dp, dp[i]->connectedFileNames[j], lineCount);
         }
     }
@@ -160,6 +170,20 @@ void allocateDependencyRange(DependencyP dp[], int size)
     {
         dp[i] = (DependencyP)malloc(sizeof(struct _Dependency));
         dp[i]->connectedFileCount = 0;
+    }
+}
+
+/**
+ * @brief Frees allocated memory of unused dependency range.
+ * @param dp dependency struct array
+ * @param startIndex start index of unused dependencies
+ * @param endIndex end index of unused dependencies
+ */
+void freeDependencyRange(DependencyP *dp, int startIndex, int endIndex)
+{
+    for (startIndex; startIndex < endIndex; startIndex++)
+    {
+        free(dp[startIndex]);
     }
 }
 
@@ -183,12 +207,15 @@ char *dfs(DependencyP dp[], DependencyP curr, int visited[], int visArrSize, int
     visited[visArrSize++] = indexOf(dp, curr->fileName, lineCount);
     for (i = 0; i < curr->connectedFileCount; i++)
     {
+        // iterate over every index in visited array skipping the ones with -1
         for(j = 0; j < visArrSize && curr->connectedFilesIndexes[i] != -1; j++)
         {
+            // if the specified index wasn't visited yet, we visit it recursively.
             if(curr->connectedFilesIndexes[i] != visited[j])
             {
                 result = dfs(dp, dp[curr->connectedFilesIndexes[i]], visited, visArrSize, lineCount);
             }
+            // if it was visited that means there's a cycle and we return the appropriate message.
             else
             {
                 return CYCLIC_DEPEND;
@@ -196,20 +223,6 @@ char *dfs(DependencyP dp[], DependencyP curr, int visited[], int visArrSize, int
         }
     }
     return result;
-}
-
-/**
- * @brief Frees allocated memory of unused dependency range.
- * @param dp dependency struct array
- * @param startIndex start index of unused dependencies
- * @param endIndex end index of unused dependencies
- */
-void freeDependencies(DependencyP dp[], int startIndex, int endIndex)
-{
-    for (startIndex; startIndex < endIndex; startIndex++)
-    {
-        free(dp[startIndex]);
-    }
 }
 
 int main(int argc, char* argv[])
@@ -238,21 +251,21 @@ int main(int argc, char* argv[])
     // parse file and get the number of lines in the file
     lineCount = parseFile(fp, dependencies);
     // free memory of unused dependency struct range
-    freeDependencies(dependencies, lineCount, MAX_LINES);
+    freeDependencyRange(dependencies, lineCount, MAX_LINES);
     fclose(fp);
 
     // update the indexes of connected files for each dependency struct
     updateConnectedFileIndexes(dependencies, lineCount);
 
-    // print the result of Circular Dependency check using DFS algorithm
-    int visited[MAX_CONNECTED_FILES];
-    puts(dfs(dependencies, dependencies[0], visited, 0, lineCount));
-
 #ifdef DEBUG
     printDependencyList(dependencies, lineCount);
 #endif
 
+    // print the result of Circular Dependency check using DFS algorithm
+    int visited[MAX_CONNECTED_FILES];
+    puts(dfs(dependencies, dependencies[0], visited, 0, lineCount));
+
     // free the rest of allocated memory
-    freeDependencies(dependencies, 0, lineCount);
+    freeDependencyRange(dependencies, 0, lineCount);
     return EXIT_SUCCESS;
 }

@@ -1,3 +1,16 @@
 Q&A:
 
-1.
+1. The main disadvantage of such definition is the accidental or deliberate misuse of the
+   definition. So, it is better to write the struct definition in the source code file,
+   that way when someone else uses our code he won't be able to make changes to struct definition
+   but still be able to make use of that said struct.
+
+2. The header files are not read directly by the compiler, instead it's read by the preprocessor
+   who basically copy it straight into the place of the #include directive.
+
+   As most header file doesn't contain any actual code, just declaration and macros,
+   there's really nothing of such header files that is really put into the executable files.
+   All macros and recursive #include directives are resolved by the preprocessor.
+   What is left to the compiler is declarations, type-aliases (typedef declarations) and, well, more declarations.
+   Declarations does not actually generate any code, they are only used by the compiler for its internal
+   state when parsing and generating the actual code.

@@ -47,6 +47,7 @@ struct _MyLinkedList
  */
 NodeP createNode(char *data, NodeP next)
 {
+    assert(data);
     NodeP pNode = (NodeP)malloc(sizeof(struct Node));
     if(!pNode)
     {
@@ -69,7 +70,7 @@ NodeP createNode(char *data, NodeP next)
 MyLinkedListP createList()
 {
     MyLinkedListP l = (MyLinkedListP) malloc(sizeof(struct _MyLinkedList));
-    if (l == NULL)
+    if (!l)
     {
         return NULL;
     }
@@ -117,9 +118,12 @@ MyLinkedListP cloneList(MyLinkedListP l)
         return NULL;
     }
 
+    // make a copy of old head and create a pointer to the new one
     NodeP old = l->head, *copy = &(newList->head);
+    // copy list sizes
     newList->size = l->size;
 
+    // while there are nodes to copy we copy them to new mem addresses along with their data
     while (old)
     {
         *copy = createNode(old->data, NULL);
@@ -127,6 +131,7 @@ MyLinkedListP cloneList(MyLinkedListP l)
         copy = &(*copy)->next;
     }
 
+    // return pointer to the new list
     return newList;
 }
 
@@ -139,6 +144,7 @@ void freeList(MyLinkedListP l)
 {
     if(l)
     {
+        // get the head and then free memory of each node
         NodeP pNode = l->head, pNode2 = NULL;
         while (pNode)
         {
@@ -147,6 +153,7 @@ void freeList(MyLinkedListP l)
             free(pNode2);
         }
 
+        // after freeing all nodes we free the memory allocated for the list itself
         free(l);
     }
 }
@@ -160,7 +167,7 @@ void freeList(MyLinkedListP l)
  */
 int removeData(MyLinkedListP l, char *val)
 {
-    if (!l)
+    if (!l && !val)
     {
         return MYLIST_ERROR_CODE;
     }
@@ -246,6 +253,7 @@ int isInList(MyLinkedListP l, char *val)
     int count = 0;
     NodeP currNode = l->head;
 
+    // for each node in the list we compare its data with the given value and count occurences
     while(currNode)
     {
         if(strcmp(currNode->data, val) == 0)
