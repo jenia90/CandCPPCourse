@@ -147,7 +147,7 @@ MyLinkedListP cloneList(MyLinkedListP l)
  */
 void freeList(MyLinkedListP l)
 {
-    if(l)
+    if(l != NULL)
     {
         NodeP pNode = l->head, pNode2 = NULL;
         while (pNode)
@@ -156,7 +156,7 @@ void freeList(MyLinkedListP l)
             pNode = pNode->next;
             freeNode(pNode2);
         }
-        free(l->head);
+        free(pNode);
         free(l);
     }
 }

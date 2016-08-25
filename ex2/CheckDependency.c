@@ -204,7 +204,7 @@ char *dfs(DependencyP dp[], DependencyP curr, int visited[], int visArrSize, int
  * @param startIndex start index of unused dependencies
  * @param endIndex end index of unused dependencies
  */
-void freeDependencies(DependencyP *dp, int startIndex, int endIndex)
+void freeDependencies(DependencyP dp[], int startIndex, int endIndex)
 {
     for (startIndex; startIndex < endIndex; startIndex++)
     {
@@ -247,7 +247,6 @@ int main(int argc, char* argv[])
     // print the result of Circular Dependency check using DFS algorithm
     int visited[MAX_CONNECTED_FILES];
     puts(dfs(dependencies, dependencies[0], visited, 0, lineCount));
-
 
 #ifdef DEBUG
     printDependencyList(dependencies, lineCount);

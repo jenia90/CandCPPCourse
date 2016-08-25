@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(CandCPPCourse)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wall -Wvla -std=c99")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wextra -Wall -Wvla -std=c99")
 
 add_library(MyLinkedList ex2/MyLinkedList.c)
 add_executable(ListExample ex2/ListExample.c)
