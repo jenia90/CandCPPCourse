@@ -23,9 +23,12 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define NO_FILE_ERROR "Unable to access specified file\directory!\n"
+#define NO_FILE_ERROR "Unable to access specified file\\directory!\n"
 #define INV_ARG_ERROR "Invalid number of arguments!\nPlease use: ReadDependency <dir_path> " \
 "<output_file>\n"
+
+#define FILEPATH_STRING "%s/%s"
+#define FILENAME_STRING "%s: "
 #define DELIMITER ","
 #define ANG_BRAC '<'
 #define QUOTE '"'
@@ -118,7 +121,7 @@ int main(int argc, char* argv[])
             if(dir->d_type == 0)
             {
                 // gets full path of the file
-                sprintf(fn, "%s\\%s", argv[1], dir->d_name);
+                sprintf(fn, FILEPATH_STRING, argv[1], dir->d_name);
                 inFile = fopen(fn, "r");
                 if(!inFile)
                 {
@@ -127,7 +130,7 @@ int main(int argc, char* argv[])
                 }
 
                 // prints the name of the file being processed
-                fprintf(outFile,"%s: ", dir->d_name);
+                fprintf(outFile, FILENAME_STRING, dir->d_name);
                 scanFile(inFile, outFile);
 
                 // close current input file

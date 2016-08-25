@@ -16,7 +16,7 @@ CheckDependency.o: CheckDependency.c
 CheckDependency: CheckDependency.o
 	gcc -Wall -Wextra -Wvla -std=c99 CheckDependency.o -o CheckDependency
 
-ReadDependency.o: ReadDependencies.c
+ReadDependency.o: ReadDependency.c
 	gcc -Wall -Wextra -Wvla -std=c99 -c ReadDependency.c
 
 ReadDependency: ReadDependency.o

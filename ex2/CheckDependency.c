@@ -181,7 +181,8 @@ void allocateDependencyRange(DependencyP dp[], int size)
  */
 void freeDependencyRange(DependencyP *dp, int startIndex, int endIndex)
 {
-    for (startIndex; startIndex < endIndex; startIndex++)
+    int i;
+    for (i = startIndex; i < endIndex; i++)
     {
         free(dp[startIndex]);
     }
