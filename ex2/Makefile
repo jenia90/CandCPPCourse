@@ -16,5 +16,8 @@ CheckDependency.o: CheckDependency.c
 CheckDependency: CheckDependency.o
 	gcc -Wall -Wextra -Wvla -std=c99 CheckDependency.o -o CheckDependency
 
+tar:
+	tar cvf ex2_late.tar CheckDependency.c MyLinkedList.c Makefile README extension.pdf
+
 clean:
-	rm -f ListExample ListExample.o MyLinkedList.o CheckDependency CheckDependency.o
+	rm -f ListExample ListExample.o MyLinkedList.o CheckDependency CheckDependency.o ex2_late.tar

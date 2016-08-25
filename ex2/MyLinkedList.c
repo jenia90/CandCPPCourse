@@ -60,16 +60,6 @@ NodeP createNode(char *data, NodeP next)
 }
 
 /**
- * @brief Frees memory allocated to a given Node.
- * @param n Node pointer to free.
- */
-void freeNode(NodeP n)
-{
-    free(n->data);
-    free(n);
-}
-
-/**
  * @brief Allocates a new empty LinkedList
  * 			It is the caller's responsibility to free the returned LinkedList.
  *
@@ -147,16 +137,16 @@ MyLinkedListP cloneList(MyLinkedListP l)
  */
 void freeList(MyLinkedListP l)
 {
-    if(l != NULL)
+    if(l)
     {
         NodeP pNode = l->head, pNode2 = NULL;
         while (pNode)
         {
             pNode2 = pNode;
             pNode = pNode->next;
-            freeNode(pNode2);
+            free(pNode2);
         }
-        free(pNode);
+
         free(l);
     }
 }
@@ -193,7 +183,7 @@ int removeData(MyLinkedListP l, char *val)
             if(currNode == l->head)
             {
                 l->head = currNode->next; // assign new head
-                freeNode(currNode); // free obsolete Node memory
+                free(currNode); // free obsolete Node memory
                 currNode = l->head; // get next Node to check
                 count++;
                 l->size--;
@@ -203,7 +193,7 @@ int removeData(MyLinkedListP l, char *val)
                 //assert(prevNode);
                 // link previous Node next pointer to next Node of current Node
                 prevNode->next = currNode->next;
-                freeNode(currNode); // free obsolete Node memory
+                free(currNode); // free obsolete Node memory
                 currNode = prevNode->next; // get next Node to check
                 l->size--;
                 count++;
