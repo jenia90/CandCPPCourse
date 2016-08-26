@@ -2,12 +2,15 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/ex3/MyStringFunction.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/GenericHashTable.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/MyStringFunction.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/MyIntFunction.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/GenericHashTable.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/HashIntSearch.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/MyIntFunction.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/HashStringSearch.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ex2/CheckDependency.c" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ex2/ReadDependency.c" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ex2/MyLinkedList.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ex2/ListExample.c" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ex2/MyLinkedList.c" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
