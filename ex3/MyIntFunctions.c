@@ -2,6 +2,8 @@
 // Created by jenia on 28/08/2016.
 //
 
+#include <stdlib.h>
+#include <stdio.h>
 #include "Key.h"
 
 /**
@@ -9,7 +11,8 @@
  */
 void* cloneInt(const void* i)
 {
-
+    void *temp = (void *) i;
+    return temp;
 }
 
 /**
@@ -17,9 +20,8 @@ void* cloneInt(const void* i)
  */
 void freeInt( void* i)
 {
-
+    free(i);
 }
-
 
 /**
  * @brief hash value of key for HashTable with size tableSize
@@ -29,7 +31,8 @@ void freeInt( void* i)
  */
 int intFcn (const void* key, size_t tableSize)
 {
-
+    int res = *(int*)key % (int)tableSize;
+    return res < 0 ? res + (int)tableSize : res;
 }
 /**
  * @brief print a string
@@ -38,7 +41,7 @@ int intFcn (const void* key, size_t tableSize)
  */
 void intPrint (const void* key)
 {
-
+    printf("%d", *(int*)key);
 }
 
 /**
@@ -48,4 +51,4 @@ void intPrint (const void* key)
  *   returns non-zero.
  *
  */
-/* TODO change here */ intCompare (/* TODO change here */);
+typedef int (*intCompare) (int, int);

@@ -9,22 +9,16 @@
  */
  typedef void * (*CloneKeyFcn)(const void * key);
 
-
 /**
  * @brief Free all the memory allocated for an object
  */
  typedef void(*FreeKeyFcn)(void * key);
-
-
-
 
 /**
  * @brief hash value of key for HashTable with size tableSize
  * @return number between 0-(tableSize-1) or negative number in case of an error
  */
  typedef int(*HashFcn)(const void * key, size_t tableSize);
-
-
 
 /**
  * @brief print function
@@ -39,7 +33,7 @@
  *   returns non-zero.
  * use void *
  */
-typedef void * (*ComparisonFcn)(const int* key1, const int* key2);
+typedef int(*ComparisonFcn)(const void *key1, const void *key2);
 
 
 #endif

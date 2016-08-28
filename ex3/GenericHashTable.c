@@ -2,11 +2,30 @@
 // Created by jenia on 28/08/2016.
 //
 
+#include <stdio.h>
+#include <stdlib.h>
 #include "GenericHashTable.h"
+#include "TableErrorHandle.h"
 
-struct Table{
+#define MAX_ROW_ELEMENTS 2
 
-};
+typedef struct Cell
+{
+    void *key;
+    void *val;
+} *CellP;
+
+typedef struct Table
+{
+    size_t size;
+    CellP *data;
+    CloneKeyFcn cloneKey;
+    FreeKeyFcn freeKey;
+    HashFcn hashFcn;
+    PrintKeyFcn printKeyFun;
+    PrintDataFcn printDataFun;
+    ComparisonFcn comparisonFun;
+} Table;
 
 /**
  * @brief print function
@@ -23,7 +42,34 @@ typedef void(*PrintDataFcn)(const void* data);
 
 TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
         ,HashFcn hfun,PrintKeyFcn printKeyFun, PrintDataFcn printDataFun
-        , ComparisonFcn fcomp);
+        , ComparisonFcn fcomp)
+{
+    TableP newTable = (TableP)malloc(sizeof(Table) * tableSize);
+    if (!newTable)
+    {
+        reportError(MEM_OUT);
+        return NULL;
+    }
+
+    newTable->data = (CellP*)malloc(sizeof(CellP) * tableSize);
+    newTable->cloneKey = cloneKey;
+    newTable->freeKey = freeKey;
+    newTable->hashFcn = hfun;
+    newTable->printKeyFun = printKeyFun;
+    newTable->printDataFun = printDataFun;
+    newTable->comparisonFun = fcomp;
+
+    return newTable;
+}
+
+CellP createCell(void *key, void *val)
+{
+    CellP newCell = (CellP)malloc(sizeof(struct Cell) * MAX_ROW_ELEMENTS);
+    newCell->key = key;
+    newCell->val = val;
+
+    return newCell;
+}
 
 
 /**
@@ -34,15 +80,46 @@ TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
  * as it was before the duplication).
  * If everything is OK, return true. Otherwise (an error occured) return false;
  */
-int  insert( TableP table, const void* key, DataP object);   /* was FIXED here **/
-// int  insert( TableP table, const void* key, DataP object);
+int insert( TableP table, const void* key, DataP object)
+{
+    int hashKey = table->hashFcn(key, table->size);
+
+    CellP newCell = createCell(table->cloneKey(key), object);
+    if(!newCell)
+    {
+        reportError(MEM_OUT);
+        return false;
+    }
+    table->data[hashKey] = newCell;
+
+    return true;
+}
+
+TableP rehashTable(TableP table, size_t newSize)
+{
+    TableP newTable = createTable(newSize, table->cloneKey, table->freeKey, table->hashFcn, table
+            ->printKeyFun, table->printDataFun, table->comparisonFun);
+
+    if(!newTable)
+    {
+        return NULL;
+    }
+
+
+
+    return newTable;
+
+}
 
 
 /**
  * @brief remove an data from the table.
  * If everything is OK, return the pointer to the ejected data. Otherwise return NULL;
  */
-DataP removeData(TableP table, const void* key);
+DataP removeData(TableP table, const void* key)
+{
+
+}
 
 
 
@@ -55,10 +132,10 @@ DataP removeData(TableP table, const void* key);
  * If the key was not found, fill both pointers with value of -1.
  * return pointer to the data or null
  */
-DataP findData(const TableP table, const void* key, int* arrCell, int* listNode);
+DataP findData(const TableP table, const void* key, int* arrCell, int* listNode)
+{
 
-
-
+}
 
 /**
  * @brief return a pointer to the data that exist in the table in cell number arrCell (where 0 is the
@@ -67,7 +144,10 @@ DataP findData(const TableP table, const void* key, int* arrCell, int* listNode)
  * itself).
  * If such data not exist return NULL
  */
-DataP getDataAt(const TableP table, int arrCell, int listNode);
+DataP getDataAt(const TableP table, int arrCell, int listNode)
+{
+
+}
 
 /**
  * @brief return the pointer to the key that exist in the table in cell number arrCell (where 0 is the
@@ -76,18 +156,24 @@ DataP getDataAt(const TableP table, int arrCell, int listNode);
  * itself).
  * If such key not exist return NULL
  */
-ConstKeyP getKeyAt(const TableP, int arrCell, int listNode);
+ConstKeyP getKeyAt(const TableP table, int arrCell, int listNode)
+{
+
+}
 
 /**
  * @brief Print the table (use the format presented in PrintTableExample).
  */
-void printTable(const TableP table);
+void printTable(const TableP table)
+{
 
-
-
+}
 
 /**
  * @brief Free all the memory allocated for the table.
  * It's the user responsibility to call this function before exiting the program.
  */
-void freeTable(TableP table);
+void freeTable(TableP table)
+{
+
+}
