@@ -2,14 +2,14 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/ex3/MyStringFunction.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ex3/GenericHashTable.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ex3/MyStringFunction.c" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ex3/MyIntFunction.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/MyStringFunctions.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/HashStrSearch.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/MyStringFunctions.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ex3/GenericHashTable.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/MyIntFunctions.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ex3/HashIntSearch.c" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ex3/MyIntFunction.c" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ex3/HashStringSearch.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/GenericHashTable.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex3/MyIntFunctions.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
