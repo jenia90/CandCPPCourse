@@ -6,12 +6,13 @@
 #include <stdio.h>
 #include "Key.h"
 
+
 /**
  * @brief clone an int
  */
 void* cloneInt(const void* i)
 {
-    void *temp = (void *) i;
+    int *temp = (int *) i;
     return temp;
 }
 
@@ -45,10 +46,13 @@ void intPrint (const void* key)
 }
 
 /**
- *  intCompare - pointer to int comparison function:
  * @brief compare 2 ints
  *   returns zero int if both ints are equal, otherwise
  *   returns non-zero.
  *
  */
-typedef int (*intCompare) (int, int);
+int intCompare(const void *i1, const void *i2)
+{
+    int val1 = *(int*)i1, val2 = *(int*)i2;
+    return val1 - val2;
+}

@@ -2,6 +2,9 @@
 // Created by jenia on 28/08/2016.
 //
 
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #include "Key.h"
 
 /**
@@ -9,7 +12,8 @@
  */
 void* cloneStr(const void* s)
 {
-
+    char *temp = (char *)s;
+    return temp;
 }
 
 /**
@@ -17,7 +21,7 @@ void* cloneStr(const void* s)
  */
 void freeStr(void* s)
 {
-
+    free(s);
 }
 
 /**
@@ -28,7 +32,16 @@ void freeStr(void* s)
  */
 int strFcn (const void*  s, size_t tableSize)
 {
+    int res, i, k = 0;
 
+    for(i = 0; i < strlen((char *)s); i++)
+    {
+        k += ((char *)s)[i];
+    }
+
+    res = k % (int)tableSize;
+
+    return res < 0 ? res + (int)tableSize : res;
 }
 
 /**
@@ -38,7 +51,7 @@ int strFcn (const void*  s, size_t tableSize)
  */
 void strPrint (const void*  s)
 {
-
+    puts((char *)s);
 }
 
 /**
@@ -47,4 +60,7 @@ void strPrint (const void*  s)
  *   returns zero int if both strings are equal, otherwise
  *   returns non-zero.
  */
-/* TODO change here */ strCompare (/* TODO change here */);
+int strCompare(const void* s1, const void* s2)
+{
+    return strcmp((char *)s1, (char *)s2);
+}

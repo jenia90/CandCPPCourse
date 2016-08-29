@@ -8,30 +8,40 @@
 #include "TableErrorHandle.h"
 
 #define MAX_ROW_ELEMENTS 2
+#define EXPANSION_COEFFICIENT 2
+#define DEFAULT_TABLE_SIZE 4
+
+typedef struct Item
+{
+    void *key;
+    DataP *data;
+} Item;
 
 typedef struct Cell
 {
-    void *key;
-    void *val;
-} *CellP;
+    Item items[MAX_ROW_ELEMENTS];
+} Cell, *CellP;
 
 typedef struct Table
 {
-    size_t size;
-    CellP *data;
+    size_t size, origSize;
+    CellP *cells;
     CloneKeyFcn cloneKey;
     FreeKeyFcn freeKey;
     HashFcn hashFcn;
     PrintKeyFcn printKeyFun;
     PrintDataFcn printDataFun;
-    ComparisonFcn comparisonFun;
-} Table;
+    ComparisonFcn compKeys;
+} Table = {.origSize = DEFAULT_TABLE_SIZE};
 
 /**
  * @brief print function
  *
  */
 typedef void(*PrintDataFcn)(const void* data);
+
+void moveTable(TableP oldTable, TableP newTable);
+int hashedIndexOf(const TableP table, const void *key);
 
 /**
  * @brief Allocate memory for a hash table with which uses the given functions.
@@ -51,24 +61,40 @@ TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
         return NULL;
     }
 
-    newTable->data = (CellP*)malloc(sizeof(CellP) * tableSize);
+    newTable->size = tableSize;
+    newTable->cells = (CellP *)malloc(sizeof(Cell) * tableSize);
     newTable->cloneKey = cloneKey;
     newTable->freeKey = freeKey;
     newTable->hashFcn = hfun;
     newTable->printKeyFun = printKeyFun;
     newTable->printDataFun = printDataFun;
-    newTable->comparisonFun = fcomp;
+    newTable->compKeys = fcomp;
 
     return newTable;
 }
 
-CellP createCell(void *key, void *val)
+/**
+ * @brief In case we run out of cells to allocate for new keys in our table we expand the table
+ * to a given size transfer all our current items to the new table.
+ * @param table
+ * @param newSize
+ * @return
+ */
+int expandTable(TableP table, const size_t newSize)
 {
-    CellP newCell = (CellP)malloc(sizeof(struct Cell) * MAX_ROW_ELEMENTS);
-    newCell->key = key;
-    newCell->val = val;
+    TableP newTable = createTable(newSize, table->cloneKey, table->freeKey, table->hashFcn,
+                                  table->printKeyFun, table->printDataFun, table->compKeys);
 
-    return newCell;
+    if(!newTable)
+    {
+        reportError(MEM_OUT);
+        return false;
+    }
+    moveTable(table, newTable);
+    *table = *newTable;
+
+
+    return true;
 }
 
 
@@ -82,33 +108,39 @@ CellP createCell(void *key, void *val)
  */
 int insert( TableP table, const void* key, DataP object)
 {
-    int hashKey = table->hashFcn(key, table->size);
-
-    CellP newCell = createCell(table->cloneKey(key), object);
-    if(!newCell)
+    bool result = false;
+    int i,  hashKey = hashedIndexOf(table, key);
+    CellP cell = table->cells[hashKey];
+    if(!cell)
     {
-        reportError(MEM_OUT);
-        return false;
-    }
-    table->data[hashKey] = newCell;
+        cell = (CellP)malloc(sizeof(Cell));
 
-    return true;
-}
-
-TableP rehashTable(TableP table, size_t newSize)
-{
-    TableP newTable = createTable(newSize, table->cloneKey, table->freeKey, table->hashFcn, table
-            ->printKeyFun, table->printDataFun, table->comparisonFun);
-
-    if(!newTable)
-    {
-        return NULL;
+        if(!cell)
+        {
+            return false;
+        }
     }
 
+    for(i = 0; i < MAX_ROW_ELEMENTS && !result; i++)
+    {
+        if(!cell->items[i].data)
+        {
+            cell->items->key = table->cloneKey(key);
+            cell->items[i].data = object;
+            result = true;
+        }
+    }
 
+    if(!result)
+    {
+        if(!expandTable(table, table->size * EXPANSION_COEFFICIENT))
+        {
+            return false;
+        }
+        result = (bool)insert(table, key, object);
+    }
 
-    return newTable;
-
+    return result;
 }
 
 
@@ -118,10 +150,21 @@ TableP rehashTable(TableP table, size_t newSize)
  */
 DataP removeData(TableP table, const void* key)
 {
+    DataP data = NULL;
+    int i, hashIndex = hashedIndexOf(table, key);
+    CellP cell = table->cells[hashIndex];
 
+    for(i = 0; i < MAX_ROW_ELEMENTS; i++)
+    {
+        if(table->compKeys(key, cell->items[i].key) == 0)
+        {
+            data = cell->items[i].data;
+            table->freeKey(cell->items[i].key);
+        }
+    }
+
+    return data;
 }
-
-
 
 /**
  * @brief Search the table and look for an object with the given key.
@@ -134,7 +177,23 @@ DataP removeData(TableP table, const void* key)
  */
 DataP findData(const TableP table, const void* key, int* arrCell, int* listNode)
 {
+    DataP data = NULL;
+    int i, hashedIndex = hashedIndexOf(table, key);
 
+    if(table->cells[hashedIndex])
+    {
+        *arrCell = hashedIndex;
+        for(i = 0; i < MAX_ROW_ELEMENTS; i++)
+        {
+            if(table->compKeys(key, table->cells[hashedIndex]->items[i].key) == 0)
+            {
+                *listNode = i;
+                data = table->cells[hashedIndex]->items[i].data;
+            }
+        }
+    }
+
+    return data;
 }
 
 /**
@@ -146,7 +205,12 @@ DataP findData(const TableP table, const void* key, int* arrCell, int* listNode)
  */
 DataP getDataAt(const TableP table, int arrCell, int listNode)
 {
+    if(arrCell < table->size && listNode < MAX_ROW_ELEMENTS)
+    {
+        return table->cells[arrCell]->items[listNode].data;
+    }
 
+    return NULL;
 }
 
 /**
@@ -159,6 +223,12 @@ DataP getDataAt(const TableP table, int arrCell, int listNode)
 ConstKeyP getKeyAt(const TableP table, int arrCell, int listNode)
 {
 
+    if(arrCell < table->size && listNode < MAX_ROW_ELEMENTS)
+    {
+        return table->cells[arrCell]->items[listNode].key;
+    }
+
+    return NULL;
 }
 
 /**
@@ -166,7 +236,27 @@ ConstKeyP getKeyAt(const TableP table, int arrCell, int listNode)
  */
 void printTable(const TableP table)
 {
-
+    int cellIndex, itemIndex;
+    for(cellIndex = 0; cellIndex < table->size; cellIndex++)
+    {
+        printf("[%d]\t", cellIndex);
+        if(table->cells[cellIndex])
+        {
+            for(itemIndex = 0; itemIndex< MAX_ROW_ELEMENTS; itemIndex++)
+            {
+                ConstKeyP key = getKeyAt(table, cellIndex, itemIndex);
+                DataP data = getDataAt(table, cellIndex, itemIndex);
+                if(key)
+                {
+                    table->printKeyFun(key);
+                    puts(",");
+                    table->printDataFun(data);
+                    puts("\t-->\t");
+                }
+            }
+        }
+        puts("\n");
+    }
 }
 
 /**
@@ -175,5 +265,37 @@ void printTable(const TableP table)
  */
 void freeTable(TableP table)
 {
+    int i, j;
+    for (i = 0; i < table->size; i++)
+    {
+        CellP cell = table->cells[i];
+        for(j = 0; j < MAX_ROW_ELEMENTS; j++)
+        {
+            free(cell->items[i].key);
+        }
+        free(cell);
+    }
 
+    free(table);
+}
+
+void moveTable(TableP oldTable, TableP newTable)
+{
+    int i, j;
+    for (i = 0; i < oldTable->size; i++)
+    {
+        CellP cell = oldTable->cells[i];
+        newTable->cells[2 * i] = cell;
+        for(j = 0; j < MAX_ROW_ELEMENTS; j++)
+        {
+            free(cell->items[i].key);
+        }
+        free(cell);
+    }
+}
+
+int hashedIndexOf(const TableP table, const void *key)
+{
+    int d = (int)(table->size / table->origSize);
+    return d * table->hashFcn(key, table->size);
 }
