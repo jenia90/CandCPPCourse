@@ -87,10 +87,11 @@ int main(int argc, char *argv[])
         
         
             
-	//	(7) free the data 	
- 	for (unsigned int i = 0; i < DATA_SIZE; i++) 
+	//	(7) free the data
+    int j;
+ 	for (j = 0; j < DATA_SIZE; j++)
     {
-        free(data[i]);
+        free(data[j]);
     }
     return 0;
 }
