@@ -54,5 +54,5 @@ void intPrint (const void* key)
  */
 int intCompare(const void *i1, const void *i2)
 {
-    return memcmp((int*)i1, (int*)i2, sizeof(int));
+    return (int)i1 - (int)i2;
 }

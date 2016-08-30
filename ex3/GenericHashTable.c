@@ -70,22 +70,37 @@ TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
     return newTable;
 }
 
-
-
+/**
+ * @brief Creates a new item at a specific index inside the table cell and allocates memory for it.
+ * @param table pointer to the hash table
+ * @param cell pointer to the cell to which that item will be added
+ * @param itemIdx index at which it will be placed
+ * @param key key of the new item
+ * @param object data pointer of the new item
+ * @return pointer to the item if successful; NULL otherwise
+ */
 static CellP createItem(TableP table, CellP *cell, int itemIdx, const void *key, DataP object)
 {
-    CellP item = cell[itemIdx] = malloc(sizeof(CellP));
+    // allocate memory for the new item.
+    CellP item = cell[itemIdx] = malloc(sizeof(*item));
     if(!item)
     {
         reportError(MEM_OUT);
         return NULL;
     }
 
+    // clone the key using a specific function and then assign data
     item->key = table->cloneKey(key);
     item->data = object;
     return item;
 }
 
+/**
+ * @brief Creates a new cell and allocates memory for its items
+ * @param cells array of cells to where a new cell will be allocated
+ * @param index index of the new cell
+ * @return pointer to the new cell if successful; NULL otherwise
+ */
 static CellP *createCell(CellP **cells,int index)
 {
     CellP *cell = (cells[index] = calloc(MAX_ROW_ELEMENTS, sizeof(*cell)));
@@ -227,15 +242,18 @@ int insert( TableP table, const void* key, DataP object)
 DataP removeData(TableP table, const void* key)
 {
     DataP data = NULL;
-    int i, hashIndex = hashedIndexOf(table, key);
-    CellP *cell = table->cells[hashIndex];
+    int d = (int)(table->size / table->origSize);
+    int i, j, hashKey = d * table->hashFcn(key, table->size);
 
-    for(i = 0; i < MAX_ROW_ELEMENTS; i++)
+    for(i = hashKey; i < hashKey + d; ++i)
     {
-        if(table->compKeys(key, cell[i]->key) == 0)
+        for(i = 0; i < MAX_ROW_ELEMENTS; i++)
         {
-            data = cell[i]->data;
-            table->freeKey(cell[i]->key);
+            if(!table->compKeys(key, table->cells[i][j]->key))
+            {
+                data = table->cells[i][j]->data;
+                table->freeKey(table->cells[i][j]->key);
+            }
         }
     }
 
@@ -328,13 +346,13 @@ void printTable(const TableP table)
                 if(key)
                 {
                     table->printKeyFun(key);
-                    printf(",");
+                    putchar(',');
                     table->printDataFun(data);
-                    printf("\t-->\t");
+                    puts("\t-->\t");
                 }
             }
         }
-        printf("\n");
+        putchar('\n');
     }
 }
 
