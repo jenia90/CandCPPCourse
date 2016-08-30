@@ -47,6 +47,11 @@ TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
         ,HashFcn hfun,PrintKeyFcn printKeyFun, PrintDataFcn printDataFun
         , ComparisonFcn fcomp)
 {
+    if(tableSize == 0)
+    {
+        reportError(GENERAL_ERROR);
+        return NULL;
+    }
     TableP newTable = (TableP)calloc(tableSize, sizeof(Table));
     if (!newTable)
     {
@@ -54,7 +59,7 @@ TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
         return NULL;
     }
     newTable->origSize = newTable->size = tableSize;
-    newTable->cells = calloc(tableSize, sizeof(CellP));
+    newTable->cells = calloc(tableSize, sizeof(*newTable->cells));
     if(!newTable->cells)
     {
         reportError(MEM_OUT);
@@ -121,7 +126,7 @@ static CellP *createCell(CellP **cells,int index)
  * @param newSize
  * @return
  */
-static int **expandTable(TableP table, int expandBy)
+static int expandTable(TableP table, int expandBy)
 {
     int i, j, oldSize = table->size;
     CellP **oldCells = table->cells;
@@ -174,7 +179,7 @@ static int **expandTable(TableP table, int expandBy)
     free(oldCells);
     table->cells = newCells;
 
-    return false;
+    return true;
 }
 
 /**

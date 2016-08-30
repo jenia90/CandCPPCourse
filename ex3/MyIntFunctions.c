@@ -13,8 +13,12 @@
  */
 void* cloneInt(const void* i)
 {
-    int temp = *(int*)i;
-    return (void*)temp;
+    if(i)
+    {
+        int temp = *(int*)i;
+        return (void*)temp;
+    }
+    return NULL;
 }
 
 /**
