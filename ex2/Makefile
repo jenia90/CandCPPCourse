@@ -1,4 +1,4 @@
-all: ListExample CheckDependency ReadDependency
+all: ListExample CheckDependency ReadDirectory
 	./ListExample
 
 ListExample.o: ListExample.c
@@ -16,14 +16,14 @@ CheckDependency.o: CheckDependency.c
 CheckDependency: CheckDependency.o
 	gcc -Wall -Wextra -Wvla -std=c99 CheckDependency.o -o CheckDependency
 
-ReadDependency.o: ReadDependency.c
-	gcc -Wall -Wextra -Wvla -std=c99 -c ReadDependency.c
+ReadDirectory.o: ReadDirectory.c
+	gcc -Wall -Wextra -Wvla -std=c99 -c ReadDirectory.c
 
-ReadDependency: ReadDependency.o
-	gcc -Wall -Wextra -Wvla -std=c99 ReadDependency.o -o ReadDependency
+ReadDirectory: ReadDirectory.o
+	gcc -Wall -Wextra -Wvla -std=c99 ReadDirectory.o -o ReadDirectory
 
 tar:
-	tar cvf ex2_late.tar CheckDependency.c ReadDependency.c MyLinkedList.c Makefile README extension.pdf
+	tar cvf ex2_late.tar CheckDependency.c ReadDirectory.c MyLinkedList.c Makefile README extension.pdf
 
 clean:
-	rm -f ListExample ListExample.o MyLinkedList.o CheckDependency CheckDependency.o ReadDependency ReadDependency.o ex2_late.tar
+	rm -f ListExample ListExample.o MyLinkedList.o CheckDependency CheckDependency.o ReadDirectory ReadDirectory.o ex2_late.tar

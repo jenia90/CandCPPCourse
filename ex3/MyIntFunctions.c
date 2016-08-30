@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <mem.h>
 #include "Key.h"
 
 
@@ -12,8 +13,8 @@
  */
 void* cloneInt(const void* i)
 {
-    int *temp = (int *) i;
-    return temp;
+    int temp = *(int*)i;
+    return (void*)temp;
 }
 
 /**
@@ -53,6 +54,5 @@ void intPrint (const void* key)
  */
 int intCompare(const void *i1, const void *i2)
 {
-    int val1 = *(int*)i1, val2 = *(int*)i2;
-    return val1 - val2;
+    return memcmp((int*)i1, (int*)i2, sizeof(int));
 }
