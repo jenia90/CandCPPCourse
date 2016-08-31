@@ -12,8 +12,8 @@
  */
 void* cloneStr(const void* s)
 {
-    char *temp = (char *)s;
-    return temp;
+    char *temp = calloc(strlen(s), sizeof(char));
+    return strcpy(temp, s);
 }
 
 /**
@@ -51,7 +51,7 @@ int strFcn (const void*  s, size_t tableSize)
  */
 void strPrint (const void*  s)
 {
-    puts((char *)s);
+    printf("%s", (char *)s);
 }
 
 /**
@@ -62,5 +62,5 @@ void strPrint (const void*  s)
  */
 int strCompare(const void* s1, const void* s2)
 {
-    return strcmp((char *)s1, (char *)s2);
+    return strcmp(s1, s2);
 }

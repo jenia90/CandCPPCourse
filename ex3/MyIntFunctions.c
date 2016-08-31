@@ -4,21 +4,17 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <mem.h>
-#include "Key.h"
+#include <memory.h>
 
+#define SIZE_OF_INT sizeof(int)
 
 /**
  * @brief clone an int
  */
 void* cloneInt(const void* i)
 {
-    if(i)
-    {
-        int temp = *(int*)i;
-        return (void*)temp;
-    }
-    return NULL;
+    int *temp = malloc(sizeof(int));
+    return memcpy(temp, i, SIZE_OF_INT);
 }
 
 /**
@@ -58,5 +54,5 @@ void intPrint (const void* key)
  */
 int intCompare(const void *i1, const void *i2)
 {
-    return (int)i1 - (int)i2;
+    return memcmp(i1, i2, SIZE_OF_INT);
 }
