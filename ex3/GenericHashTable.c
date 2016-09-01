@@ -2,17 +2,23 @@
 // Created by jenia on 28/08/2016.
 //
 
+#ifndef MAX_ROW_ELEMENTS
+#define MAX_ROW_ELEMENTS 2
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "GenericHashTable.h"
 #include "TableErrorHandle.h"
 
-#define MAX_ROW_ELEMENTS 2
 #define EXPANSION_COEFFICIENT 2
 #define CELL_IDX_STR "[%d]\t"
 #define KEY_VAL_SPLIT ","
 #define ITEM_SPLIT "\t-->\t"
 #define NEW_LINE "\n"
+
+#define RESIZED_INDEX_OLD(x) 2 * x
+#define RESIZED_INDEX_NEW(x) 2 * x + 1
 
 #define NOT_FOUND -1
 typedef struct Item
@@ -149,7 +155,7 @@ static int expandTable(TableP table, int expandBy)
         return false;
     }
 
-    for (i = 0; i < oldSize; i++)
+    for (i = 0; i < (int)oldSize; i++)
     {
         Cell oldCell = oldCells[i];
         if (!oldCell)
@@ -157,7 +163,7 @@ static int expandTable(TableP table, int expandBy)
             continue;
         }
 
-        Cell newCell = createCell(newCells, 2 * i);
+        Cell newCell = createCell(newCells, RESIZED_INDEX_OLD(i));
 
         if (!newCell)
         {
@@ -240,7 +246,7 @@ int insert(TableP table, const void* key, DataP object)
     if(expandTable(table, EXPANSION_COEFFICIENT))
     {
         cells = table->cells;
-        Cell newCell = createCell(cells, 2 * hashKey + 1);
+        Cell newCell = createCell(cells, RESIZED_INDEX_NEW(hashKey));
         if(newCell)
         {
             return createItem(table, newCell, 0, key, object) != NULL;
@@ -317,7 +323,7 @@ DataP findData(const TableP table, const void* key, int* arrCell, int* listNode)
  */
 DataP getDataAt(const TableP table, int arrCell, int listNode)
 {
-    if(arrCell < table->size && listNode < MAX_ROW_ELEMENTS)
+    if(arrCell < (int)table->size && listNode < MAX_ROW_ELEMENTS)
     {
         Item cell = table->cells[arrCell][listNode];
         if(cell)
@@ -339,7 +345,7 @@ DataP getDataAt(const TableP table, int arrCell, int listNode)
 ConstKeyP getKeyAt(const TableP table, int arrCell, int listNode)
 {
 
-    if(arrCell < table->size && listNode < MAX_ROW_ELEMENTS)
+    if(arrCell < (int)table->size && listNode < MAX_ROW_ELEMENTS)
     {
         Item cell = table->cells[arrCell][listNode];
         if(cell)
@@ -358,7 +364,7 @@ void printTable(const TableP table)
 {
     int cellIndex, itemIndex;
     Cells cells = table->cells;
-    for(cellIndex = 0; cellIndex < table->size; cellIndex++)
+    for(cellIndex = 0; cellIndex < (int)table->size; cellIndex++)
     {
         printf(CELL_IDX_STR, cellIndex);
         if(cells[cellIndex])
@@ -387,7 +393,7 @@ void printTable(const TableP table)
 void freeTable(TableP table)
 {
     int i, j;
-    for (i = 0; i < table->size; i++)
+    for (i = 0; i < (int)table->size; i++)
     {
         Cell cell = table->cells[i];
         if(cell)

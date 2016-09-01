@@ -34,7 +34,7 @@ int strFcn (const void*  s, size_t tableSize)
 {
     int res, i, k = 0;
 
-    for(i = 0; i < strlen((char *)s); i++)
+    for(i = 0; i < (int)strlen((char *)s); i++)
     {
         k += ((char *)s)[i];
     }
