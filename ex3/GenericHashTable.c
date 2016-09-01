@@ -168,6 +168,7 @@ static int expandTable(TableP table, int expandBy)
         if (!newCell)
         {
             reportError(MEM_OUT);
+            free(newCells);
             return false;
         }
 
@@ -183,6 +184,8 @@ static int expandTable(TableP table, int expandBy)
             if (!item)
             {
                 reportError(MEM_OUT);
+                free(newCell);
+                free(newCells);
                 return false;
             }
 
@@ -393,24 +396,25 @@ void printTable(const TableP table)
 void freeTable(TableP table)
 {
     int i, j;
+    Cells cells = table->cells;
     for (i = 0; i < (int)table->size; i++)
     {
-        Cell cell = table->cells[i];
+        Cell cell = cells[i];
         if(cell)
         {
             for (j = 0; j < MAX_ROW_ELEMENTS; j++)
             {
-                if (cell[j])
+                Item item = cell[j];
+                if (item)
                 {
-                    table->freeKey(cell[j]->key);
+                    table->freeKey(item->key);
+                    free(item);
                 }
             }
 
-            free(*cell);
+            free(cell);
         }
-
-        free(cell);
     }
-
+    free(cells);
     free(table);
 }
