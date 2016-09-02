@@ -1,9 +1,16 @@
-//
-// Created by jenia on 28/08/2016.
-//
+/**
+* @file GenericHashTable.c
+* @author jenia90
+* @version 1.0
+* @date 1 Sep 2016
+*
+* @brief Generic hash table implementation
+* @section DESCRIPTION:
+* Creates a hash table which holds an array of defined size in each cell.
+*/
 
 #ifndef MAX_ROW_ELEMENTS
-#define MAX_ROW_ELEMENTS 2
+#define MAX_ROW_ELEMENTS 4
 #endif
 
 #include <stdio.h>

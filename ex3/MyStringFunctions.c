@@ -11,8 +11,7 @@
  */
 void* cloneStr(const void* s)
 {
-    char *temp = calloc(strlen(s), sizeof(char));
-    return strcpy(temp, s);
+    return strcpy(malloc(strlen(s) + 1), s);
 }
 
 /**
