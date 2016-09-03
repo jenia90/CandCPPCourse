@@ -6,7 +6,8 @@
 *
 * @brief Generic hash table implementation
 * @section DESCRIPTION:
-* Creates a hash table which holds an array of defined size in each cell.
+* Defines a hash table which holds an array of defined size in each cell.
+ * it uses a given set of functions to perform operations on different types of table keys.
 */
 
 /**

@@ -14,11 +14,11 @@ HashIntSearch: HashIntSearch.o MyIntFunctions.o libgenericHashTable.a
 HashStrSearch: HashStrSearch.o MyStringFunctions.o libgenericHashTable.a
 	$(CC) $(CFLAGS) $(ADDFLAGS) HashStrSearch.c -L. -lgenericHashTable MyStringFunctions.o -o HashStrSearch
 
-GenericHashTable.o: GenericHashTable.c TableErrorHandle.c
-	$(CC) $(CFLAGS) $(DFLAGS) $(ADDFLAGS) -c GenericHashTable.c TableErrorHandle.c
-    
 libgenericHashTable.a: GenericHashTable.o TableErrorHandle.o
 	ar rcs libgenericHashTable.a GenericHashTable.o TableErrorHandle.o
+
+GenericHashTable.o: GenericHashTable.c TableErrorHandle.c
+	$(CC) $(CFLAGS) $(DFLAGS) $(ADDFLAGS) -c GenericHashTable.c TableErrorHandle.c
 
 MyIntFunctions.o: MyIntFunctions.c
 	$(CC) $(CFLAGS) $(ADDFLAGS) -c MyIntFunctions.c
@@ -31,11 +31,12 @@ debug:
 
 valgrind: 
 	make debug
+	@echo
 	@echo Running int valgrind check:
 	valgrind --leak-check=full --show-possibly-lost=yes --show-reachable=yes --undef-value-errors=yes ./HashIntSearch $(ARGS_INT)
+	@echo
 	@echo Running string valgrind check:
 	valgrind --leak-check=full --show-possibly-lost=yes --show-reachable=yes --undef-value-errors=yes ./HashStrSearch $(ARGS_STR)
-
 
 tar:
 	tar cvf ex3_late.tar Makefile GenericHashTable.c MyIntFunctions.c MyStringFunctions.c MyStringFunctions.h MyIntFunctions.h Key.h
