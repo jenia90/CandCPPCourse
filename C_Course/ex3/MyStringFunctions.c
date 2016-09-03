@@ -1,10 +1,18 @@
-//
-// Created by jenia on 28/08/2016.
-//
+/**
+* @file MyStringFunctions.c
+* @author jenia90
+* @version 1.0
+* @date 1 Sep 2016
+*
+* @brief A file containing set of functions for dealing with string (char *) values in a hash table
+* @section DESCRIPTION:
+* A set of basic functions to deal with string (char *) keys in a hash table data structure
+*/
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <assert.h>
 
 #define PRINT_STR "%s"
 
@@ -13,6 +21,7 @@
  */
 void* cloneStr(const void* s)
 {
+    assert(s);
     return strcpy(malloc(strlen(s) + 1), s);
 }
 
@@ -21,6 +30,7 @@ void* cloneStr(const void* s)
  */
 void freeStr(void* s)
 {
+    assert(s);
     free(s);
 }
 
@@ -32,6 +42,7 @@ void freeStr(void* s)
  */
 int strFcn (const void*  s, size_t tableSize)
 {
+    assert(s);
     int res, i, k = 0;
 
     // sums each of the string's char value.
@@ -52,6 +63,7 @@ int strFcn (const void*  s, size_t tableSize)
  */
 void strPrint (const void*  s)
 {
+    assert(s);
     printf(PRINT_STR, (char *)s);
 }
 
@@ -63,5 +75,6 @@ void strPrint (const void*  s)
  */
 int strCompare(const void* s1, const void* s2)
 {
+    assert(s1 && s2);
     return strcmp(s1, s2);
 }

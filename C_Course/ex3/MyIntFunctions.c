@@ -1,10 +1,17 @@
-//
-// Created by jenia on 28/08/2016.
-//
-
+/**
+* @file MyIntFunctions.c
+* @author jenia90
+* @version 1.0
+* @date 1 Sep 2016
+*
+* @brief A file containing set of functions for dealing with int values in a hash table
+* @section DESCRIPTION:
+* A set of basic functions to deal with int keys in a hash table data structure
+*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <memory.h>
+#include <assert.h>
 
 #define SIZE_OF_INT sizeof(int)
 
@@ -13,8 +20,8 @@
  */
 void* cloneInt(const void* i)
 {
-    int *temp = malloc(sizeof(int));
-    return memcpy(temp, i, SIZE_OF_INT);
+    assert(i);
+    return memcpy(malloc(sizeof(int)), i, SIZE_OF_INT);
 }
 
 /**
@@ -22,6 +29,7 @@ void* cloneInt(const void* i)
  */
 void freeInt( void* i)
 {
+    assert(i);
     free(i);
 }
 
@@ -33,6 +41,7 @@ void freeInt( void* i)
  */
 int intFcn (const void* key, size_t tableSize)
 {
+    assert(key);
     int res = *(int*)key % (int)tableSize;
     return res < 0 ? res + (int)tableSize : res;
 }
@@ -43,6 +52,7 @@ int intFcn (const void* key, size_t tableSize)
  */
 void intPrint (const void* key)
 {
+    assert(key);
     printf("%d", *(int*)key);
 }
 
@@ -54,5 +64,6 @@ void intPrint (const void* key)
  */
 int intCompare(const void *i1, const void *i2)
 {
+    assert(i1 && i2);
     return memcmp(i1, i2, SIZE_OF_INT);
 }

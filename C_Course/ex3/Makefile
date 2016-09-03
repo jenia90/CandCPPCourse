@@ -1,12 +1,11 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Wvla -std=c99
-DFLAGS = -DMAX_ROW_ELEMENTS=2
+DFLAGS = -DMAX_ROW_ELEMENTS=2 -DNDEBUG
 ARGS_INT = 1 0
 ARGS_STR = 1 lmno
 
-all: HashIntSearch HashStrSearch
+all: HashIntSearch
 	./HashIntSearch $(ARGS_INT)
-	./HashStrSearch $(ARGS_STR)
 
 HashIntSearch: HashIntSearch.o MyIntFunctions.o libgenericHashTable.a
 	$(CC) $(CFLAGS) $(ADDFLAGS) HashIntSearch.c -L. -lgenericHashTable MyIntFunctions.o -o HashIntSearch
@@ -39,7 +38,7 @@ valgrind:
 	valgrind --leak-check=full --show-possibly-lost=yes --show-reachable=yes --undef-value-errors=yes ./HashStrSearch $(ARGS_STR)
 
 tar:
-	tar cvf ex3_late.tar Makefile GenericHashTable.c MyIntFunctions.c MyStringFunctions.c MyStringFunctions.h MyIntFunctions.h Key.h
+	tar cvf ex3_late.tar Makefile GenericHashTable.c MyIntFunctions.c MyStringFunctions.c MyStringFunctions.h MyIntFunctions.h Key.h extension.pdf
 
 clean:
 	rm -f *.o *.a *.tar HashIntSearch HashStrSearch

@@ -13,12 +13,17 @@
 /**
  * We defined here the default cell size in case it wasn't defined as compiler argument
  */
+
+/**
+ * Default MAX_ROW_ELEMENTS macro definition
+ */
 #ifndef MAX_ROW_ELEMENTS
 #define MAX_ROW_ELEMENTS 2
 #endif
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "GenericHashTable.h"
 #include "TableErrorHandle.h"
 
@@ -35,7 +40,7 @@
 #define RESIZED_INDEX_NEW(x) 2 * x + 1
 
 #define NOT_FOUND -1
-
+#define INIT_INDEX 0
 /**
  * Structure defining a hash table item. It holds a unique key and data.
  */
@@ -80,9 +85,8 @@ typedef void(*PrintDataFcn)(const void* data);
  * report error MEM_OUT to the standard error and return NULL.
  */
 
-TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
-        ,HashFcn hfun,PrintKeyFcn printKeyFun, PrintDataFcn printDataFun
-        , ComparisonFcn fcomp)
+TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey, HashFcn hfun,
+                   PrintKeyFcn printKeyFun, PrintDataFcn printDataFun, ComparisonFcn fcomp)
 {
     // Check if passed table size is valid
     if(tableSize == 0)
@@ -91,7 +95,7 @@ TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
         return NULL;
     }
 
-    // allocate memory block for the hashtable of given size.
+    // allocate memory block for the hash table of given size.
     TableP newTable = (TableP)calloc(tableSize, sizeof(Table));
     if (!newTable)
     {
@@ -130,6 +134,8 @@ TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
  */
 static ItemP createItem(TableP table, ItemP *cell, int itemIdx, const void *key, DataP object)
 {
+    assert(table && cell && key && object);
+
     // allocate memory for the new item.
     ItemP item = cell[itemIdx] = malloc(sizeof(*item));
     if(!item)
@@ -152,6 +158,8 @@ static ItemP createItem(TableP table, ItemP *cell, int itemIdx, const void *key,
  */
 static Cell createCell(Cells cells, int index)
 {
+    assert(cells);
+
     Cell cell = cells[index] = calloc(MAX_ROW_ELEMENTS, sizeof(*cell));
 
     if(!cell)
@@ -164,33 +172,23 @@ static Cell createCell(Cells cells, int index)
 }
 
 /**
- * @brief In case we run out of cells to allocate for new keys in our table we expand the table
- * to a given size transfer all our current items to the new table.
- * @param table
- * @param newSize
- * @return
+ * Reallocates table cells to new indexes after table resizing.
+ * @param table Hash table pointer
+ * @param oldCells old cells array
+ * @param newTableSize new table size uint
+ * @param oldTableSize old table size uint
+ * @return new cells array
  */
-static int expandTable(TableP table, int expandBy)
+static Cells reallocateCells(TableP table, Cells oldCells, size_t newTableSize, size_t oldTableSize)
 {
+    assert(table && oldCells);
+    // allocate memory block for the new size array and set each cell to NULL
+    Cells newCells = calloc(newTableSize, sizeof(*newCells));
+    
+    // iterate over each old cell and if its not NULL copy it's contents to new index and free 
+    // old memory blocks.
     int i, j;
-    // backup old size value.
-    size_t oldSize = table->size;
-
-    // get old cells array.
-    Cells oldCells = table->cells;
-
-    // allocate memory block for new cells array.
-    Cells newCells = calloc(table->size *= expandBy, sizeof(*newCells));
-
-    if (!newCells)
-    {
-        reportError(MEM_OUT);
-        return false;
-    }
-
-    // iterate over each cell in the old cell array and recreate it in the new cell array
-    // along with its items.
-    for (i = 0; i < (int)oldSize; i++)
+    for (i = 0; i < (int)oldTableSize; i++)
     {
         Cell oldCell = oldCells[i];
         if (oldCell)
@@ -201,30 +199,60 @@ static int expandTable(TableP table, int expandBy)
             {
                 reportError(MEM_OUT);
                 free(newCells);
-                return false;
+                return NULL;
             }
 
             for (j = 0; j < MAX_ROW_ELEMENTS; j++)
             {
                 Item oldItem = oldCell[j];
-                if (oldItem)
+                if (!oldItem)
                 {
-                    Item item = createItem(table, newCell, j, oldItem->key, oldItem->data);
-                    if (!item)
-                    {
-                        reportError(MEM_OUT);
-                        free(newCell);
-                        free(newCells);
-                        return false;
-                    }
-
-                    table->freeKey(oldItem->key);
-                    free(oldItem);
+                    continue;
                 }
+
+                Item item = createItem(table, newCell, j, oldItem->key, oldItem->data);
+                if (!item)
+                {
+                    reportError(MEM_OUT);
+                    free(newCell);
+                    free(newCells);
+                    return NULL;
+                }
+
+                table->freeKey(oldItem->key);
+                free(oldItem);
             }
 
             free(oldCell);
         }
+    }
+
+    return newCells;
+}
+
+/**
+ * @brief In case we run out of cells to allocate for new keys in our table we expand the table
+ * to a given size transfer all our current items to the new table.
+ * @param table
+ * @param newSize
+ * @return
+ */
+static int expandTable(TableP table, int expandBy)
+{
+    assert(table);
+    // backup old size value.
+    size_t oldSize = table->size;
+
+    // get old cells array.
+    Cells oldCells = table->cells;
+
+    // reallocate old cells to new indexes in the expanded table and free old cells memory blocks.
+    Cells newCells = reallocateCells(table, oldCells, table->size *= expandBy, oldSize);
+    
+    if (!newCells)
+    {
+        reportError(MEM_OUT);
+        return false;
     }
 
     free(oldCells);
@@ -243,10 +271,17 @@ static int expandTable(TableP table, int expandBy)
  */
 int insert(TableP table, const void* key, DataP object)
 {
+    assert(table && key && object);
+
     Cells cells = table->cells;
+    // get table size ratio
     int d = (int)(table->size / table->origSize);
+    
+    // calculate hashed key using table's hashing function
     int i, j, hashKey = d * table->hashFcn(key, table->origSize);
-    for(i = hashKey; i < d + hashKey; ++i)
+    
+    // try finding a free space in the range
+    for(i = hashKey; i < d + hashKey; i++)
     {
         Cell cell = cells[i];
         if (cell)
@@ -266,6 +301,8 @@ int insert(TableP table, const void* key, DataP object)
             }
 
         }
+
+        // if cell is empty we create a new cell and place the item at 0 index
         else
         {
             cell = createCell(cells, i);
@@ -274,18 +311,18 @@ int insert(TableP table, const void* key, DataP object)
                 return false;
             }
 
-            return createItem(table, cell, 0, key, object) != NULL;
+            return createItem(table, cell, INIT_INDEX, key, object) != NULL;
         }
 
     }
 
+    // if no free cell found we expand the table and then insert the key-data to the resized table
     if(expandTable(table, EXPANSION_COEFFICIENT))
     {
-        cells = table->cells;
-        Cell newCell = createCell(cells, RESIZED_INDEX_NEW(hashKey));
+        Cell newCell = createCell(table->cells, RESIZED_INDEX_NEW(hashKey));
         if(newCell)
         {
-            return createItem(table, newCell, 0, key, object) != NULL;
+            return createItem(table, newCell, INIT_INDEX, key, object) != NULL;
         }
     }
 
@@ -298,6 +335,7 @@ int insert(TableP table, const void* key, DataP object)
  */
 DataP removeData(TableP table, const void* key)
 {
+    assert(table && key);
     int arrCell, listNode;
     DataP data = findData(table, key, &arrCell, &listNode);
     Cells cells = table->cells;
@@ -324,9 +362,11 @@ DataP removeData(TableP table, const void* key)
  */
 DataP findData(const TableP table, const void* key, int* arrCell, int* listNode)
 {
+    assert(table && key);
     int d = (int)(table->size / table->origSize);
     int i, j, hashKey = d * table->hashFcn(key, table->origSize);
 
+    // look for the data in the hashkey range and update the position pointers if found.
     for(i = hashKey; i < d + hashKey; i++)
     {
         Cell cell = table->cells[i];
@@ -359,12 +399,14 @@ DataP findData(const TableP table, const void* key, int* arrCell, int* listNode)
  */
 DataP getDataAt(const TableP table, int arrCell, int listNode)
 {
+    assert(table);
+
     if(arrCell < (int)table->size && listNode < MAX_ROW_ELEMENTS)
     {
-        Item cell = table->cells[arrCell][listNode];
-        if(cell)
+        Item item = table->cells[arrCell][listNode];
+        if(item)
         {
-            return cell->data;
+            return item->data;
         }
     }
 
@@ -380,13 +422,14 @@ DataP getDataAt(const TableP table, int arrCell, int listNode)
  */
 ConstKeyP getKeyAt(const TableP table, int arrCell, int listNode)
 {
+    assert(table);
 
     if(arrCell < (int)table->size && listNode < MAX_ROW_ELEMENTS)
     {
-        Item cell = table->cells[arrCell][listNode];
-        if(cell)
+        Item item = table->cells[arrCell][listNode];
+        if(item)
         {
-            return cell->key;
+            return item->key;
         }
     }
 
@@ -398,6 +441,8 @@ ConstKeyP getKeyAt(const TableP table, int arrCell, int listNode)
  */
 void printTable(const TableP table)
 {
+    assert(table);
+
     int cellIndex, itemIndex;
     Cells cells = table->cells;
     for(cellIndex = 0; cellIndex < (int)table->size; cellIndex++)
@@ -428,6 +473,8 @@ void printTable(const TableP table)
  */
 void freeTable(TableP table)
 {
+    assert(table);
+
     int i, j;
     Cells cells = table->cells;
     for (i = 0; i < (int)table->size; i++)
