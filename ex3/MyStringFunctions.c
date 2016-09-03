@@ -6,6 +6,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#define PRINT_STR "%s"
+
 /**
  * @brief clone a string
  */
@@ -32,6 +34,7 @@ int strFcn (const void*  s, size_t tableSize)
 {
     int res, i, k = 0;
 
+    // sums each of the string's char value.
     for(i = 0; i < (int)strlen((char *)s); i++)
     {
         k += ((char *)s)[i];
@@ -49,7 +52,7 @@ int strFcn (const void*  s, size_t tableSize)
  */
 void strPrint (const void*  s)
 {
-    printf("%s", (char *)s);
+    printf(PRINT_STR, (char *)s);
 }
 
 /**

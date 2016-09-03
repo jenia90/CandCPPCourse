@@ -9,8 +9,11 @@
 * Creates a hash table which holds an array of defined size in each cell.
 */
 
+/**
+ * We defined here the default cell size in case it wasn't defined as compiler argument
+ */
 #ifndef MAX_ROW_ELEMENTS
-#define MAX_ROW_ELEMENTS 4
+#define MAX_ROW_ELEMENTS 2
 #endif
 
 #include <stdio.h>
@@ -24,20 +27,33 @@
 #define ITEM_SPLIT "\t-->\t"
 #define NEW_LINE "\n"
 
+/**
+ * Macros to calculate the updated index for a resized table
+ */
 #define RESIZED_INDEX_OLD(x) 2 * x
 #define RESIZED_INDEX_NEW(x) 2 * x + 1
 
 #define NOT_FOUND -1
+
+/**
+ * Structure defining a hash table item. It holds a unique key and data.
+ */
 typedef struct Item
 {
     void *key;
     DataP data;
 } *ItemP;
 
+/**
+ * Definitions of table cell types
+ */
 typedef ItemP **Cells;
 typedef ItemP *Cell;
 typedef ItemP Item;
 
+/**
+ * A structure representing a hash table and a new type definition.
+ */
 typedef struct Table
 {
     Cells cells;
@@ -67,12 +83,14 @@ TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
         ,HashFcn hfun,PrintKeyFcn printKeyFun, PrintDataFcn printDataFun
         , ComparisonFcn fcomp)
 {
+    // Check if passed table size is valid
     if(tableSize == 0)
     {
         reportError(GENERAL_ERROR);
         return NULL;
     }
 
+    // allocate memory block for the hashtable of given size.
     TableP newTable = (TableP)calloc(tableSize, sizeof(Table));
     if (!newTable)
     {
@@ -80,6 +98,7 @@ TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
         return NULL;
     }
 
+    // allocate cell array memory block for the hashtable cells.
     newTable->cells = calloc(tableSize, sizeof(*newTable->cells));
     if(!newTable->cells)
     {
@@ -87,6 +106,7 @@ TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
         return NULL;
     }
 
+    // init Table struct members.
     newTable->origSize = newTable->size = tableSize;
     newTable->cloneKey = cloneKey;
     newTable->freeKey = freeKey;
@@ -152,8 +172,13 @@ static Cell createCell(Cells cells, int index)
 static int expandTable(TableP table, int expandBy)
 {
     int i, j;
+    // backup old size value.
     size_t oldSize = table->size;
+
+    // get old cells array.
     Cells oldCells = table->cells;
+
+    // allocate memory block for new cells array.
     Cells newCells = calloc(table->size *= expandBy, sizeof(*newCells));
 
     if (!newCells)
@@ -162,45 +187,43 @@ static int expandTable(TableP table, int expandBy)
         return false;
     }
 
+    // iterate over each cell in the old cell array and recreate it in the new cell array
+    // along with its items.
     for (i = 0; i < (int)oldSize; i++)
     {
         Cell oldCell = oldCells[i];
-        if (!oldCell)
+        if (oldCell)
         {
-            continue;
-        }
+            Cell newCell = createCell(newCells, RESIZED_INDEX_OLD(i));
 
-        Cell newCell = createCell(newCells, RESIZED_INDEX_OLD(i));
-
-        if (!newCell)
-        {
-            reportError(MEM_OUT);
-            free(newCells);
-            return false;
-        }
-
-        for (j = 0; j < MAX_ROW_ELEMENTS; j++)
-        {
-            Item oldItem = oldCell[j];
-            if (!oldItem)
-            {
-                continue;
-            }
-
-            Item item = createItem(table, newCell, j, oldItem->key, oldItem->data);
-            if (!item)
+            if (!newCell)
             {
                 reportError(MEM_OUT);
-                free(newCell);
                 free(newCells);
                 return false;
             }
 
-            table->freeKey(oldItem->key);
-            free(oldItem);
-        }
+            for (j = 0; j < MAX_ROW_ELEMENTS; j++)
+            {
+                Item oldItem = oldCell[j];
+                if (oldItem)
+                {
+                    Item item = createItem(table, newCell, j, oldItem->key, oldItem->data);
+                    if (!item)
+                    {
+                        reportError(MEM_OUT);
+                        free(newCell);
+                        free(newCells);
+                        return false;
+                    }
 
-        free(oldCell);
+                    table->freeKey(oldItem->key);
+                    free(oldItem);
+                }
+            }
+
+            free(oldCell);
+        }
     }
 
     free(oldCells);
@@ -244,10 +267,12 @@ int insert(TableP table, const void* key, DataP object)
         }
         else
         {
-            if(!(cell = createCell(cells, i)))
+            cell = createCell(cells, i);
+            if(!cell)
             {
                 return false;
             }
+
             return createItem(table, cell, 0, key, object) != NULL;
         }
 
@@ -272,8 +297,8 @@ int insert(TableP table, const void* key, DataP object)
  */
 DataP removeData(TableP table, const void* key)
 {
-    int i, j;
-    DataP data = findData(table, key, &i, &j);
+    int arrCell, listNode;
+    DataP data = findData(table, key, &arrCell, &listNode);
     Cells cells = table->cells;
 
     if(!data)
@@ -281,9 +306,9 @@ DataP removeData(TableP table, const void* key)
         return NULL;
     }
 
-    table->freeKey(cells[i][j]->key);
-    free(cells[i][j]);
-    free(cells[i]);
+    table->freeKey(cells[arrCell][listNode]->key);
+    free(cells[arrCell][listNode]);
+    free(cells[arrCell]);
     return data;
 }
 
