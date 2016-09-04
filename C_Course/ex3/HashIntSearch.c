@@ -59,7 +59,6 @@ int main(int argc, char *argv[])
             printf("ERROR: failed to insert object %d key %d data %d to the table!\n", i,*data[i],*data[i]);
             return 0;   
         }
-        //printTable(table); //TODO: Remove
     }
 
     // (4) print the table

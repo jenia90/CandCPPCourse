@@ -19,4 +19,4 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wall -Wvla -std=gnu++11")
 #target_link_libraries(HashIntSearch GenericHashTable MyIntFunctions TableErrorHandle)
 #target_link_libraries(HashStrSearch GenericHashTable MyStringFunctions TableErrorHandle)
 
-add_executable(ConvexHull CPP_Course/ex1/ConvexHull.cpp)
+add_executable(ConvexHull CPP_Course/ex1/ConvexHull.cpp CPP_Course/ex1/PointSet.cpp CPP_Course/ex1/PointSet.h CPP_Course/ex1/Point.cpp CPP_Course/ex1/Point.h)
