@@ -1,6 +1,6 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
-#include "../../CPP_Course/ex1/Point.h"
+#include "Point.h"
 
 struct Node
 {
