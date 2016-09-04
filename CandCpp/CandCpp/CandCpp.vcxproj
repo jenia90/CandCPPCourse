@@ -62,14 +62,14 @@
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClCompile Include="..\..\CPP_Course\ex1\ConvexHull.cpp" />
-    <ClCompile Include="LinkedList.cpp" />
+    <ClCompile Include="..\..\CPP_Course\ex1\LinkedList.cpp" />
     <Object Include="..\..\CPP_Course\ex1\Point.cpp" />
     <Object Include="..\..\CPP_Course\ex1\PointSet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\CPP_Course\ex1\LinkedList.h" />
     <ClInclude Include="..\..\CPP_Course\ex1\Point.h" />
     <ClInclude Include="..\..\CPP_Course\ex1\PointSet.h" />
-    <ClInclude Include="LinkedList.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

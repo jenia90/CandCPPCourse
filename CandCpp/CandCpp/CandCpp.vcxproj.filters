@@ -9,7 +9,9 @@
     <ClCompile Include="..\..\CPP_Course\ex1\ConvexHull.cpp">
       <Filter>ex1</Filter>
     </ClCompile>
-    <ClCompile Include="LinkedList.cpp" />
+    <ClCompile Include="..\..\CPP_Course\ex1\LinkedList.cpp">
+      <Filter>ex1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CPP_Course\ex1\Point.h">
@@ -18,7 +20,9 @@
     <ClInclude Include="..\..\CPP_Course\ex1\PointSet.h">
       <Filter>ex1</Filter>
     </ClInclude>
-    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="..\..\CPP_Course\ex1\LinkedList.h">
+      <Filter>ex1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Object Include="..\..\CPP_Course\ex1\Point.cpp">

@@ -1,29 +1,60 @@
 #include "LinkedList.h"
 
-LinkedList::LinkedList(Point& p): _size(0), _head(new Node(p, nullptr))
+Node* Node::getNext()
+{
+	return this->next;
+}
+
+Point* Node::getPoint()
+{
+	return this->_p;
+}
+
+LinkedList::LinkedList(): _size(0), _head(nullptr)
 {
 }
 
-bool LinkedList::addNode(Point& p)
+bool LinkedList::addNode(Point* p)
 {
-	Node& newNode = new Node(p, _head);
+	Node *newNode = new Node(p, _head);
+	if (newNode)
+	{
+		_head = newNode;
+		_size++;
+		return true;
+	}
+
+	return false;
 }
 
-bool LinkedList::removeNode(Point& p)
+Point* LinkedList::removeHead()
 {
+	Point *point;
+	if (_head)
+	{
+		Node *next = _head;
+		point = _head->getPoint();
+		_head = _head->getNext();
+		delete next;
+		_size--;
+	}
+
+	return point;
 }
 
-int LinkedList::size()
+int LinkedList::size() const
 {
 	return _size;
 }
 
 LinkedList::~LinkedList()
 {
-	do
-	{
-		Node next = _head.next;
+	Node *curr;
 
+	while (_head != nullptr)
+	{
+		curr = _head;
+		_head = _head->getNext();
+		delete curr;
 	}
-	while (_head != nullptr);
 }

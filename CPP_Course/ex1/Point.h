@@ -14,6 +14,7 @@ class Point
 {
 	int _x, _y;
 public:
+	Point();
 	/**
 	 * @brief Ctor
 	 * @param x the x coordinate
@@ -32,6 +33,8 @@ public:
 	 * @param y the y coordinate
 	 */
 	void set(int x, int y);
+
+	bool operator ==(const Point& p) const;
 
 	/**
 	 * @brief Prints the point in a specialized format
