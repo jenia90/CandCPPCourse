@@ -11,10 +11,6 @@
 */
 
 /**
- * We defined here the default cell size in case it wasn't defined as compiler argument
- */
-
-/**
  * Default MAX_ROW_ELEMENTS macro definition
  */
 #ifndef MAX_ROW_ELEMENTS
