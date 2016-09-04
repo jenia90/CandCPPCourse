@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ex1">
+      <UniqueIdentifier>{3b534cc9-d442-4a5d-bd57-85dc2409ef06}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\CPP_Course\ex1\ConvexHull.cpp">
+      <Filter>ex1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CPP_Course\ex1\Point.cpp">
+      <Filter>ex1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CPP_Course\ex1\PointSet.cpp">
+      <Filter>ex1</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\CPP_Course\ex1\Point.h">
+      <Filter>ex1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CPP_Course\ex1\PointSet.h">
+      <Filter>ex1</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
