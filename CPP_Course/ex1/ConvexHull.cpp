@@ -7,14 +7,18 @@
 #include "PointSet.h"
 #include "LinkedList.h"
 
-PointSet& createPointSet(LinkedList *list)
+PointSet createPointSet(LinkedList list)
 {
-	PointSet point_set = PointSet(list->size());
+	PointSet pSet = PointSet(list.size());
+	for (int i = 0; i < list.size(); i++)
+	{
+		pSet.add(list.removeHead());
+	}
+	return pSet;
 }
 
 int main(int argc, char* argv[])
 {
-	int x_i, y_i, delimIdx;
 	std::string line;
 	Point p;
 	LinkedList list = LinkedList();
@@ -22,7 +26,7 @@ int main(int argc, char* argv[])
 	while (std::cin >> p)
 	{
 		
-		list.addNode(p);
+		list.addNode(&p);
 	}
 
 	PointSet pSet = createPointSet(list);

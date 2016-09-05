@@ -5,6 +5,8 @@
 #ifndef POINTSET_H
 #define POINTSET_H
 
+#define NOT_FOUND -1
+
 #include <iostream>
 #include "Point.h"
 
@@ -13,7 +15,6 @@
  */
 class PointSet
 {
-private:
 	int _size;
 	Point *_pointSet;
 
@@ -33,6 +34,8 @@ public:
 	 * @return true if add was successful; false otherwise.
 	 */
 	bool add(Point& p);
+
+	int isInSet(const Point p);
 
 	/**
 	 * @brief removes a point from the set

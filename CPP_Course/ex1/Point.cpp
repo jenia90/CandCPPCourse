@@ -4,7 +4,7 @@
 
 #include "Point.h"
 
-Point::Point()
+Point::Point() : _x(0), _y(0)
 {
 }
 
@@ -32,7 +32,7 @@ std::istream& operator>>(std::istream& is, Point& point)
 	std::string str;
 	is >> str;
 	int delimIdx = str.find(",");
-	point.set(std::stoi(str.substr(0, delimIdx)), std::stoi(str.substr(delimIdx + 1, str.length() - 1)));
+	point.set(std::stoi(str.substr(0, delimIdx)), std::stoi(str.substr(delimIdx + 1, str.size() - 1)));
 	return is;
 }
 

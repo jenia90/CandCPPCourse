@@ -1,22 +1,22 @@
 #include "LinkedList.h"
 
-Node& Node::getNext() const
+Node* Node::getNext() const
 {
 	return next;
 }
 
-Point& Node::getPoint() const
+Point* Node::getPoint() const
 {
 	return _p;
 }
 
-LinkedList::LinkedList(): _size(0), _head(Node())
+LinkedList::LinkedList(): _size(0), _head(new Node())
 {
 }
 
-bool LinkedList::addNode(Point p)
+bool LinkedList::addNode(Point* p)
 {
-	Node newNode = Node(p, _head);
+	Node *newNode = new Node(p, _head);
 	_head = newNode;
 	_size++;
 	return true;
@@ -24,17 +24,17 @@ bool LinkedList::addNode(Point p)
 
 Point& LinkedList::removeHead()
 {
-	Point point;
+	Point *point = nullptr;
 	if (_head)
 	{
-		Node next = _head;
-		point = _head.getPoint();
-		_head = _head.getNext();
+		Node *next = _head;
+		point = _head->getPoint();
+		_head = _head->getNext();
 		delete next;
 		_size--;
 	}
 
-	return point;
+	return *point;
 }
 
 int LinkedList::size() const
@@ -44,12 +44,12 @@ int LinkedList::size() const
 
 LinkedList::~LinkedList()
 {
-	Node curr;
+	Node *curr = _head;
 
-	while (_head != nullptr)
+	while (curr)
 	{
-		curr = _head;
-		_head = _head.getNext();
 		delete curr;
+		_head = _head->getNext();
+		curr = _head;
 	}
 }
