@@ -9,23 +9,20 @@
 
 PointSet& createPointSet(LinkedList *list)
 {
-	PointSet point_set;
+	PointSet point_set = PointSet(list->size());
 }
 
 int main(int argc, char* argv[])
 {
 	int x_i, y_i, delimIdx;
 	std::string line;
-	LinkedList* list = new LinkedList();
+	Point p;
+	LinkedList list = LinkedList();
 
-	while (std::getline(std::cin, line))
+	while (std::cin >> p)
 	{
-		delimIdx = line.find(",");
-		x_i = std::stoi(line.substr(0, delimIdx));
-		y_i = std::stoi(line.substr(delimIdx + 1, line.length() - 1));
-
-		Point* p = new Point(x_i, y_i);
-		list->addNode(p);
+		
+		list.addNode(p);
 	}
 
 	PointSet pSet = createPointSet(list);

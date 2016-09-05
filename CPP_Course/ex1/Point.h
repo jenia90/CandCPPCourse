@@ -35,6 +35,7 @@ public:
 	void set(int x, int y);
 
 	bool operator ==(const Point& p) const;
+	friend std::istream& operator>>(std::istream& is, Point& point);
 
 	/**
 	 * @brief Prints the point in a specialized format

@@ -27,6 +27,15 @@ bool Point::operator==(const Point& p) const
 	return (this->_x == p._x) && (this->_y == p._y);
 }
 
+std::istream& operator>>(std::istream& is, Point& point)
+{
+	std::string str;
+	is >> str;
+	int delimIdx = str.find(",");
+	point.set(std::stoi(str.substr(0, delimIdx)), std::stoi(str.substr(delimIdx + 1, str.length() - 1)));
+	return is;
+}
+
 std::string Point::toString()
 {
 }

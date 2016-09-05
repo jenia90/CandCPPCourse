@@ -13,17 +13,15 @@
  */
 class PointSet
 {
-	/**
-	* @brief an array to hold the set of points.
-	*/
-	Point *_pointSet;
+private:
 	int _size;
+	Point *_pointSet;
 
 public:
 	/**
 	 * Ctor
 	 */
-	PointSet();
+	PointSet(int size);
 	/**
 	 * Destructor
 	 */
@@ -53,6 +51,11 @@ public:
 	 * @brief Prints the set in specialized format.
 	 */
 	std::string toString();
+
+	bool operator !=(const PointSet& pSet);
+	bool operator ==(const PointSet& pSet);
+	PointSet operator -(const PointSet& pSet);
+	PointSet operator &(const PointSet& pSet);
 };
 
 

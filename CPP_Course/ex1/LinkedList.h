@@ -4,31 +4,35 @@
 
 struct Node
 {
-	Node(Point *point, Node *next)
+	Node(): _p(), next()
+	{
+	}
+	Node(Point& point, Node& next)
 		: _p(point),
 		  next(next)
 	{
 	}
 	
-	Node *getNext();
-	Point *getPoint();
+	Node& getNext() const;
+	Point& getPoint() const;
+
 
 	~Node()
 	{	
 	}
 private:
-	Point *_p;
-	Node *next;
+	Point& _p;
+	Node& next;
 }; 
 
 class LinkedList
 {
-	Node *_head;
+	Node& _head;
 	int _size;
 public:
 	LinkedList();
-	bool addNode(Point* p);
-	Point* removeHead();
+	bool addNode(Point p);
+	Point& removeHead();
 	int size() const;
 	~LinkedList();
 };
