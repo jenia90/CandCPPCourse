@@ -28,6 +28,8 @@ public:
 	 */
 	~PointSet();
 
+	inline Point *getSet() { return _pointSet; }
+
 	/**
 	 * @brief Adds a new point to the set
 	 * @param p Point to add
@@ -42,7 +44,17 @@ public:
 	 * @param p Point to remove
 	 * @return true if removal was successful; false otherwise.
 	 */
-	bool remove(Point& p);
+	bool remove(Point p, int index);
+
+	/**
+	 * @brief Methods sort and merge are the implementation of merge-sort sorting algorithm
+	 * to sort the points in our set. Also, while sorting it skips duplicate points;
+	 */
+	void sort(Point* pSet, int low, int high);
+	void merge(Point* pSet, int low, int mid, int high);
+
+	void swap(Point& p1, Point&p2);
+	int compare(const Point& p1, const Point& p2);
 
 	/**
 	 * @breif returns the size of the set

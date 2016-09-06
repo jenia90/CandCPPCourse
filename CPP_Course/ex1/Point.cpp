@@ -22,6 +22,12 @@ void Point::set(int x, int y)
 	_y = y;
 }
 
+Point& Point::operator=(const Point& p)
+{
+	this->set(p.getX(), p.getY());
+
+}
+
 bool Point::operator==(const Point& p) const
 {
 	return (this->_x == p._x) && (this->_y == p._y);
@@ -38,5 +44,8 @@ std::istream& operator>>(std::istream& is, Point& point)
 
 std::string Point::toString()
 {
+	std::ostringstream oss;
+	oss << _x << "," << _y << std::endl;
+	return oss.str();
 }
 

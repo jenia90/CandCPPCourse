@@ -30,6 +30,7 @@ int main(int argc, char* argv[])
 	}
 
 	PointSet pSet = createPointSet(list);
+	pSet.sort(pSet.getSet(), 0, pSet.size());
 
 	return 0;
 }

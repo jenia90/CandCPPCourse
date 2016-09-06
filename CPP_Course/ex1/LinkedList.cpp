@@ -1,15 +1,5 @@
 #include "LinkedList.h"
 
-Node* Node::getNext() const
-{
-	return next;
-}
-
-Point* Node::getPoint() const
-{
-	return _p;
-}
-
 LinkedList::LinkedList(): _size(0), _head(new Node())
 {
 }
@@ -35,11 +25,6 @@ Point& LinkedList::removeHead()
 	}
 
 	return *point;
-}
-
-int LinkedList::size() const
-{
-	return _size;
 }
 
 LinkedList::~LinkedList()

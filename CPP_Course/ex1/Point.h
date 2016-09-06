@@ -6,6 +6,7 @@
 #define POINT_H
 
 #include <iostream>
+#include <sstream>
 
 /**
  * @brief a class representing a point
@@ -34,7 +35,14 @@ public:
 	 */
 	void set(int x, int y);
 
+	inline int getX() const { return _x; }
+
+	inline int getY() const	{ return _y; }
+
+	Point& operator=(const Point& p);
+
 	bool operator ==(const Point& p) const;
+
 	friend std::istream& operator>>(std::istream& is, Point& point);
 
 	/**
