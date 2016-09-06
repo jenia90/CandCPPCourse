@@ -18,6 +18,9 @@
     <ClCompile Include="..\..\CPP_Course\ex1\LinkedList.cpp">
       <Filter>ex1</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\CPP_Course\ex1\PointSetBinaryOperations.cpp">
+      <Filter>ex1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CPP_Course\ex1\LinkedList.h">

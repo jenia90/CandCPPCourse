@@ -7,7 +7,6 @@
 
 #define NOT_FOUND -1
 
-#include <iostream>
 #include "Point.h"
 
 /**
@@ -54,7 +53,6 @@ public:
 	void merge(Point* pSet, int low, int mid, int high);
 
 	void swap(Point& p1, Point&p2);
-	int compare(const Point& p1, const Point& p2);
 
 	/**
 	 * @breif returns the size of the set

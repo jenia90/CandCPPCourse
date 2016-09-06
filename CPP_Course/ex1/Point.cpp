@@ -28,6 +28,18 @@ Point& Point::operator=(const Point& p)
 
 }
 
+int Point::compare(const Point& p)
+{
+	int yComp = this->getY() - p.getY();
+
+	if (!yComp)
+	{
+		return this->getX() - p.getX();
+	}
+
+	return yComp;
+}
+
 bool Point::operator==(const Point& p) const
 {
 	return (this->_x == p._x) && (this->_y == p._y);

@@ -41,13 +41,13 @@ inline bool PointSet::remove(Point p, int index = -1)
 {
 	if (index == NOT_FOUND)
 	{
-		if(index = isInSet(p) == NOT_FOUND)
+		if (index = isInSet(p) == NOT_FOUND)
 		{
 			return false;
 		}
 	}
 
-	for(int i = index; i < (_size - 1); i++)
+	for (int i = index; i < (_size - 1); i++)
 	{
 		_pointSet[i] = _pointSet[i + 1];
 	}
@@ -56,10 +56,37 @@ inline bool PointSet::remove(Point p, int index = -1)
 	return true;
 }
 
+int operator^(Point p1, Point p2)
+{
+	return p1.getX() * p2.getY() - p1.getY() * p2.getX();;
+}
+
+bool operator<(Point p1, Point p2)
+{
+	if (p1.getY() == 0 && p1.getX() > 0)
+	{
+		return true; //angle of p1 is 0, thus p2>p1
+	}
+	if (p2.getY() == 0 && p2.getX() > 0)
+	{
+		return false; //angle of p2 is 0 , thus p1>p2
+	}
+	if (p1.getY() > 0 && p2.getY() < 0)
+	{
+		return true; //p1 is between 0 and 180, p2 between 180 and 360
+	}
+	if (p1.getY() < 0 && p2.getY() > 0)
+	{
+		return false;
+	}
+
+	return (p1^p2) > 0; //return true if p1 is clockwise from p2
+}
+
 void PointSet::sort(Point* pSet, int low, int high)
 {
 	int mid;
-	if(low <= high)
+	if (low <= high)
 	{
 		mid = (low + high) / 2;
 		sort(pSet, low, mid);
@@ -85,12 +112,12 @@ void PointSet::merge(Point* pSet, int low, int mid, int high)
 	int i = 0, j = 0, k = 0;
 	while (i < n1 && j < n2)
 	{
-		if(compare(leftArr[i], rightArr[j]) < 0)
+		if (leftArr[i].compare(rightArr[j]))
 		{
 			pSet[k] = leftArr[i];
 			i++;
 		}
-		else if(compare(leftArr[i], rightArr[j]) > 0)
+		else if (leftArr[i].compare(rightArr[j]) > 0)
 		{
 			pSet[k] = rightArr[j];
 			j++;
@@ -127,18 +154,6 @@ void PointSet::swap(Point& p1, Point& p2)
 	p2 = temp;
 }
 
-int PointSet::compare(const Point& p1, const Point& p2)
-{
-	int xComp = p1.getX() - p2.getX();
-
-	if(!xComp)
-	{
-		return p1.getY() - p2.getY();
-	}
-
-	return xComp;
-}
-
 int PointSet::size()
 {
 	return _size;
@@ -161,20 +176,4 @@ std::string PointSet::toString()
 	}
 
 	return oss.str();
-}
-
-bool PointSet::operator!=(const PointSet& pSet)
-{
-}
-
-bool PointSet::operator==(const PointSet& pSet)
-{
-}
-
-PointSet PointSet::operator-(const PointSet& pSet)
-{
-}
-
-PointSet PointSet::operator&(const PointSet& pSet)
-{
 }

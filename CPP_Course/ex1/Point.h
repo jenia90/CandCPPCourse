@@ -4,8 +4,7 @@
 
 #ifndef POINT_H
 #define POINT_H
-
-#include <iostream>
+\
 #include <sstream>
 
 /**
@@ -35,11 +34,18 @@ public:
 	 */
 	void set(int x, int y);
 
-	inline int getX() const { return _x; }
+	inline int getX() const
+	{
+		return _x;
+	}
 
-	inline int getY() const	{ return _y; }
+	inline int getY() const
+	{
+		return _y;
+	}
 
 	Point& operator=(const Point& p);
+	int compare(const Point& p);
 
 	bool operator ==(const Point& p) const;
 
