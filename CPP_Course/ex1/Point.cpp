@@ -67,7 +67,7 @@ int operator^(Point p1, Point p2)
 
 bool Point::operator<(Point& p)
 {
-	std::cout << "Compairing: " << this->toString() << "     with :" << p.toString() << std::endl;
+	std::cout << "Compairing: " << this->toString() << "\twith :" << p.toString() << std::endl;
 	if (this->getY() == 0 && this->getX() > 0)
 	{
 		return true; //angle of p1 is 0, thus p2>p1
