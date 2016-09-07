@@ -12,3 +12,6 @@ LinkedList.o: LinkedList.cpp
 
 ConvexHull: Point.o PointSet.o LinkedList.o
 	$(CC) $(CFLAGS) Point.o PointSet.o LinkedList.o ConvexHull.cpp -o ConvexHull
+
+clean:
+	rm -f *.o *.a *.tar ConvexHull
