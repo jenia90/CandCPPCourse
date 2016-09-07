@@ -37,11 +37,11 @@ int PointSet::isInSet(const Point p)
 	return NOT_FOUND;
 }
 
-inline bool PointSet::remove(Point p, int index = -1)
+inline bool PointSet::remove(Point p, int index = NOT_FOUND)
 {
 	if (index == NOT_FOUND)
 	{
-		if (index = isInSet(p) == NOT_FOUND)
+		if ((index = isInSet(p)) == NOT_FOUND)
 		{
 			return false;
 		}
