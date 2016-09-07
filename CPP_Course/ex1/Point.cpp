@@ -65,27 +65,30 @@ int operator^(Point p1, Point p2)
 	return p1.getX() * p2.getY() - p1.getY() * p2.getX();;
 }
 
-bool Point::operator<(Point& p)
+bool Point::operator<(const Point& p)
 {
-	std::cout << "Compairing: " << this->toString() << "\twith :" << p.toString() << std::endl;
-	if (this->getY() == 0 && this->getX() > 0)
+	if(p._isInit)
 	{
-		return true; //angle of p1 is 0, thus p2>p1
-	}
-	if (p.getY() == 0 && p.getX() > 0)
-	{
-		return false; //angle of p2 is 0 , thus p1>p2
-	}
-	if (this->getY() > 0 && p.getY() < 0)
-	{
-		return true; //p1 is between 0 and 180, p2 between 180 and 360
-	}
-	if (this->getY() < 0 && p.getY() > 0)
-	{
-		return false;
-	}
+		if (this->getY() == 0 && this->getX() > 0)
+		{
+			return true; //angle of p1 is 0, thus p2>p1
+		}
+		if (p.getY() == 0 && p.getX() > 0)
+		{
+			return false; //angle of p2 is 0 , thus p1>p2
+		}
+		if (this->getY() > 0 && p.getY() < 0)
+		{
+			return true; //p1 is between 0 and 180, p2 between 180 and 360
+		}
+		if (this->getY() < 0 && p.getY() > 0)
+		{
+			return false;
+		}
 
-	return (*this^p) > 0; //return true if p1 is clockwise from p2
+		return (*this ^ p) > 0; //return true if p1 is clockwise from p2
+	}
+	//return false;
 }
 
 std::istream& operator>>(std::istream& is, Point& point)

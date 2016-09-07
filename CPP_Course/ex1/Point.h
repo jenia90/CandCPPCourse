@@ -51,10 +51,10 @@ public:
 	}
 
 	Point* operator=(const Point& p);
-	static int compare(const Point& p1, const Point& p2);
+	//static int compare(const Point& p1, const Point& p2);
 
 	bool operator ==(const Point& p) const;
-	bool operator<(Point& p1);
+	bool operator<(const Point& p1);
 
 	friend std::istream& operator>>(std::istream& is, Point& point);
 
