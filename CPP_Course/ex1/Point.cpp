@@ -5,11 +5,11 @@
 #include "Point.h"
 #include <iostream>
 
-Point::Point() : _x(0), _y(0), isInit(false)
+Point::Point() : _x(0), _y(0), _isInit(false)
 {
 }
 
-Point::Point(int x, int y): _x(x), _y(y), isInit(true)
+Point::Point(int x, int y): _x(x), _y(y), _isInit(true)
 {
 }
 
@@ -22,15 +22,16 @@ void Point::set(int x, int y)
 	_x = x;
 	_y = y;
 
-	isInit = true;
+	_isInit = true;
 }
 
-Point& Point::operator=(const Point& p)
+Point* Point::operator=(const Point& p)
 {
 	this->set(p.getX(), p.getY());
+	return this;
 }
 
-int Point::compare(const Point& p)
+int Point::compare(const Point& p) const
 {
 	int yComp = this->getY() - p.getY();
 
@@ -64,7 +65,7 @@ int operator^(Point p1, Point p2)
 	return p1.getX() * p2.getY() - p1.getY() * p2.getX();;
 }
 
-bool Point::operator<(Point p)
+bool Point::operator<(Point p) const
 {
 	if (this->getY() == 0 && this->getX() > 0)
 	{

@@ -13,7 +13,7 @@
 class Point
 {
 	int _x, _y;
-	bool isInit;
+	bool _isInit;
 public:
 	Point();
 	/**
@@ -45,12 +45,17 @@ public:
 		return _y;
 	}
 
-	Point& operator=(const Point& p);
-	int compare(const Point& p);
-	int compare(const Point& p1, const Point& p2);
+	inline bool isInit() const
+	{
+		return _isInit;
+	}
+
+	Point* operator=(const Point& p);
+	int compare(const Point& p) const;
+	static int compare(const Point& p1, const Point& p2);
 
 	bool operator ==(const Point& p) const;
-	bool operator<(Point p1);
+	bool operator<(Point p1) const;
 
 	friend std::istream& operator>>(std::istream& is, Point& point);
 
