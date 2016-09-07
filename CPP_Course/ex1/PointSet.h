@@ -18,6 +18,7 @@ class PointSet
 	Point *_pointSet;
 
 public:
+	PointSet();
 	/**
 	 * Ctor
 	 */
@@ -45,6 +46,7 @@ public:
 	 * @return true if removal was successful; false otherwise.
 	 */
 	bool remove(Point p, int index);
+	bool removeLast();
 
 	/**
 	 * @breif returns the capacity of the set

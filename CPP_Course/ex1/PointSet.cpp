@@ -5,6 +5,10 @@
 #include <algorithm>
 #include "PointSet.h"
 
+PointSet::PointSet() : _size(0), _capacity(2), _pointSet(new Point[_capacity])
+{
+}
+
 PointSet::PointSet(int capacity) : _size(0), _capacity(capacity), _pointSet(new Point[capacity])
 {
 }
@@ -69,6 +73,17 @@ inline bool PointSet::remove(Point p, int index = NOT_FOUND)
 
 	_size--;
 	return true;
+}
+
+bool PointSet::removeLast()
+{
+	if(_size - 1 > 0)
+	{
+		_size--;
+		return true;
+	}
+
+	return false;
 }
 
 int PointSet::size() const
