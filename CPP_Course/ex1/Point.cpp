@@ -17,7 +17,7 @@ Point::~Point()
 {
 }
 
-void Point::set(int x, int y)
+void Point::set(const int x, const int y)
 {
 	_x = x;
 	_y = y;
@@ -30,30 +30,30 @@ Point* Point::operator=(const Point& p)
 	this->set(p.getX(), p.getY());
 	return this;
 }
-
-int Point::compare(const Point& p) const
-{
-	int yComp = this->getY() - p.getY();
-
-	if (!yComp)
-	{
-		return this->getX() - p.getX();
-	}
-
-	return yComp;
-}
-
-int Point::compare(const Point& p1, const Point& p2)
-{
-	int yComp = p1.getY() - p2.getY();
-
-	if (!yComp)
-	{
-		return p1.getX() - p2.getX();
-	}
-
-	return yComp;
-}
+//
+//int Point::compare(const Point& p) const
+//{
+//	int yComp = this->getY() - p.getY();
+//
+//	if (!yComp)
+//	{
+//		return this->getX() - p.getX();
+//	}
+//
+//	return yComp;
+//}
+//
+//int Point::compare(const Point& p1, const Point& p2)
+//{
+//	int yComp = p1.getY() - p2.getY();
+//
+//	if (!yComp)
+//	{
+//		return p1.getX() - p2.getX();
+//	}
+//
+//	return yComp;
+//}
 
 bool Point::operator==(const Point& p) const
 {
@@ -65,8 +65,9 @@ int operator^(Point p1, Point p2)
 	return p1.getX() * p2.getY() - p1.getY() * p2.getX();;
 }
 
-bool Point::operator<(Point p) const
+bool Point::operator<(Point& p)
 {
+	std::cout << "Compairing: " << this->toString() << "\twith :" << p.toString() << std::endl;
 	if (this->getY() == 0 && this->getX() > 0)
 	{
 		return true; //angle of p1 is 0, thus p2>p1

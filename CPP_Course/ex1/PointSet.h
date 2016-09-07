@@ -34,7 +34,7 @@ public:
 	 * @param p Point to add
 	 * @return true if add was successful; false otherwise.
 	 */
-	bool add(Point& p);
+	bool add(const Point& p);
 	Point *resizeSet(int newCapacity);
 
 	int isInSet(const Point& p);

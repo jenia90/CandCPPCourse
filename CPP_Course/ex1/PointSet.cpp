@@ -4,7 +4,6 @@
 
 #include <algorithm>
 #include "PointSet.h"
-#include <algorithm>
 
 PointSet::PointSet(int capacity) : _size(0), _capacity(capacity), _pointSet(new Point[capacity])
 {
@@ -15,7 +14,7 @@ PointSet::~PointSet()
 	delete[] _pointSet;
 }
 
-bool PointSet::add(Point& p)
+bool PointSet::add(const Point& p)
 {
 	if(_size == _capacity)
 	{
