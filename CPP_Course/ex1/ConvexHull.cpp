@@ -7,7 +7,32 @@
 #include "PointSet.h"
 #include "LinkedList.h"
 
-bool operator<(Point p1, Point p2);
+int operator^(Point p1, Point p2)
+{
+	return p1.getX() * p2.getY() - p1.getY() * p2.getX();;
+}
+
+bool operator<(Point p1, Point p2)
+{
+	if (p1.getY() == 0 && p1.getX() > 0)
+	{
+		return true; //angle of p1 is 0, thus p2>p1
+	}
+	if (p2.getY() == 0 && p2.getX() > 0)
+	{
+		return false; //angle of p2 is 0 , thus p1>p2
+	}
+	if (p1.getY() > 0 && p2.getY() < 0)
+	{
+		return true; //p1 is between 0 and 180, p2 between 180 and 360
+	}
+	if (p1.getY() < 0 && p2.getY() > 0)
+	{
+		return false;
+	}
+
+	return (p1^p2) > 0; //return true if p1 is clockwise from p2
+}
 
 PointSet createPointSet(LinkedList list)
 {
@@ -19,7 +44,16 @@ PointSet createPointSet(LinkedList list)
 	return pSet;
 }
 
-void grahamScan(PointSet pSet)
+void printConvex(Point *convex, int size)
+{
+	std::cout << "result:" << std::endl;
+	for (int i = 0; i < size; ++i)
+	{
+		std::cout << convex[i].toString();
+	}
+}
+
+Point* grahamScan(PointSet pSet, int *numOfPoints)
 {
 	int currIndex = 0;
 	Point& p0 = pSet.getSet()[currIndex];
@@ -40,29 +74,31 @@ void grahamScan(PointSet pSet)
 		}
 		else
 		{
-			currIndex++;
+			stack[i] = pSet.getSet()[currIndex++];
 		}
+
+		*numOfPoints = i;
 	}
 
-	//TODO: CONTINUE IMPLEMENTATION
 
+	return stack;
 }
 
 int main(int argc, char* argv[])
 {
 	std::string line;
-	Point p;
+	int numPoints;
+	Point p, *convex;
 	LinkedList list = LinkedList();
 
 	while (std::cin >> p)
 	{
-		
 		list.addNode(&p);
 	}
 
 	PointSet pSet = createPointSet(list);
 	pSet.sort(pSet.getSet(), 0, pSet.size());
-	grahamScan(pSet);
+	printConvex(grahamScan(pSet, &numPoints), numPoints);
 
 	return 0;
 }
