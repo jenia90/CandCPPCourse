@@ -47,24 +47,25 @@ Point* grahamScan(PointSet& pSet, int *numOfPoints)
 	// right turn with the next point. If yes, we replace the top of the stack with the next 
 	// point in the set. Otherwise, push the next point into our stack.
 	for (int i = currIndex; i < pSet.size() && currIndex < pSet.size(); i++)
+    {
+        if (pSet.getSet()[currIndex].isInit())
+        {
+            if (stk[i - 1] < stk[i] && pSet.getSet()[currIndex] < stk[i])
+            {
+                stk[i++] = pSet.getSet()[currIndex++];
+            }
+            else
+            {
+                stk[i] = pSet.getSet()[currIndex++];
+            }
 
-		if (pSet.getSet()[currIndex].isInit())
-		{
-
-			if (stk[i - 1] < stk[i] && pSet.getSet()[currIndex] < stk[i])
-			{
-				stk[i++] = pSet.getSet()[currIndex++];
-			}
-			else
-			{
-				stk[i] = pSet.getSet()[currIndex++];
-			}
-
-			*numOfPoints = i;
-		}
-
+            *numOfPoints = i;
+        }
+    }
 	return stk;
 }
+
+// TODO: REMOVE
 PointSet myRun()
 {
 	PointSet pointSet = PointSet(2);
@@ -83,7 +84,7 @@ PointSet myRun()
 	return pointSet;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
 	std::string line;
 	int numPoints;
@@ -99,9 +100,11 @@ int main(int argc, char* argv[])
 	// sort the set of points according to their polar angle.
 	std::sort(pSet.getSet(), pSet.getSet() + pSet.size());
 
+    std::cout << "num of points in set: " << pSet.size() << std::endl;
 	// get the convex hull set of points.
 	convex = grahamScan(pSet, &numPoints);
 
+    std::cout << "num of points in convex: " << numPoints << std::endl;
 	// print points in the convex hull.
 	printConvex(convex, numPoints);
 
