@@ -6,6 +6,7 @@
 #define POINTSET_H
 
 #define NOT_FOUND -1
+#define DEFAULT_CAPACITY 2
 
 #include "Point.h"
 
@@ -16,6 +17,12 @@ class PointSet
 {
 	int _size, _capacity;
 	Point *_pointSet;
+
+	/**
+	 * @brief Expands the array by creating a new array and moving all Points to it
+	 * @param newCapacity size of the new array
+	 */
+	void resizeSet(int newCapacity);
 
 public:
 	PointSet();
@@ -28,7 +35,11 @@ public:
 	 */
 	~PointSet();
 
-	inline Point *getSet() { return _pointSet; }
+	/**
+	 * @brief getter for the set
+	 * @return set of points.
+	 */
+	Point *getSet() { return _pointSet; }
 
 	/**
 	 * @brief Adds a new point to the set
@@ -36,8 +47,12 @@ public:
 	 * @return true if add was successful; false otherwise.
 	 */
 	bool add(const Point& p);
-	Point *resizeSet(int newCapacity);
 
+	/**
+	 * @brief checks if a given point is in the set and returns its index if yes.
+	 * @param p Point reference to find.
+	 * @return index of the Point in the set; -1 otherwise.
+	 */
 	int isInSet(const Point& p);
 
 	/**
@@ -46,7 +61,14 @@ public:
 	 * @return true if removal was successful; false otherwise.
 	 */
 	bool remove(Point p, int index);
+
+	/**
+	 * @brief removes the last point in the set.
+	 * @return true if successful; false otherwise.
+	 */
 	bool removeLast();
+
+	PointSet& sort(int begin, int end, int (*compare)(Point, Point));
 
 	/**
 	 * @breif returns the capacity of the set

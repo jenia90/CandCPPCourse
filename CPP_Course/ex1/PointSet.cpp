@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "PointSet.h"
 
-PointSet::PointSet() : _size(0), _capacity(2), _pointSet(new Point[_capacity])
+PointSet::PointSet() : _size(0), _capacity(DEFAULT_CAPACITY), _pointSet(new Point[DEFAULT_CAPACITY])
 {
 }
 
@@ -22,7 +22,7 @@ bool PointSet::add(const Point& p)
 {
 	if(_size == _capacity)
 	{
-		_pointSet = resizeSet(_capacity *= 2);
+		resizeSet(_capacity *= 2);
 	}
 
 	if (isInSet(p) == NOT_FOUND)
@@ -34,13 +34,17 @@ bool PointSet::add(const Point& p)
 	return false;
 }
 
-Point* PointSet::resizeSet(int newCapacity)
+void PointSet::resizeSet(int newCapacity)
 {
 	Point *newSet = new Point[newCapacity];
+
 	std::copy_n(_pointSet, size(), newSet);
+
 	delete[] _pointSet;
+
 	_capacity = newCapacity;
-	return newSet;
+
+	_pointSet = newSet;
 }
 
 int PointSet::isInSet(const Point& p)
@@ -56,7 +60,7 @@ int PointSet::isInSet(const Point& p)
 	return NOT_FOUND;
 }
 
-inline bool PointSet::remove(Point p, int index = NOT_FOUND)
+bool PointSet::remove(Point p, int index = NOT_FOUND)
 {
 	if (index == NOT_FOUND)
 	{
@@ -75,11 +79,25 @@ inline bool PointSet::remove(Point p, int index = NOT_FOUND)
 	return true;
 }
 
+PointSet& PointSet::sort(int begin, int end, int (*compare)(Point, Point))
+{
+	if(compare)
+	{
+		std::sort(_pointSet + begin, _pointSet + end, compare);
+	}
+	else
+	{
+		std::sort(_pointSet + begin, _pointSet + end);
+	}
+
+	return *this;
+}
+
 bool PointSet::removeLast()
 {
 	if(_size - 1 > 0)
 	{
-		_size--;
+		_pointSet[_size--] = Point();
 		return true;
 	}
 
@@ -93,19 +111,20 @@ int PointSet::size() const
 
 std::string PointSet::toString()
 {
-	std::ostringstream oss;
+	std::stringstream ss;
 
 	if (_size > 0)
 	{
 		for (int i = 0; i < _size; i++)
 		{
-			oss << _pointSet[i].toString();
+			ss << _pointSet[i].toString();
 		}
 	}
 	else
 	{
-		oss << "" << std::endl;
+		ss << "" << std::endl;
 	}
 
-	return oss.str();
+	return ss.str();
 }
+

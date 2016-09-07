@@ -4,7 +4,9 @@
 
 #ifndef POINT_H
 #define POINT_H
-\
+
+#define DELMITER ","
+
 #include <sstream>
 
 /**
@@ -35,27 +37,28 @@ public:
 	 */
 	void set(int x, int y);
 
-	inline int getX() const
+	int getX() const
 	{
 		return _x;
 	}
 
-	inline int getY() const
+	int getY() const
 	{
 		return _y;
 	}
 
-	inline bool isInit() const
+	bool isInit() const
 	{
 		return _isInit;
 	}
 
-	Point* operator=(const Point& p);
+	Point& operator=(const Point& p);
 	//static int compare(const Point& p1, const Point& p2);
 
 	bool operator ==(const Point& p) const;
-	bool operator<(const Point& p1);
-
+	bool operator !=(const Point& p) const;
+	Point& operator -(const Point& p);
+	bool operator<(const Point& p) const;
 	friend std::istream& operator>>(std::istream& is, Point& point);
 
 	/**

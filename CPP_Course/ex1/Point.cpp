@@ -25,70 +25,36 @@ void Point::set(const int x, const int y)
 	_isInit = true;
 }
 
-Point* Point::operator=(const Point& p)
+Point& Point::operator=(const Point& p)
 {
 	this->set(p.getX(), p.getY());
-	return this;
+	return *this;
 }
-//
-//int Point::compare(const Point& p) const
-//{
-//	int yComp = this->getY() - p.getY();
-//
-//	if (!yComp)
-//	{
-//		return this->getX() - p.getX();
-//	}
-//
-//	return yComp;
-//}
-//
-//int Point::compare(const Point& p1, const Point& p2)
-//{
-//	int yComp = p1.getY() - p2.getY();
-//
-//	if (!yComp)
-//	{
-//		return p1.getX() - p2.getX();
-//	}
-//
-//	return yComp;
-//}
 
 bool Point::operator==(const Point& p) const
 {
-	return (this->_x == p._x) && (this->_y == p._y);
+	return (_x == p.getX()) && (_y == p.getY());
 }
 
-int operator^(Point p1, Point p2)
+bool Point::operator !=(const Point& p) const
 {
-	return p1.getX() * p2.getY() - p1.getY() * p2.getX();;
+	return (_x != p.getX()) || (_y != p.getY());
 }
 
-bool Point::operator<(const Point& p)
+Point& Point::operator -(const Point& p)
 {
-	if(p._isInit)
+	this->set(_x - p.getX(), _y - p.getY());
+	return *this;
+}
+
+bool Point::operator<(const Point &p) const
+{
+	if(_x != p.getX())
 	{
-		if (this->getY() == 0 && this->getX() > 0)
-		{
-			return true; //angle of p1 is 0, thus p2>p1
-		}
-		if (p.getY() == 0 && p.getX() > 0)
-		{
-			return false; //angle of p2 is 0 , thus p1>p2
-		}
-		if (this->getY() > 0 && p.getY() < 0)
-		{
-			return true; //p1 is between 0 and 180, p2 between 180 and 360
-		}
-		if (this->getY() < 0 && p.getY() > 0)
-		{
-			return false;
-		}
-
-		return (*this ^ p) > 0; //return true if p1 is clockwise from p2
+		return _x < p.getX();
 	}
-	//return false;
+
+	return _y < p.getY();
 }
 
 std::istream& operator>>(std::istream& is, Point& point)
@@ -96,10 +62,10 @@ std::istream& operator>>(std::istream& is, Point& point)
 	try
 	{
 		std::string str;
-	is >> str;
-	int delimIdx = str.find(",");
-	point.set(std::stoi(str.substr(0, delimIdx)), std::stoi(str.substr(delimIdx + 1, str.size() - 1)));
-	return is;
+		is >> str;
+		unsigned int delimIdx = str.find(DELMITER);
+		point.set(std::stoi(str.substr(0, delimIdx)), std::stoi(str.substr(delimIdx + 1, str.size() - 1)));
+		return is;
 	}
 	catch (...)
 	{
@@ -111,7 +77,7 @@ std::istream& operator>>(std::istream& is, Point& point)
 std::string Point::toString()
 {
 	std::ostringstream oss;
-	oss << _x << "," << _y << std::endl;
+	oss << _x << DELMITER << _y << std::endl;
 	return oss.str();
 }
 

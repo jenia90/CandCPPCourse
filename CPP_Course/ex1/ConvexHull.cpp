@@ -7,6 +7,11 @@
 #include "Point.h"
 #include "PointSet.h"
 
+#define COLLINEAR 0
+#define CLOCKWISE 1
+#define COUNTERCLOCKWISE 2
+#define TOP 1
+#define NEXT_TO_TOP 2
 Point p0;
 
 /**
@@ -14,52 +19,67 @@ Point p0;
  * @param convex array of Point objects
  * @param size number of points in the array.
  */
-void printConvex(PointSet& convex, int size)
+void printConvex(PointSet convex)
 {
-	std::cout << "result:" << std::endl;
-	for (int i = 0; i < size; ++i)
-	{
-		std::cout << convex.toString();
-	}
+	std::cout << "result:" << std::endl << convex.toString();
 }
 
-void swap(Point &p1, Point &p2) noexcept
+/**
+ * @brief Swaps to points
+ * @param p1 Point 1
+ * @param p2 Point 2
+ */
+void swap(Point &p1, Point &p2)
 {
     Point temp = p1;
     p1 = p2;
     p2 = temp;
 }
 
-int distSq(Point p1, Point p2)
+/**
+ * @brief Calculates the distance squared of 2 Points
+ * @param p1 Point 1
+ * @param p2 Point 2
+ * @return product of multiplication
+ */
+int distanceSquared(Point p1, Point p2)
 {
 	return (p1.getX() - p2.getX())*(p1.getX() - p2.getX()) +
 		(p1.getY() - p2.getY())*(p1.getY() - p2.getY());
 }
 
-int orientation(Point p, Point q, Point r)
+/**
+ * @brief Calculates the orientation of 2 points in respect to the third one
+ * @param p Point 1
+ * @param q Point 2
+ * @param r Point 3
+ * @return 0 if collinear; 1 if clockwise; 2 if counterclockwise
+ */
+int orientation(Point a, Point b, Point c)
 {
-	int val = (q.getY() - p.getY()) * (r.getX() - q.getX()) -
-		(q.getX() - p.getX()) * (r.getY() - q.getY());
+	int val = (b.getX() - a.getX()) * (c.getY() - a.getY()) -
+              (b.getY() - a.getY()) * (c.getX() - a.getX());
 
-	if (val == 0) return 0;  // colinear
-	return (val > 0) ? 1 : 2; // clock or counterclock wise
+    return val > 0 ? COUNTERCLOCKWISE : val < 0 ? CLOCKWISE : COLLINEAR;
 }
 
-int compare(const void* vp1, const void* vp2)
+/**
+ * @brief Helper function used to pass as a function pointer to the qsort function for comparing
+ * 2 Points.
+ * @param vp1 void pointer to Point 1
+ * @param vp2 void pointer to Point 2
+ * @return
+ */
+int compare(Point a, Point b)
 {
-	Point *p1 = (Point *)vp1;
-	Point *p2 = (Point *)vp2;
+    const int order = orientation(p0, a, b);
 
-	if (p1->isInit() && p2->isInit())
-	{
-		// Find orientation
-		int o = orientation(p0, *p1, *p2);
-		if (o == 0)
-			return (distSq(p0, *p2) >= distSq(p0, *p1)) ? -1 : 1;
+    if (order == COLLINEAR)
+    {
+        return distanceSquared(p0, a) < distanceSquared(p0, b);
+    }
 
-		return (o == 2) ? -1 : 1;
-	}
-	return -1;
+    return (order == COUNTERCLOCKWISE);
 }
 
 /**
@@ -69,23 +89,20 @@ int compare(const void* vp1, const void* vp2)
  * of points in the convex hull.
  * @return array of Point objects making the convex hull of the PointSet.
  */
-PointSet& grahamScan(PointSet& pSet, int *numOfPoints)
+PointSet grahamScan(PointSet& pSet)
 {
-	PointSet cHull = PointSet(pSet.size());
-	int currIndex = 0;
-	Point& p0 = pSet.getSet()[currIndex++];
+	PointSet cHull;
 	cHull.add(p0);
-	cHull.add(pSet.getSet()[currIndex++]);
-	*numOfPoints = currIndex;
+	cHull.add(pSet.getSet()[TOP]);
+    cHull.add(pSet.getSet()[NEXT_TO_TOP]);
 
-	for(int i = currIndex; i < pSet.size(); i++)
+	for(int i = 3; i < pSet.size(); i++)
 	{
-		Point p = pSet.getSet()[i];
-		*numOfPoints++;
-		while(orientation(cHull.getSet()[cHull.size() - 2], cHull.getSet()[cHull.size() - 1], p) != 2)
+        Point p = pSet.getSet()[i];
+		while(orientation(cHull.getSet()[cHull.size() - NEXT_TO_TOP], cHull.getSet()[cHull.size() - TOP], p)
+              != COUNTERCLOCKWISE)
 		{
 			cHull.removeLast();
-			*numOfPoints--;
 		}
 
 		cHull.add(p);
@@ -96,7 +113,7 @@ PointSet& grahamScan(PointSet& pSet, int *numOfPoints)
 // TODO: REMOVE
 PointSet myRun()
 {
-	PointSet pointSet = PointSet(2);
+	PointSet pointSet;
 	int lim = 50;
 	for (int i = -1 * lim; i <= lim; i++)
 	{
@@ -114,7 +131,6 @@ PointSet myRun()
 
 int main()
 {
-	int numPoints;
 	Point p;
 	PointSet convex, pSet = myRun();
 
@@ -134,37 +150,35 @@ int main()
 		// most point in case of tie
 		if ((y < minY) || (minY == y && pSet.getSet()[i].getX() < pSet.getSet()[min].getX()))
 		{
-			minY = pSet.getSet()[i].getY(), min = i;
+			minY = pSet.getSet()[i].getY();
+            min = i;
 		}
 	}
 
 	swap(pSet.getSet()[0], pSet.getSet()[min]);
 
 	p0 = pSet.getSet()[0];
-
-	std::qsort(&pSet.getSet()[1], pSet.size() - 1, sizeof(Point), compare);
+    pSet.sort(0, pSet.size() - 1, compare);
 
 	int m = 1; // Initialize size of modified array
 	for (int i = 1; i < pSet.size(); i++)
 	{
 		// Keep removing i while angle of i and i+1 is same
 		// with respect to p0
-		while (i < pSet.size() - 1 && orientation(p0, pSet.getSet()[i],
-			pSet.getSet()[i + 1]) == 0)
-			i++;
+		while (i < (pSet.size() - 1) && orientation(p0, pSet.getSet()[i], pSet.getSet()[i + 1]) == 0)
+        {
+            i++;
+        }
 
 
 		pSet.getSet()[m] = pSet.getSet()[i];
 		m++;  // Update size of modified array
 	}
 
-    std::cout << "num of points in set: " << pSet.size() << std::endl;
 	// get the convex hull set of points.
-	convex = grahamScan(pSet, &numPoints);
-
-    std::cout << "num of points in convex: " << numPoints << std::endl;
+	convex = grahamScan(pSet);
 	// print points in the convex hull.
-	printConvex(convex, numPoints);
+	printConvex(convex);
 
 	return 0;
 }
