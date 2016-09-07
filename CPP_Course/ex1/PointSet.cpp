@@ -4,7 +4,7 @@
 
 #include "PointSet.h"
 
-PointSet::PointSet(int capacity) : _size(0), _pointSet(new Point[capacity])
+PointSet::PointSet(int capacity) : _size(0), _capacity(capacity), _pointSet(new Point[capacity])
 {
 }
 
@@ -15,6 +15,11 @@ PointSet::~PointSet()
 
 bool PointSet::add(Point& p)
 {
+	if(_size == _capacity)
+	{
+		_pointSet = resizeSet(_capacity *= 2);
+	}
+
 	if (isInSet(p) == NOT_FOUND)
 	{
 		_pointSet[_size++] = p;
@@ -24,7 +29,16 @@ bool PointSet::add(Point& p)
 	return false;
 }
 
-int PointSet::isInSet(const Point p)
+Point* PointSet::resizeSet(int newCapacity)
+{
+	Point *newSet = new Point[newCapacity];
+	std::copy_n(_pointSet, size(), newSet);
+	delete[] _pointSet;
+	_capacity = newCapacity;
+	return newSet;
+}
+
+int PointSet::isInSet(const Point& p)
 {
 	for (int i = 0; i < size(); i++)
 	{
@@ -55,7 +69,7 @@ inline bool PointSet::remove(Point p, int index = NOT_FOUND)
 	_size--;
 	return true;
 }
-
+/*
 void PointSet::sort(Point* pSet, int low, int high)
 {
 	int mid;
@@ -118,16 +132,17 @@ void PointSet::merge(Point* pSet, int low, int mid, int high)
 		k++;
 	}
 	_size = k;
-}
+}*/
 
+/*
 void PointSet::swap(Point& p1, Point& p2)
 {
 	Point& temp = p1;
 	p1 = p2;
 	p2 = temp;
-}
+}*/
 
-int PointSet::size()
+int PointSet::size() const
 {
 	return _size;
 }

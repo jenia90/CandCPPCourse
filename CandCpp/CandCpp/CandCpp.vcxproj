@@ -62,15 +62,11 @@
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClCompile Include="..\..\CPP_Course\ex1\ConvexHull.cpp" />
-    <ClCompile Include="..\..\CPP_Course\ex1\LinkedList.cpp" />
     <ClCompile Include="..\..\CPP_Course\ex1\Point.cpp" />
     <ClCompile Include="..\..\CPP_Course\ex1\PointSet.cpp" />
     <ClCompile Include="..\..\CPP_Course\ex1\PointSetBinaryOperations.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\CPP_Course\ex1\LinkedList.h">
-      <FileType>CppHeader</FileType>
-    </ClInclude>
     <ClInclude Include="..\..\CPP_Course\ex1\Point.h">
       <FileType>CppHeader</FileType>
     </ClInclude>

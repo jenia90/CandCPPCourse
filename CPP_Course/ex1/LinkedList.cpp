@@ -4,27 +4,30 @@ LinkedList::LinkedList(): _size(0), _head(new Node())
 {
 }
 
-bool LinkedList::addNode(Point* p)
+bool LinkedList::addNode(Point p)
 {
-	Node *newNode = new Node(p, _head);
-	_head = newNode;
+	if(_head->getPoint() == p)
+	{
+		return false;
+	}
+	_head = new Node(p, _head);
+	if (!_head) return false;
 	_size++;
 	return true;
 }
 
 Point& LinkedList::removeHead()
 {
-	Point *point = nullptr;
+	Point point;
 	if (_head)
 	{
-		Node *next = _head;
+		Node next = *_head;
 		point = _head->getPoint();
 		_head = _head->getNext();
-		delete next;
 		_size--;
 	}
 
-	return *point;
+	return point;
 }
 
 LinkedList::~LinkedList()

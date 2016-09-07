@@ -14,14 +14,14 @@
  */
 class PointSet
 {
-	int _size;
+	int _size, _capacity;
 	Point *_pointSet;
 
 public:
 	/**
 	 * Ctor
 	 */
-	PointSet(int size);
+	PointSet(int capacity);
 	/**
 	 * Destructor
 	 */
@@ -35,8 +35,9 @@ public:
 	 * @return true if add was successful; false otherwise.
 	 */
 	bool add(Point& p);
+	Point *resizeSet(int newCapacity);
 
-	int isInSet(const Point p);
+	int isInSet(const Point& p);
 
 	/**
 	 * @brief removes a point from the set
@@ -55,10 +56,10 @@ public:
 	void swap(Point& p1, Point&p2);
 
 	/**
-	 * @breif returns the size of the set
-	 * @return size of the set
+	 * @breif returns the capacity of the set
+	 * @return capacity of the set
 	 */
-	int size();
+	int size() const;
 
 	/**
 	 * @brief Prints the set in specialized format.

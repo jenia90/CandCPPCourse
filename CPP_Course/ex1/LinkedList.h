@@ -7,7 +7,7 @@ struct Node
 	/**
 	 * @Brief Empty node constructor.
 	 */
-	Node(): _p(nullptr), next(nullptr)
+	Node(): _p(), next(nullptr)
 	{
 	}
 
@@ -16,7 +16,7 @@ struct Node
 	 * @param point Point pointer.
 	 * @param next next Node pointer.
 	 */
-	Node(Point* point, Node* next)
+	Node(Point point, Node* next)
 		: _p(point),
 		  next(next)
 	{
@@ -25,19 +25,18 @@ struct Node
 	/**
 	 * @brief Getters for Node member fields.
 	 */
-	Node* getNext() { return next; }
-	Point* getPoint() { return _p; }
+	Node* getNext() const { return next; }
+	Point getPoint() const { return _p; }
 
 	/**
 	 * @brief Destructor. Frees allocated memory blocks of _p and next.
 	 */
 	~Node()
 	{
-		delete _p;
-		delete next;
+
 	}
 private:
-	Point* _p;
+	Point _p;
 	Node* next;
 }; 
 
@@ -57,7 +56,7 @@ public:
 	 * @param p Point pointer
 	 * @return true if successful; false otherwise.
 	 */
-	bool addNode(Point* p);
+	bool addNode(Point p);
 	/**
 	 * @brief Removes the head of the list and returns the Point object it held.
 	 * @return Point object
@@ -68,7 +67,7 @@ public:
 	 * @brief Gets the size of the list
 	 * @return int representing size of the list
 	 */
-	int size() { return _size; }
+	int size() const { return _size; }
 	
 	/**
 	 * @brief Destructor. Deletes all remaining nodes.
