@@ -21,6 +21,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wall -Wvla -std=gnu++11")
 
 add_library(PointSet CPP_Course/ex1/PointSet.cpp)
 add_library(Point CPP_Course/ex1/Point.cpp)
-add_library(LinkedList CPP_Course/ex1/LinkedList.cpp)
 add_executable(ConvexHull CPP_Course/ex1/ConvexHull.cpp )
 target_link_libraries(ConvexHull PointSet Point LinkedList)

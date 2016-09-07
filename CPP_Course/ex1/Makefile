@@ -7,11 +7,8 @@ PointSet.o: PointSet.cpp
 Point.o: Point.cpp
 	$(CC) $(CFLAGS) -c Point.cpp
 
-LinkedList.o: LinkedList.cpp
-	$(CC) $(CFLAGS) -c LinkedList.cpp
-
-ConvexHull: Point.o PointSet.o LinkedList.o
-	$(CC) $(CFLAGS) Point.o PointSet.o LinkedList.o ConvexHull.cpp -o ConvexHull
+ConvexHull: Point.o PointSet.o
+	$(CC) $(CFLAGS) Point.o PointSet.o ConvexHull.cpp -o ConvexHull
 
 clean:
 	rm -f *.o *.a *.tar ConvexHull

@@ -2,6 +2,7 @@
 // Created by jenia on 04/09/2016.
 //
 
+#include <algorithm>
 #include "PointSet.h"
 
 PointSet::PointSet(int capacity) : _size(0), _capacity(capacity), _pointSet(new Point[capacity])

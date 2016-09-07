@@ -3,13 +3,11 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex1/LinkedList.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex1/PointSet.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex1/LinkedList.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex1/Point.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex1/ConvexHull.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex1/Point.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex1/PointSet.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex1/Point.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex1/Point.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex1/PointSet.h" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
