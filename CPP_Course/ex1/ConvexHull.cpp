@@ -7,35 +7,8 @@
 #include "PointSet.h"
 #include <algorithm>
 
-/*
-int operator^(Point p1, Point p2)
-{
-	return p1.getX() * p2.getY() - p1.getY() * p2.getX();;
-}
 
-bool operator<(Point p1, Point p2)
-{
-	if (p1.getY() == 0 && p1.getX() > 0)
-	{
-		return true; //angle of p1 is 0, thus p2>p1
-	}
-	if (p2.getY() == 0 && p2.getX() > 0)
-	{
-		return false; //angle of p2 is 0 , thus p1>p2
-	}
-	if (p1.getY() > 0 && p2.getY() < 0)
-	{
-		return true; //p1 is between 0 and 180, p2 between 180 and 360
-	}
-	if (p1.getY() < 0 && p2.getY() > 0)
-	{
-		return false;
-	}
-
-	return (p1^p2) > 0; //return true if p1 is clockwise from p2
-}*/
-
-void printConvex(Point *convex, int size)
+void printConvex(Point convex[], int size)
 {
 	std::cout << "result:" << std::endl;
 	for (int i = 0; i < size; ++i)
@@ -48,31 +21,37 @@ Point* grahamScan(PointSet& pSet, int *numOfPoints)
 {
 	int currIndex = 0;
 	Point& p0 = pSet.getSet()[currIndex];
-	Point stack[pSet.size()];
+	Point stk[pSet.size()];
 
-	stack[currIndex++] = p0;
+	stk[currIndex++] = p0;
 	for(; currIndex < 3; currIndex++)
 	{
-		stack[currIndex] = pSet.getSet()[currIndex];
+		stk[currIndex] = pSet.getSet()[currIndex];
 	}
 
-	for (int i = currIndex; i < pSet.size(); i++)
+	for (int i = currIndex; i < pSet.size() && currIndex < pSet.size(); i++)
+
+		if (pSet.getSet()[currIndex].isInit())
+		{
+
+			if (stk[i - 1] < stk[i] && pSet.getSet()[currIndex] < stk[i])
+			{
+				stk[i++] = pSet.getSet()[currIndex++];
+				continue;
+			}
+			else
+			{
+				stk[i] = pSet.getSet()[currIndex++];
+			}
+
+			*numOfPoints = i;
+		}
+
+	for (Point point : stk)
 	{
-		if(stack[i - 1] < stack[i] && pSet.getSet()[currIndex] < stack[i])
-		{
-			stack[i++] = pSet.getSet()[currIndex++];
-			continue;
-		}
-		else
-		{
-			stack[i] = pSet.getSet()[currIndex++];
-		}
-
-		*numOfPoints = i;
+		std::cout << "Points in stack:" << std::endl << point.toString();
 	}
-
-
-	return stack;
+	return stk;
 }
 
 int main(int argc, char* argv[])
@@ -91,11 +70,11 @@ int main(int argc, char* argv[])
 		pSet.add(p);
 		
 	}
-	std::cout << "Created set" << std::endl;
+	std::cout << "Created set" << std::endl; //TODO: Remove
 	std::sort(pSet.getSet(), pSet.getSet()+pSet.size());
-	std::cout << "Sorted" << std::endl;
-	Point *scanned = grahamScan(pSet, &numPoints);
-	printConvex(scanned, numPoints);
+	std::cout << "Sorted" << std::endl; //TODO: Remove
+	convex = grahamScan(pSet, &numPoints);
+	printConvex(convex, numPoints);
 
 	return 0;
 }

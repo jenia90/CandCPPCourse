@@ -3,6 +3,7 @@
 //
 
 #include "PointSet.h"
+#include <algorithm>
 
 PointSet::PointSet(int capacity) : _size(0), _capacity(capacity), _pointSet(new Point[capacity])
 {
@@ -69,78 +70,6 @@ inline bool PointSet::remove(Point p, int index = NOT_FOUND)
 	_size--;
 	return true;
 }
-/*
-void PointSet::sort(Point* pSet, int low, int high)
-{
-	int mid;
-	if (low <= high)
-	{
-		mid = (low + high) / 2;
-		sort(pSet, low, mid);
-		sort(pSet, mid + 1, high);
-		merge(pSet, low, mid, high);
-	}
-}
-
-void PointSet::merge(Point* pSet, int low, int mid, int high)
-{
-	int n1 = mid - low + 1, n2 = high - mid;
-	Point leftArr[n1], rightArr[n2];
-
-	for (int i = 0; i < n1; ++i)
-	{
-		leftArr[i] = pSet[low + i];
-	}
-	for (int i = 0; i < n2; i++)
-	{
-		rightArr[i] = pSet[mid + 1 + i];
-	}
-
-	int i = 0, j = 0, k = 0;
-	while (i < n1 && j < n2)
-	{
-		if (leftArr[i].compare(rightArr[j]))
-		{
-			pSet[k] = leftArr[i];
-			i++;
-		}
-		else if (leftArr[i].compare(rightArr[j]) > 0)
-		{
-			pSet[k] = rightArr[j];
-			j++;
-		}
-		else
-		{
-			pSet[k] = rightArr[i];
-			i++;
-			j++;
-		}
-		k++;
-	}
-
-	while (i < n1)
-	{
-		pSet[k] = leftArr[i];
-		i++;
-		k++;
-	}
-
-	while (j < n2)
-	{
-		pSet[k] = rightArr[j];
-		j++;
-		k++;
-	}
-	_size = k;
-}*/
-
-/*
-void PointSet::swap(Point& p1, Point& p2)
-{
-	Point& temp = p1;
-	p1 = p2;
-	p2 = temp;
-}*/
 
 int PointSet::size() const
 {
