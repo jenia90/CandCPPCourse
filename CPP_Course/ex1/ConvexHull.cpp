@@ -91,6 +91,7 @@ int main(int argc, char* argv[])
 	Point p, *convex;
 	LinkedList list = LinkedList();
 
+
 	while (std::cin >> p)
 	{
 		list.addNode(&p);
