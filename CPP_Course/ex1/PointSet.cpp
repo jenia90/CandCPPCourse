@@ -193,16 +193,20 @@ PointSet PointSet::operator&(const PointSet& pSet)
 
 PointSet& PointSet::operator=(const PointSet& pSet)
 {
+    // check if its not self assignment
     if (this != &pSet) 
-    { 
+    {
+        // check if current set and new set are of different size, if yes, create a new set of
+        // given capacity
         if (this->size() != pSet.size())
         {
-            delete[] _pointSet;
-            _pointSet = new Point[pSet._capacity];
-            this->_size = 0;
-            this->_capacity = pSet._capacity;
+            delete[] _pointSet; // delete old set
+            _pointSet = new Point[pSet._capacity]; // create new set with given capacity
+            this->_size = 0; // reset size field
+            this->_capacity = pSet._capacity; // set capacity field
         }
 
+        // add every Point to the new set
         for(int i = 0; i < pSet.size(); i++)
         {
             this->add(pSet.getSet()[i]);

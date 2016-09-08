@@ -144,6 +144,14 @@ int main()
         pSet.add(p);
     }
 
+    // check if 2 or less points were received. If yes, sort them and print the set.
+    if(pSet.size() <= 2)
+    {
+        pSet.sort(PIVOT_INDEX, pSet.size());
+        printConvex(pSet);
+        return 0;
+    }
+
     // sort the set of points according to their polar angle.
     int minY = pSet.getSet()[PIVOT_INDEX].getY(), min = 0;
     for (int i = NEXT_TO_PIVOT; i < pSet.size(); i++)
