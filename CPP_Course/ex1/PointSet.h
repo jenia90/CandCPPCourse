@@ -96,7 +96,7 @@ public:
 	bool operator ==(const PointSet& pSet);
 	PointSet operator -(const PointSet& pSet);
 	PointSet operator &(const PointSet& pSet);
-    PointSet operator =(const PointSet& pSet);
+    PointSet & operator =(const PointSet& pSet);
 };
 
 

@@ -19,7 +19,7 @@ PointSet::~PointSet()
 
 bool PointSet::add(const Point& p)
 {
-	if(_size == _capacity)
+	if(_size >= _capacity)
 	{
 		resizeSet(_capacity *= 2);
 	}
@@ -184,7 +184,7 @@ PointSet PointSet::operator&(const PointSet& pSet)
     return newSet;
 }
 
-PointSet PointSet::operator=(const PointSet &pSet)
+PointSet& PointSet::operator=(const PointSet &pSet)
 {
     if (this != &pSet) { // self-assignment check expected
         if (this->size() != pSet.size())
