@@ -44,8 +44,8 @@ void swap(Point &p1, Point &p2)
  */
 int distanceSquared(Point p1, Point p2)
 {
-	return (p1.getX() - p2.getX())*(p1.getX() - p2.getX()) +
-		(p1.getY() - p2.getY())*(p1.getY() - p2.getY());
+	return (p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) +
+           (p1.getY() - p2.getY()) * (p1.getY() - p2.getY());
 }
 
 /**
@@ -57,29 +57,30 @@ int distanceSquared(Point p1, Point p2)
  */
 int orientation(Point a, Point b, Point c)
 {
-	int val = (b.getX() - a.getX()) * (c.getY() - a.getY()) -
-              (b.getY() - a.getY()) * (c.getX() - a.getX());
+    int val = (b.getY() - a.getY()) * (c.getX() - b.getX()) -
+              (b.getX() - a.getX()) * (c.getY() - b.getY());
 
-    return val > 0 ? COUNTERCLOCKWISE : val < 0 ? CLOCKWISE : COLLINEAR;
+    if (val == COLLINEAR) return COLLINEAR;
+    return (val > COLLINEAR)? CLOCKWISE: COUNTERCLOCKWISE;
 }
 
 /**
- * @brief Helper function used to pass as a function pointer to the qsort function for comparing
+ * @brief Helper function used to pass as a function pointer to the sort function for comparing
  * 2 Points.
- * @param vp1 void pointer to Point 1
- * @param vp2 void pointer to Point 2
+ * @param a Point 1
+ * @param a Point 2
  * @return
  */
 int compare(Point a, Point b)
 {
-    const int order = orientation(p0, a, b);
+    int sort = orientation(p0, a, b);
 
-    if (order == COLLINEAR)
+    if (sort == COLLINEAR)
     {
-        return distanceSquared(p0, a) < distanceSquared(p0, b);
+        return distanceSquared(p0, a) <= distanceSquared(p0, b);
     }
 
-    return (order == COUNTERCLOCKWISE);
+    return (sort == COUNTERCLOCKWISE);
 }
 
 /**
@@ -158,25 +159,13 @@ int main()
 	swap(pSet.getSet()[0], pSet.getSet()[min]);
 
 	p0 = pSet.getSet()[0];
-    pSet.sort(0, pSet.size() - 1, compare);
-
-	int m = 1; // Initialize size of modified array
-	for (int i = 1; i < pSet.size(); i++)
-	{
-		// Keep removing i while angle of i and i+1 is same
-		// with respect to p0
-		while (i < (pSet.size() - 1) && orientation(p0, pSet.getSet()[i], pSet.getSet()[i + 1]) == 0)
-        {
-            i++;
-        }
-
-
-		pSet.getSet()[m] = pSet.getSet()[i];
-		m++;  // Update size of modified array
-	}
+    pSet.sort(1, pSet.size(), compare);
 
 	// get the convex hull set of points.
 	convex = grahamScan(pSet);
+
+    // sort the convex hull set of points
+    convex.sort(0, convex.size(), nullptr);
 	// print points in the convex hull.
 	printConvex(convex);
 

@@ -4,18 +4,7 @@
 
 #include "PointSet.h"
 
-bool PointSet::operator!=(const PointSet& pSet)
+int main()
 {
-}
 
-bool PointSet::operator==(const PointSet& pSet)
-{
-}
-
-PointSet PointSet::operator-(const PointSet& pSet)
-{
-}
-
-PointSet PointSet::operator&(const PointSet& pSet)
-{
 }

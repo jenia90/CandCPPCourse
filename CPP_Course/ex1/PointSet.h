@@ -24,6 +24,8 @@ class PointSet
 	 */
 	void resizeSet(int newCapacity);
 
+    bool isEqual(PointSet pSet2);
+
 public:
 	PointSet();
 	/**
@@ -39,7 +41,8 @@ public:
 	 * @brief getter for the set
 	 * @return set of points.
 	 */
-	Point *getSet() { return _pointSet; }
+    Point * getSet()const
+    { return _pointSet; }
 
 	/**
 	 * @brief Adds a new point to the set
@@ -53,7 +56,7 @@ public:
 	 * @param p Point reference to find.
 	 * @return index of the Point in the set; -1 otherwise.
 	 */
-	int isInSet(const Point& p);
+	int isInSet(const Point& p)const;
 
 	/**
 	 * @brief removes a point from the set
@@ -68,6 +71,14 @@ public:
 	 */
 	bool removeLast();
 
+    /**
+     * @brief Sorts the set from begin index to end index using a given comparison function. If
+     * no function was given it will use the std one.
+     * @param begin begin index in the array
+     * @param end end index in the array
+     * @param compare comparison function pointer
+     * @return sorted PointSet.
+     */
 	PointSet& sort(int begin, int end, int (*compare)(Point, Point));
 
 	/**
@@ -85,6 +96,7 @@ public:
 	bool operator ==(const PointSet& pSet);
 	PointSet operator -(const PointSet& pSet);
 	PointSet operator &(const PointSet& pSet);
+    PointSet operator =(const PointSet& pSet);
 };
 
 

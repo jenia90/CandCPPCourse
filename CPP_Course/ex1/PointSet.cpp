@@ -47,7 +47,7 @@ void PointSet::resizeSet(int newCapacity)
 	_pointSet = newSet;
 }
 
-int PointSet::isInSet(const Point& p)
+int PointSet::isInSet(const Point& p) const
 {
 	for (int i = 0; i < size(); i++)
 	{
@@ -79,7 +79,7 @@ bool PointSet::remove(Point p, int index = NOT_FOUND)
 	return true;
 }
 
-PointSet& PointSet::sort(int begin, int end, int (*compare)(Point, Point))
+PointSet& PointSet::sort(int begin, int end, int (*compare)(Point, Point) = nullptr)
 {
 	if(compare)
 	{
@@ -126,5 +126,71 @@ std::string PointSet::toString()
 	}
 
 	return ss.str();
+}
+
+bool PointSet::isEqual(PointSet pSet2)
+{
+    if(this->size() != pSet2.size())
+    {
+        return false;
+    }
+
+    for (int i = 0; i < this->_size; ++i)
+    {
+        if(pSet2.isInSet(this->getSet()[i]) != NOT_FOUND)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool PointSet::operator!=(const PointSet& pSet)
+{
+    return !isEqual(pSet);
+}
+
+bool PointSet::operator==(const PointSet& pSet)
+{
+    return isEqual(pSet);
+}
+
+PointSet PointSet::operator-(const PointSet& pSet)
+{
+    PointSet newSet = PointSet();
+    for (int i = 0; i < this->size(); ++i)
+    {
+        if(pSet.isInSet(this->_pointSet[i]) == NOT_FOUND)
+        {
+            newSet.add(this->_pointSet[i]);
+        }
+    }
+
+    return newSet;
+}
+
+PointSet PointSet::operator&(const PointSet& pSet)
+{
+    PointSet newSet = PointSet();
+    int size = this->_size <= pSet.size() ? this->_size : pSet.size();
+    for (int i = 0; i < size; ++i)
+    {
+        if(pSet.isInSet(this->_pointSet[i]) != NOT_FOUND)
+        {
+            newSet.add(this->_pointSet[i]);
+        }
+    }
+
+    return newSet;
+}
+
+PointSet PointSet::operator=(const PointSet &pSet)
+{
+    this->_size = pSet._size;
+    this->_capacity = pSet._capacity;
+    delete [] this->_pointSet;
+    this->_pointSet = pSet._pointSet;
+    return *this;
 }
 
