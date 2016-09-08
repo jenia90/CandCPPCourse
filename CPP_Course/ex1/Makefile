@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -Wall -Wextra -Wvla -std=c++11
 
-default: ConvexHull
+default: ConvexHull PointSetBinaryOperations
 
 PointSet.o: PointSet.cpp
 	$(CC) $(CFLAGS) $(ADDFLAGS) -c PointSet.cpp
