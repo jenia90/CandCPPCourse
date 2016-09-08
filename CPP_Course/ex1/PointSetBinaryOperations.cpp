@@ -19,7 +19,14 @@
 #define NOT_EQUAL_TITLE "result for '!=': "
 #define SUBTRACT_TITLE "result for '-':"
 #define INTERESECT_TITLE "result for '&':"
+#define TRUE "true"
+#define FALSE "false"
 
+/**
+ * @brief Helper function used to generate a set of points given the limit on coordinates
+ * @param lim limit for the point coordinates (default: 10)
+ * @return PointSet initialized with the generated points
+ */
 PointSet generatePointSet(int lim = 10)
 {
     PointSet pointSet;
@@ -37,9 +44,14 @@ PointSet generatePointSet(int lim = 10)
     return pointSet;
 }
 
+/**
+ * @brief Helper function to print the binary value
+ * @param val value to print
+ * @return "true" if true and "false" if false
+ */
 std::string printBinary(bool val)
 {
-    return val ? "true" : "false";
+    return val ? TRUE : FALSE;
 }
 
 int main()

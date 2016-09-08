@@ -28,7 +28,7 @@
 #define NEXT_TO_TOP 2
 
 #define RESULT "result:"
-#define mIN_SCAN 3
+#define MIN_SCAN 3
 #define NEXT_TO_PIVOT 1
 #define PIVOT_INDEX 0
 // Pivot point in respect to which we will do the comparisons and sorting.
@@ -117,7 +117,7 @@ PointSet grahamScan(PointSet& pSet)
     cHull.add(pSet.getSet()[TOP]);
     cHull.add(pSet.getSet()[NEXT_TO_TOP]);
 
-    for(int i = mIN_SCAN; i < pSet.size(); i++)
+    for(int i = MIN_SCAN; i < pSet.size(); i++)
     {
         Point p = pSet.getSet()[i];
         while(orientation(cHull.getSet()[cHull.size() - NEXT_TO_TOP], cHull.getSet()[cHull.size() - TOP], p)
@@ -131,37 +131,15 @@ PointSet grahamScan(PointSet& pSet)
     return cHull;
 }
 
-// TODO: REMOVE
-PointSet generatePointSet(int lim = 20)
-{
-    PointSet pointSet;
-    for (int i = -1 * lim; i <= lim; i++)
-    {
-        for (int j = -1 * lim; j <= lim; j++)
-        {
-            pointSet.add(Point(i, j));
-        }
-    }
-    pointSet.add(Point(0, lim + 1));
-    pointSet.add(Point(0, (-1 * lim) - 1));
-    pointSet.add(Point(lim + 1, 0));
-    pointSet.add(Point((-1 * lim) - 1, 0));
-    return pointSet;
-}
-
 int main()
 {
     Point p;
     PointSet convex, pSet;
 
-#ifndef DEBUG
     while (std::cin >> p)
     {
         pSet.add(p);
     }
-#else
-    pSet = generatePointSet();
-#endif
 
     // sort the set of points according to their polar angle.
     int minY = pSet.getSet()[PIVOT_INDEX].getY(), min = 0;
