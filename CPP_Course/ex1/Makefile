@@ -1,6 +1,8 @@
 CC = g++
 CFLAGS = -Wall -Wextra -Wvla -std=c++11
 
+default: ConvexHull
+
 PointSet.o: PointSet.cpp
 	$(CC) $(CFLAGS) $(ADDFLAGS) -c PointSet.cpp
 
@@ -9,6 +11,12 @@ Point.o: Point.cpp
 
 ConvexHull: Point.o PointSet.o
 	$(CC) $(CFLAGS) $(ADDFLAGS) Point.o PointSet.o ConvexHull.cpp -o ConvexHull
+
+PointSetBinaryOperations: PointSetBinaryOperations.o
+	$(CC) $(CFLAGS) $(ADDFLAGS) PointSetBinaryOperations.o PointSet.o Point.o -o PointSetBinaryOperations 
+
+tar:
+	tar cvf ex1.tar README Makefile ConvexHull.cpp PointSetBinaryOperations.cpp Point.h Point.cpp PointSet.h PointSet.cpp
 
 clean:
 	rm -f *.o *.a *.tar ConvexHull

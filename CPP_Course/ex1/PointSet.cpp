@@ -79,7 +79,7 @@ bool PointSet::remove(Point p, int index = NOT_FOUND)
 	return true;
 }
 
-PointSet& PointSet::sort(int begin, int end, int (*compare)(Point, Point) = nullptr)
+PointSet& PointSet::sort(int begin, int end, int (*compare)(Point, Point))
 {
 	if(compare)
 	{
