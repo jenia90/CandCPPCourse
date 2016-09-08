@@ -15,7 +15,6 @@ PointSet::PointSet(int capacity) : _size(0), _capacity(capacity), _pointSet(new 
 
 PointSet::~PointSet()
 {
-	delete[] _pointSet;
 }
 
 bool PointSet::add(const Point& p)
@@ -187,10 +186,21 @@ PointSet PointSet::operator&(const PointSet& pSet)
 
 PointSet PointSet::operator=(const PointSet &pSet)
 {
-    this->_size = pSet._size;
-    this->_capacity = pSet._capacity;
-    delete [] this->_pointSet;
-    this->_pointSet = pSet._pointSet;
+    if (this != &pSet) { // self-assignment check expected
+        if (this->size() != pSet.size())
+        {
+            delete[] _pointSet;            // destroy storage in this
+            /* reset size to zero and mArray to null, in case allocation throws */
+            _pointSet = new Point[pSet._capacity]; // create storage in this
+            this->_size = 0;
+            this->_capacity = pSet._capacity;
+        }
+
+        for(int i = 0; i < pSet.size(); i++)
+        {
+            this->add(pSet.getSet()[i]);
+        }
+    }
     return *this;
 }
 

@@ -21,7 +21,7 @@ Point p0;
  */
 void printConvex(PointSet convex)
 {
-	std::cout << "result:" << std::endl << convex.toString();
+    std::cout << "result:" << std::endl << convex.toString();
 }
 
 /**
@@ -44,7 +44,7 @@ void swap(Point &p1, Point &p2)
  */
 int distanceSquared(Point p1, Point p2)
 {
-	return (p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) +
+    return (p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) +
            (p1.getY() - p2.getY()) * (p1.getY() - p2.getY());
 }
 
@@ -92,63 +92,86 @@ int compare(Point a, Point b)
  */
 PointSet grahamScan(PointSet& pSet)
 {
-	PointSet cHull;
-	cHull.add(p0);
-	cHull.add(pSet.getSet()[TOP]);
+    PointSet cHull;
+    cHull.add(p0);
+    cHull.add(pSet.getSet()[TOP]);
     cHull.add(pSet.getSet()[NEXT_TO_TOP]);
 
-	for(int i = 3; i < pSet.size(); i++)
-	{
+    for(int i = 3; i < pSet.size(); i++)
+    {
         Point p = pSet.getSet()[i];
-		while(orientation(cHull.getSet()[cHull.size() - NEXT_TO_TOP], cHull.getSet()[cHull.size() - TOP], p)
+        while(orientation(cHull.getSet()[cHull.size() - NEXT_TO_TOP], cHull.getSet()[cHull.size() - TOP], p)
               != COUNTERCLOCKWISE)
-		{
-			cHull.removeLast();
-		}
+        {
+            cHull.removeLast();
+        }
 
-		cHull.add(p);
-	}
-	return cHull;
+        cHull.add(p);
+    }
+    return cHull;
+}
+
+// TODO: REMOVE
+PointSet myRun()
+{
+    PointSet pointSet;
+    int lim = 50;
+    for (int i = -1 * lim; i <= lim; i++)
+    {
+        for (int j = -1 * lim; j <= lim; j++)
+        {
+            pointSet.add(Point(i, j));
+        }
+    }
+    pointSet.add(Point(0, lim + 1));
+    pointSet.add(Point(0, (-1 * lim) - 1));
+    pointSet.add(Point(lim + 1, 0));
+    pointSet.add(Point((-1 * lim) - 1, 0));
+    return pointSet;
 }
 
 int main()
 {
-	Point p;
-	PointSet convex, pSet;
+    Point p;
+    PointSet convex, pSet;
 
-	while (std::cin >> p)
-	{
-		pSet.add(p);
-	}
+#ifdef NDEBUG
+    while (std::cin >> p)
+    {
+        pSet.add(p);
+    }
+#else
+    pSet = myRun();
+#endif
 
-	// sort the set of points according to their polar angle.
-	int minY = pSet.getSet()[0].getY(), min = 0;
-	for (int i = 1; i < pSet.size(); i++)
-	{
-		int y = pSet.getSet()[i].getY();
+    // sort the set of points according to their polar angle.
+    int minY = pSet.getSet()[0].getY(), min = 0;
+    for (int i = 1; i < pSet.size(); i++)
+    {
+        int y = pSet.getSet()[i].getY();
 
-		// Pick the bottom-most or chose the left
-		// most point in case of tie
-		if ((y < minY) || (minY == y && pSet.getSet()[i].getX() < pSet.getSet()[min].getX()))
-		{
-			minY = pSet.getSet()[i].getY();
+        // Pick the bottom-most or chose the left
+        // most point in case of tie
+        if ((y < minY) || (minY == y && pSet.getSet()[i].getX() < pSet.getSet()[min].getX()))
+        {
+            minY = pSet.getSet()[i].getY();
             min = i;
-		}
-	}
+        }
+    }
 
-	swap(pSet.getSet()[0], pSet.getSet()[min]);
+    swap(pSet.getSet()[0], pSet.getSet()[min]);
 
-	p0 = pSet.getSet()[0];
+    p0 = pSet.getSet()[0];
     pSet.sort(1, pSet.size(), compare);
 
-	// get the convex hull set of points.
-	convex = grahamScan(pSet);
+    // get the convex hull set of points.
+    convex = grahamScan(pSet);
 
     // sort the convex hull set of points
     convex.sort(0, convex.size(), nullptr);
-	// print points in the convex hull.
-	printConvex(convex);
+    // print points in the convex hull.
+    printConvex(convex);
 
-	return 0;
+    return 0;
 }
 
