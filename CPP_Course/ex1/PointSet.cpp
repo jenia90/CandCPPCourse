@@ -1,6 +1,14 @@
-//
-// Created by jenia on 04/09/2016.
-//
+/**
+ * @file PointSet.cpp
+ * @author jenia90
+ * @version 1.0
+ * @date 08 Sep 2016
+ *
+ * @brief Code file containg the declarations of the PointSet class and its members
+ * @section DESCRIPTION:
+ * This class represents a set of points in 2D space.
+ * More thorough explanation about the class is in the README file attached to the project.
+ */
 
 #include "PointSet.h"
 
@@ -20,7 +28,7 @@ bool PointSet::add(const Point& p)
 {
 	if(_size >= _capacity)
 	{
-		_pointSet = resizeSet(_capacity *= 2);
+		_pointSet = resizeSet(_capacity *= EXPANSION_COEFFICIENT);
 	}
 
 	if (isInSet(p) == NOT_FOUND)
@@ -120,22 +128,22 @@ std::string PointSet::toString()
 	}
 	else
 	{
-		ss << "" << std::endl;
+		ss << EMPTY << std::endl;
 	}
 
 	return ss.str();
 }
 
-bool PointSet::isEqual(PointSet pSet2)
+bool PointSet::isEqual(PointSet pSet)
 {
-    if(this->size() != pSet2.size())
+    if(this->size() != pSet.size())
     {
         return false;
     }
 
     for (int i = 0; i < this->_size; ++i)
     {
-        if(pSet2.isInSet(this->getSet()[i]) != NOT_FOUND)
+        if(pSet.isInSet(this->getSet()[i]) != NOT_FOUND)
         {
             return false;
         }
@@ -185,12 +193,12 @@ PointSet PointSet::operator&(const PointSet& pSet)
 
 PointSet& PointSet::operator=(const PointSet& pSet)
 {
-    if (this != &pSet) { // self-assignment check expected
+    if (this != &pSet) 
+    { 
         if (this->size() != pSet.size())
         {
-            delete[] _pointSet;            // destroy storage in this
-            /* reset size to zero and mArray to null, in case allocation throws */
-            _pointSet = new Point[pSet._capacity]; // create storage in this
+            delete[] _pointSet;
+            _pointSet = new Point[pSet._capacity];
             this->_size = 0;
             this->_capacity = pSet._capacity;
         }

@@ -1,6 +1,20 @@
-//
-// Created by jenia90 on 9/4/16.
-//
+/**
+ * @file ConvexHull.cpp
+ * @author jenia90
+ * @version 1.0
+ * @date 08 Sep 2016
+ *
+ * @brief Program for printing the convex hull of an unlimited set of points.
+ * @section DESCRIPTION:
+ *  This program waits for the user to enter unlimited number of points followed by the EOF char
+ *  and then finds and prints the Convex Hull of those points using the Graham Scan algorithm
+ *  implementation. More on this in the README file attached to the project.
+ * Input: point coordinates followed by the enter and EOF char to end the input phase
+ * Process: Adding the points to the PointSet, choosing a pivot with minimal Y coordinate and
+ * then sorting the rest of the points using their polar angle in respect to the pivot point.
+ * Then, using the Graham Scan algorithm we find the minimal Convex Hull of the set.
+ * Output: sorted list of the convex hull points.
+ */
 
 #include <iostream>
 #include <algorithm>
@@ -12,6 +26,12 @@
 #define COUNTERCLOCKWISE 2
 #define TOP 1
 #define NEXT_TO_TOP 2
+
+#define RESULT "result:"
+#define mIN_SCAN 3
+#define NEXT_TO_PIVOT 1
+#define PIVOT_INDEX 0
+// Pivot point in respect to which we will do the comparisons and sorting.
 Point p0;
 
 /**
@@ -21,7 +41,7 @@ Point p0;
  */
 void printConvex(PointSet convex)
 {
-    std::cout << "result:" << std::endl << convex.toString();
+    std::cout << RESULT << std::endl << convex.toString();
 }
 
 /**
@@ -97,7 +117,7 @@ PointSet grahamScan(PointSet& pSet)
     cHull.add(pSet.getSet()[TOP]);
     cHull.add(pSet.getSet()[NEXT_TO_TOP]);
 
-    for(int i = 3; i < pSet.size(); i++)
+    for(int i = mIN_SCAN; i < pSet.size(); i++)
     {
         Point p = pSet.getSet()[i];
         while(orientation(cHull.getSet()[cHull.size() - NEXT_TO_TOP], cHull.getSet()[cHull.size() - TOP], p)
@@ -112,7 +132,7 @@ PointSet grahamScan(PointSet& pSet)
 }
 
 // TODO: REMOVE
-PointSet generatePointSet(int lim = 50)
+PointSet generatePointSet(int lim = 20)
 {
     PointSet pointSet;
     for (int i = -1 * lim; i <= lim; i++)
@@ -144,8 +164,8 @@ int main()
 #endif
 
     // sort the set of points according to their polar angle.
-    int minY = pSet.getSet()[0].getY(), min = 0;
-    for (int i = 1; i < pSet.size(); i++)
+    int minY = pSet.getSet()[PIVOT_INDEX].getY(), min = 0;
+    for (int i = NEXT_TO_PIVOT; i < pSet.size(); i++)
     {
         int y = pSet.getSet()[i].getY();
 
@@ -158,16 +178,16 @@ int main()
         }
     }
 
-    swap(pSet.getSet()[0], pSet.getSet()[min]);
+    swap(pSet.getSet()[PIVOT_INDEX], pSet.getSet()[min]);
 
-    p0 = pSet.getSet()[0];
-    pSet.sort(1, pSet.size(), compare);
+    p0 = pSet.getSet()[PIVOT_INDEX];
+    pSet.sort(NEXT_TO_PIVOT, pSet.size(), compare);
 
     // get the convex hull set of points.
     convex = grahamScan(pSet);
 
     // sort the convex hull set of points
-    convex.sort(0, convex.size());
+    convex.sort(PIVOT_INDEX, convex.size());
     // print points in the convex hull.
     printConvex(convex);
 

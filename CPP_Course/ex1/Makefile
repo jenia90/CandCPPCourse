@@ -19,4 +19,4 @@ tar:
 	tar cvf ex1.tar README Makefile ConvexHull.cpp PointSetBinaryOperations.cpp Point.h Point.cpp PointSet.h PointSet.cpp
 
 clean:
-	rm -f *.o *.a *.tar ConvexHull
+	rm -f *.o *.a *.tar ConvexHull PointSetBinaryOperations

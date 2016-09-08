@@ -1,9 +1,16 @@
-//
-// Created by jenia on 04/09/2016.
-//
+/**
+ * @file Point.cpp
+ * @author jenia90
+ * @version 1.0
+ * @date 08 Sep 2016
+ *
+ * @brief Code file containg the definitions of the Point class and its members
+ * @section DESCRIPTION:
+ * This class represents a point in 2D space.
+ * More thorough explanation about the class is in the README file attached to the project.
+ */
 
 #include "Point.h"
-#include <iostream>
 
 Point::Point() : _x(0), _y(0), _isInit(false)
 {
@@ -65,13 +72,13 @@ std::istream& operator>>(std::istream& is, Point& point)
 		is >> str;
 		unsigned int delimIdx = str.find(DELMITER);
 		point.set(std::stoi(str.substr(0, delimIdx)), std::stoi(str.substr(delimIdx + 1, str.size() - 1)));
-		return is;
 	}
 	catch (...)
 	{
-		std::cerr << "Invalid input!";
-		return is;
+		std::cerr << INVALID_INPUT << std::endl;
 	}
+
+    return is;
 }
 
 std::string Point::toString()

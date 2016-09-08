@@ -1,1 +1,61 @@
-answers:
+General implementation detail:
+The ConvexHull program is a program which implements a the Graham Scan algorithm in order to find
+the convex hull of a set of points.
+When launched the program will wait for the user to enter unlimited number of points in the format: 
+<x_value>,<y_value>. For each enter point will be created a new object of type Point initialized 
+by the coordinates that were entered by the user.
+When the user enters EOF char the program will stop receiving data and begin processing the point.
+
+At first, the program will take a pivot point (the first one in the set) and then it will try and
+find the point with the minimal Y coordinate and replace the pivot point with that point using the 
+swap method. 
+Next, the set of points will be sorted according to their polar angle to the pivot point.
+Now, the Graham Scan can be ran on the sorted set of points. 
+
+Algorithm was taken from: 
+http://www.personal.kent.edu/%7Ermuhamma/Compgeometry/MyCG/ConvexHull/GrahamScan/grahamScan.htm
+We create a new PointSet which will serve as our stack for the algorithm. Then, we add (push) 3
+points from our original set, where the first point to be added will be the pivot point.
+Next, we iterate over all the remaining n-3 points in the original set and for each we check 
+its polar angle in respect to the 2 last inserted points. While the orientation is not counterclockwise
+we remove the last entered point in the new set. If its counterclockwise we add the new point to the 
+set. 
+So, in the end we end up with an array of points which create the convex hull of the set.
+Next step is sorting the points numericaly (by their X or Y value) and printing the created list
+calling the toString() method of the PointSet containig the convex hull which in turn calls the
+toString() method for each of the points.
+
+Classes Implemented:
+Point:
+	This is the most basic class in this project, it implements the point and all the methods dealing
+	with the point itself, like the assignment operator overload to set the X and Y coordinates of
+	a Point.
+	Aslo, this class overloads few other operators like the comparison and equal (not equal).
+	The Point class has 2 constructors, one for creating a blank point which sets the coordinates to 
+	(0,0) and the _isInit member field to false so we will know that this is a blank point.
+	The other constructor receives 2 ints for its coordinates and assigns them to the member fields.
+
+PointSet:
+	This class holds an array of Point objects and deals with adding, removing, finding index and
+	sorting the points in the array.
+	It has 2 constructors, one empty which creates an array of Points of size 2 as default and 
+	another constructor which receives the size of the array we want to create.
+	With each add operation the PointSet checks if the point we want to add is not already in the
+	set by calling the isInSet() method which returns the index of the point or -1 if it's not in 
+	the set. Then, if the point wasn't found, the add method will add the point to the end of the
+	array and increase the size field of the set.
+	PointSet also has a sort method which receive the starting index and end index of the array we
+	want to sort and optionally a comparator function pointer.
+	In our case we use a special comparator function to sort the points according to their polar 
+	angle to the pivot point. Or in another case where we don't pass the comparator function
+	we sort the points according to their X and Y coordinates (thanks to overloading of < operator
+	in the Point class).
+
+ConvexHull:
+	This is the driver and the algorithm implementation class. In this class we deal with the user
+	input and creating of the initial PointSet and the Convex Hull PointSet.
+
+PointSetBinaryOperations:
+	This is the driver class for testing the binary operator overloads of the PointSet class.
+	We create 2 sets of diffrerent value and then print the output of the operations performed
+	between the sets, like the equality or intersection.

@@ -1,13 +1,22 @@
-//
-// Created by jenia on 04/09/2016.
-//
-
+/**
+ * @file Point.h
+ * @author jenia90
+ * @version 1.0
+ * @date 08 Sep 2016
+ *
+ * @brief Header file containg the declarations of the Point class and its members
+ * @section DESCRIPTION:
+ * This class represents a point in 2D space.
+ * More thorough explanation about the class is in the README file attached to the project.
+ */
 #ifndef POINT_H
 #define POINT_H
 
 #define DELMITER ","
+#define INVALID_INPUT "Invalid input!"
 
 #include <sstream>
+#include <iostream>
 
 /**
  * @brief a class representing a point
@@ -52,13 +61,50 @@ public:
 		return _isInit;
 	}
 
+    /**
+     * @brief assignment operator overload, assigns the coordinates of the passed in point to
+     * this point.
+     * @param p Point which corrdinates we will assign
+     * @return updated point
+     */
 	Point& operator=(const Point& p);
-	//static int compare(const Point& p1, const Point& p2);
 
+    /**
+     * @brief equality operator overload to check if this point is equal to the other point
+     * @param p Point to compare
+     * @return true if coordinates are equal; false otherwise
+     */
 	bool operator ==(const Point& p) const;
+
+    /**
+     * @brief non-equality operator overload
+     * @param p point to compare
+     * @return true if points are not equal; false otherwise
+     */
 	bool operator !=(const Point& p) const;
+
+    /**
+     * @brief Subtraction operator overload, returns the updated object after subtracting X and Y
+     * value of the given point.
+     * @param p Point object
+     * @return Updated object reference
+     */
 	Point& operator -(const Point& p);
+
+    /**
+     * @brief Comparison operator overload, compares this point to the given point
+     * @param p Point to compare
+     * @return true if this point is smaller (On Y and X); false otherwise
+     */
 	bool operator<(const Point& p) const;
+
+    /**
+     * @brief input stream operator overload user for parsing the input from the user and
+     * assigning the received value to the point object.
+     * @param is Input stream
+     * @param point Point reference which will be updated with the parsed values.
+     * @return Input stream object.
+     */
 	friend std::istream& operator>>(std::istream& is, Point& point);
 
 	/**
