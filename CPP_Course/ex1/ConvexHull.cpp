@@ -112,10 +112,9 @@ PointSet grahamScan(PointSet& pSet)
 }
 
 // TODO: REMOVE
-PointSet myRun()
+PointSet generatePointSet(int lim = 50)
 {
     PointSet pointSet;
-    int lim = 50;
     for (int i = -1 * lim; i <= lim; i++)
     {
         for (int j = -1 * lim; j <= lim; j++)
@@ -135,13 +134,13 @@ int main()
     Point p;
     PointSet convex, pSet;
 
-#ifdef NDEBUG
+#ifndef DEBUG
     while (std::cin >> p)
     {
         pSet.add(p);
     }
 #else
-    pSet = myRun();
+    pSet = generatePointSet();
 #endif
 
     // sort the set of points according to their polar angle.
@@ -168,7 +167,7 @@ int main()
     convex = grahamScan(pSet);
 
     // sort the convex hull set of points
-    convex.sort(0, convex.size(), nullptr);
+    convex.sort(0, convex.size());
     // print points in the convex hull.
     printConvex(convex);
 

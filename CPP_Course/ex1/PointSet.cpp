@@ -2,7 +2,6 @@
 // Created by jenia on 04/09/2016.
 //
 
-#include <algorithm>
 #include "PointSet.h"
 
 PointSet::PointSet() : _size(0), _capacity(DEFAULT_CAPACITY), _pointSet(new Point[DEFAULT_CAPACITY])
@@ -21,7 +20,7 @@ bool PointSet::add(const Point& p)
 {
 	if(_size >= _capacity)
 	{
-		resizeSet(_capacity *= 2);
+		_pointSet = resizeSet(_capacity *= 2);
 	}
 
 	if (isInSet(p) == NOT_FOUND)
@@ -33,7 +32,7 @@ bool PointSet::add(const Point& p)
 	return false;
 }
 
-void PointSet::resizeSet(int newCapacity)
+Point * PointSet::resizeSet(int newCapacity)
 {
 	Point *newSet = new Point[newCapacity];
 
@@ -43,7 +42,7 @@ void PointSet::resizeSet(int newCapacity)
 
 	_capacity = newCapacity;
 
-	_pointSet = newSet;
+    return newSet;
 }
 
 int PointSet::isInSet(const Point& p) const
@@ -184,7 +183,7 @@ PointSet PointSet::operator&(const PointSet& pSet)
     return newSet;
 }
 
-PointSet& PointSet::operator=(const PointSet &pSet)
+PointSet& PointSet::operator=(const PointSet& pSet)
 {
     if (this != &pSet) { // self-assignment check expected
         if (this->size() != pSet.size())

@@ -9,6 +9,8 @@
 #define DEFAULT_CAPACITY 2
 
 #include "Point.h"
+#include <algorithm>
+#include <iostream>
 
 /**
  * @brief A class representing a mathematical set of points
@@ -22,7 +24,7 @@ class PointSet
 	 * @brief Expands the array by creating a new array and moving all Points to it
 	 * @param newCapacity size of the new array
 	 */
-	void resizeSet(int newCapacity);
+    Point * resizeSet(int newCapacity);
 
     bool isEqual(PointSet pSet2);
 
@@ -79,7 +81,7 @@ public:
      * @param compare comparison function pointer
      * @return sorted PointSet.
      */
-	PointSet& sort(int begin, int end, int (*compare)(Point, Point));
+	PointSet& sort(int begin, int end, int (*compare)(Point, Point) = nullptr);
 
 	/**
 	 * @breif returns the capacity of the set

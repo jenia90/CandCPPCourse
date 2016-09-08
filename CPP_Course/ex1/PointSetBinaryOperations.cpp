@@ -2,12 +2,12 @@
 // Created by jenia on 06/09/2016.
 //
 
+#include <iostream>
 #include "PointSet.h"
 
-PointSet myRun()
+PointSet generatePointSet(int lim = 10)
 {
     PointSet pointSet;
-    int lim = 50;
     for (int i = -1 * lim; i <= lim; i++)
     {
         for (int j = -1 * lim; j <= lim; j++)
@@ -22,7 +22,21 @@ PointSet myRun()
     return pointSet;
 }
 
+std::string printBinary(bool val)
+{
+    return val ? "true" : "false";
+}
+
 int main()
 {
+    PointSet pointSet1 = generatePointSet(), pointSet2 = generatePointSet(5);
+    PointSet subtract = (pointSet1 - pointSet2);
+    PointSet intersect = (pointSet1 & pointSet2);
+
+    std::cout << "Checking operators on 2 generate sets: up to 50 and up to 40: " << std::endl;
+    std::cout << "result for '==': " << printBinary(pointSet1==pointSet2) << std::endl;
+    std::cout << "result for '!=': " << printBinary(pointSet1!=pointSet2) << std::endl;
+    std::cout << "result for '-':" << std::endl << subtract.toString() << std::endl;
+    std::cout << "result for '&':" << std::endl << intersect.toString() << std::endl;
 
 }
