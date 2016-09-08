@@ -26,6 +26,9 @@ class Point
 	int _x, _y;
 	bool _isInit;
 public:
+    /**
+     * @brief Empty constructor, sets the coordinates to 0 and init state to fasle.
+     */
 	Point();
 	/**
 	 * @brief Ctor
@@ -46,16 +49,28 @@ public:
 	 */
 	void set(int x, int y);
 
+    /**
+     * @brief getter function for the X value
+     * @return X value of the point
+     */
 	int getX() const
 	{
 		return _x;
 	}
 
+    /**
+     * @brief getter function for the Y value
+     * @return Y value of the point
+     */
 	int getY() const
 	{
 		return _y;
 	}
 
+    /**
+     * @brief getter function for the Init state of the point
+     * @return true if was initialized; false otherwise
+     */
 	bool isInit() const
 	{
 		return _isInit;

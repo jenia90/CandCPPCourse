@@ -80,7 +80,10 @@ int orientation(Point a, Point b, Point c)
     int val = (b.getY() - a.getY()) * (c.getX() - b.getX()) -
               (b.getX() - a.getX()) * (c.getY() - b.getY());
 
-    if (val == COLLINEAR) return COLLINEAR;
+    if (val == COLLINEAR)
+    {
+        return COLLINEAR;
+    }
     return (val > COLLINEAR)? CLOCKWISE: COUNTERCLOCKWISE;
 }
 

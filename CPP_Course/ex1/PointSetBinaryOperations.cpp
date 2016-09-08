@@ -61,8 +61,8 @@ int main()
     PointSet intersect = (pointSet1 & pointSet2);
 
     std::cout << TITLE_MSG << std::endl;
-    std::cout << EQUAL_TITLE << printBinary(pointSet1==pointSet2) << std::endl;
-    std::cout << NOT_EQUAL_TITLE << printBinary(pointSet1!=pointSet2) << std::endl;
+    std::cout << EQUAL_TITLE << printBinary(pointSet1 == pointSet2) << std::endl;
+    std::cout << NOT_EQUAL_TITLE << printBinary(pointSet1 != pointSet2) << std::endl;
     std::cout << SUBTRACT_TITLE << std::endl << subtract.toString() << std::endl;
     std::cout << INTERESECT_TITLE << std::endl << intersect.toString() << std::endl;
 

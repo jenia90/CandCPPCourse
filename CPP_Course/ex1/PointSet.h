@@ -47,6 +47,9 @@ class PointSet
     bool isEqual(PointSet pSet);
 
 public:
+    /**
+     * @brief Empty constructor inits the set with default capacity
+     */
 	PointSet();
 	/**
 	 * Ctor
