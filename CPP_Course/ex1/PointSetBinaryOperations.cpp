@@ -18,7 +18,7 @@
 #define EQUAL_TITLE "result for '==': "
 #define NOT_EQUAL_TITLE "result for '!=': "
 #define SUBTRACT_TITLE "result for '-':"
-#define INTERESECT_TITLE "result for '&':"
+#define INTERSECT_TITLE "result for '&':"
 #define TRUE "true"
 #define FALSE "false"
 
@@ -27,8 +27,9 @@
  * @param lim limit for the point coordinates (default: 10)
  * @return PointSet initialized with the generated points
  */
-void generatePointSet(PointSet& pointSet, int lim = 10)
+PointSet generatePointSet(int lim = 10)
 {
+    PointSet pointSet;
     for (int i = -1 * lim; i <= lim; i++)
     {
         for (int j = -1 * lim; j <= lim; j++)
@@ -40,7 +41,7 @@ void generatePointSet(PointSet& pointSet, int lim = 10)
     pointSet.add(Point(0, (-1 * lim) - 1));
     pointSet.add(Point(lim + 1, 0));
     pointSet.add(Point((-1 * lim) - 1, 0));
-    std::cout<<"End of generate!" << std::endl << pointSet.toString();
+    return pointSet;
 }
 
 /**
@@ -55,16 +56,14 @@ std::string printBinary(bool val)
 
 int main()
 {
-    PointSet pointSet1, pointSet2;
-    generatePointSet(pointSet1);
-    generatePointSet(pointSet2, 5);
-    PointSet subtract = (pointSet1 - pointSet2);
-    PointSet intersect = (pointSet1 & pointSet2);
+    PointSet pointSet1 = generatePointSet(), pointSet2 = generatePointSet(5);
+    PointSet subtract = pointSet1 - pointSet2;
+    PointSet intersect = pointSet1 & pointSet2;
 
     std::cout << TITLE_MSG << std::endl;
     std::cout << EQUAL_TITLE << printBinary(pointSet1 == pointSet2) << std::endl;
     std::cout << NOT_EQUAL_TITLE << printBinary(pointSet1 != pointSet2) << std::endl;
     std::cout << SUBTRACT_TITLE << std::endl << subtract.toString() << std::endl;
-    std::cout << INTERESECT_TITLE << std::endl << intersect.toString() << std::endl;
+    std::cout << INTERSECT_TITLE << std::endl << intersect.toString() << std::endl;
 
 }

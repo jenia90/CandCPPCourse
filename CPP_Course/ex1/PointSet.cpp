@@ -22,7 +22,6 @@ PointSet::PointSet(int capacity) : _size(0), _capacity(capacity), _pointSet(new 
 
 PointSet::~PointSet()
 {
-	std::cout << "Deleting: " << _pointSet << std::endl;
 	delete[] _pointSet;
 }
 
@@ -42,15 +41,11 @@ bool PointSet::add(const Point& p)
 	return false;
 }
 
-/**
- * @brief Expands the array by creating a new array and moving all Points to it
- * @param newCapacity size of the new array
- */
 void PointSet::resizeSet(int newCapacity)
 {
 	Point *newSet = new Point[_capacity = newCapacity];
-	std::copy_n(_pointSet, size(), newSet);
-	delete[] _pointSet;
+	std::copy_n(_pointSet, _size, newSet);
+	delete[](_pointSet);
 	_pointSet = newSet;
 }
 
@@ -143,7 +138,7 @@ bool PointSet::isEqual(PointSet pSet)
 
     for (int i = 0; i < this->_size; ++i)
     {
-        if(pSet.isInSet(this->getSet()[i]) != NOT_FOUND)
+        if(pSet.isInSet(this->_pointSet[i]) != NOT_FOUND)
         {
             return false;
         }
@@ -167,9 +162,10 @@ PointSet PointSet::operator-(const PointSet& pSet)
     PointSet newSet;
     for (int i = 0; i < this->size(); ++i)
     {
-        if(pSet.isInSet(this->_pointSet[i]) == NOT_FOUND)
+		Point p = this->_pointSet[i];
+        if(pSet.isInSet(p) == NOT_FOUND)
         {
-            newSet.add(this->_pointSet[i]);
+            newSet.add(p);
         }
     }
 
@@ -182,9 +178,10 @@ PointSet PointSet::operator&(const PointSet& pSet)
     int size = this->_size <= pSet.size() ? this->_size : pSet.size();
     for (int i = 0; i < size; ++i)
     {
-        if(pSet.isInSet(this->_pointSet[i]) != NOT_FOUND)
+		Point p = this->_pointSet[i];
+        if(pSet.isInSet(p) != NOT_FOUND)
         {
-            newSet.add(this->_pointSet[i]);
+            newSet.add(p);
         }
     }
 

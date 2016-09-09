@@ -134,6 +134,28 @@ PointSet grahamScan(PointSet& pSet)
     return cHull;
 }
 
+/**
+ * @brief Finds minimum Y point and its index
+ * @param pSet PointSet to analyze
+ * @param minY pointer to the variable where the minimum Y value will be stored
+ * @param min pointer to the variable where the index of the point will be stored
+ */
+void getMin(const PointSet &pSet, int *minY, int *min)
+{
+    for (int i = NEXT_TO_PIVOT; i < pSet.size(); i++)
+    {
+        int y = pSet.getSet()[i].getY();
+
+        // Pick the bottom-most or chose the left
+        // most point in case of tie
+        if ((y < *minY) || (*minY == y && pSet.getSet()[i].getX() < pSet.getSet()[*min].getX()))
+        {
+            *minY = pSet.getSet()[i].getY();
+            *min = i;
+        }
+    }
+}
+
 int main()
 {
     Point p;
@@ -154,18 +176,7 @@ int main()
 
     // sort the set of points according to their polar angle.
     int minY = pSet.getSet()[PIVOT_INDEX].getY(), min = 0;
-    for (int i = NEXT_TO_PIVOT; i < pSet.size(); i++)
-    {
-        int y = pSet.getSet()[i].getY();
-
-        // Pick the bottom-most or chose the left
-        // most point in case of tie
-        if ((y < minY) || (minY == y && pSet.getSet()[i].getX() < pSet.getSet()[min].getX()))
-        {
-            minY = pSet.getSet()[i].getY();
-            min = i;
-        }
-    }
+    getMin(pSet, &minY, &min);
 
     swap(pSet.getSet()[PIVOT_INDEX], pSet.getSet()[min]);
 
