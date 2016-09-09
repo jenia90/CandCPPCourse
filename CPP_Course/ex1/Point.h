@@ -47,7 +47,7 @@ public:
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 */
-	void set(int x, int y);
+	void set(const int x, const int y);
 
     /**
      * @brief getter function for the X value

@@ -22,13 +22,15 @@ PointSet::PointSet(int capacity) : _size(0), _capacity(capacity), _pointSet(new 
 
 PointSet::~PointSet()
 {
+	std::cout << "Deleting: " << _pointSet << std::endl;
+	delete[] _pointSet;
 }
 
 bool PointSet::add(const Point& p)
 {
-	if(_size >= _capacity)
+	if(_size == _capacity)
 	{
-		_pointSet = resizeSet(_capacity *= EXPANSION_COEFFICIENT);
+		resizeSet(_capacity *= EXPANSION_COEFFICIENT);
 	}
 
 	if (isInSet(p) == NOT_FOUND)
@@ -40,17 +42,16 @@ bool PointSet::add(const Point& p)
 	return false;
 }
 
-Point * PointSet::resizeSet(int newCapacity)
+/**
+ * @brief Expands the array by creating a new array and moving all Points to it
+ * @param newCapacity size of the new array
+ */
+void PointSet::resizeSet(int newCapacity)
 {
-	Point *newSet = new Point[newCapacity];
-
+	Point *newSet = new Point[_capacity = newCapacity];
 	std::copy_n(_pointSet, size(), newSet);
-
 	delete[] _pointSet;
-
-	_capacity = newCapacity;
-
-    return newSet;
+	_pointSet = newSet;
 }
 
 int PointSet::isInSet(const Point& p) const
@@ -103,7 +104,7 @@ bool PointSet::removeLast()
 {
 	if(_size - 1 > 0)
 	{
-		_pointSet[_size--] = Point();
+		_size--;
 		return true;
 	}
 
@@ -125,13 +126,12 @@ std::string PointSet::toString()
 		{
 			ss << _pointSet[i].toString();
 		}
-	}
-	else
-	{
-		ss << EMPTY << std::endl;
-	}
 
+		return ss.str();
+	}
+	ss << std::endl;
 	return ss.str();
+
 }
 
 bool PointSet::isEqual(PointSet pSet)
@@ -164,7 +164,7 @@ bool PointSet::operator==(const PointSet& pSet)
 
 PointSet PointSet::operator-(const PointSet& pSet)
 {
-    PointSet newSet = PointSet();
+    PointSet newSet;
     for (int i = 0; i < this->size(); ++i)
     {
         if(pSet.isInSet(this->_pointSet[i]) == NOT_FOUND)
@@ -178,7 +178,7 @@ PointSet PointSet::operator-(const PointSet& pSet)
 
 PointSet PointSet::operator&(const PointSet& pSet)
 {
-    PointSet newSet = PointSet();
+    PointSet newSet;
     int size = this->_size <= pSet.size() ? this->_size : pSet.size();
     for (int i = 0; i < size; ++i)
     {

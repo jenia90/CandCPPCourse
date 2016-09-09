@@ -14,7 +14,7 @@
 #include <iostream>
 #include "PointSet.h"
 
-#define TITLE_MSG "Checking operators on 2 generate sets: up to 50 and up to 40: "
+#define TITLE_MSG "Checking operators on 2 generate sets: up to 10 and up to 5: "
 #define EQUAL_TITLE "result for '==': "
 #define NOT_EQUAL_TITLE "result for '!=': "
 #define SUBTRACT_TITLE "result for '-':"
@@ -27,9 +27,8 @@
  * @param lim limit for the point coordinates (default: 10)
  * @return PointSet initialized with the generated points
  */
-PointSet generatePointSet(int lim = 10)
+void generatePointSet(PointSet& pointSet, int lim = 10)
 {
-    PointSet pointSet;
     for (int i = -1 * lim; i <= lim; i++)
     {
         for (int j = -1 * lim; j <= lim; j++)
@@ -41,7 +40,7 @@ PointSet generatePointSet(int lim = 10)
     pointSet.add(Point(0, (-1 * lim) - 1));
     pointSet.add(Point(lim + 1, 0));
     pointSet.add(Point((-1 * lim) - 1, 0));
-    return pointSet;
+    std::cout<<"End of generate!" << std::endl << pointSet.toString();
 }
 
 /**
@@ -56,7 +55,9 @@ std::string printBinary(bool val)
 
 int main()
 {
-    PointSet pointSet1 = generatePointSet(), pointSet2 = generatePointSet(5);
+    PointSet pointSet1, pointSet2;
+    generatePointSet(pointSet1);
+    generatePointSet(pointSet2, 5);
     PointSet subtract = (pointSet1 - pointSet2);
     PointSet intersect = (pointSet1 & pointSet2);
 

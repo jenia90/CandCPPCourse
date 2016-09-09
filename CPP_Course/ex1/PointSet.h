@@ -35,7 +35,7 @@ class PointSet
 	 * @brief Expands the array by creating a new array and moving all Points to it
 	 * @param newCapacity size of the new array
 	 */
-    Point * resizeSet(int newCapacity);
+    void resizeSet(int newCapacity);
 
     /**
      * @brief Helper function for the equality and non-equality operator overloads.
@@ -51,10 +51,12 @@ public:
      * @brief Empty constructor inits the set with default capacity
      */
 	PointSet();
+
 	/**
 	 * Ctor
 	 */
 	PointSet(int capacity);
+
 	/**
 	 * Destructor
 	 */

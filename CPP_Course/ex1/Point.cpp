@@ -4,7 +4,7 @@
  * @version 1.0
  * @date 08 Sep 2016
  *
- * @brief Code file containg the definitions of the Point class and its members
+ * @brief Code file containing the definitions of the Point class and its members
  * @section DESCRIPTION:
  * This class represents a point in 2D space.
  * More thorough explanation about the class is in the README file attached to the project.
@@ -22,6 +22,7 @@ Point::Point(int x, int y): _x(x), _y(y), _isInit(true)
 
 Point::~Point()
 {
+	_isInit = false;
 }
 
 void Point::set(const int x, const int y)
@@ -34,7 +35,13 @@ void Point::set(const int x, const int y)
 
 Point& Point::operator=(const Point& p)
 {
-	this->set(p.getX(), p.getY());
+	// check if its not self assignment
+	if (this != &p)
+	{
+		_x = p._x;
+		_y = p._y;
+		_isInit = p._isInit;
+	}
 	return *this;
 }
 
@@ -50,7 +57,12 @@ bool Point::operator !=(const Point& p) const
 
 Point& Point::operator -(const Point& p)
 {
-	this->set(_x - p.getX(), _y - p.getY());
+	if(isInit())
+	{
+		_x -= p.getX();
+		_y -= p.getY();
+		return *this;
+	}
 	return *this;
 }
 
