@@ -5,12 +5,17 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 
+#include <vector>
+
+using namespace std;
 
 class Shape {
-
-
+	int _numOfSides;
+	vector<double> *_sides;
 public:
-    Shape();
+    Shape(int numOfSides);
+	Shape(Shape& shape);
+	~Shape();
 };
 
 
