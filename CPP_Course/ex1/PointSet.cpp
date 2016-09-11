@@ -129,7 +129,7 @@ std::string PointSet::toString()
 
 }
 
-bool PointSet::isEqual(PointSet pSet)
+bool PointSet::isEqual(const PointSet& pSet)
 {
     if(this->size() != pSet.size())
     {

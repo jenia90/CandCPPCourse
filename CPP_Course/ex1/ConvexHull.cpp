@@ -113,9 +113,8 @@ int compare(Point a, Point b)
  * of points in the convex hull.
  * @return array of Point objects making the convex hull of the PointSet.
  */
-PointSet grahamScan(PointSet& pSet)
+void grahamScan(PointSet& cHull, PointSet& pSet)
 {
-    PointSet cHull;
     cHull.add(p0);
     cHull.add(pSet.getSet()[TOP]);
     cHull.add(pSet.getSet()[NEXT_TO_TOP]);
@@ -131,7 +130,6 @@ PointSet grahamScan(PointSet& pSet)
 
         cHull.add(p);
     }
-    return cHull;
 }
 
 /**
@@ -163,6 +161,8 @@ int main()
 
     while (std::cin >> p)
     {
+        if(p.getX()==-666)
+            break;
         pSet.add(p);
     }
 
@@ -171,7 +171,7 @@ int main()
     {
         pSet.sort(PIVOT_INDEX, pSet.size());
         printConvex(pSet);
-        return 0;
+        return EXIT_SUCCESS;
     }
 
     // sort the set of points according to their polar angle.
@@ -184,13 +184,13 @@ int main()
     pSet.sort(NEXT_TO_PIVOT, pSet.size(), compare);
 
     // get the convex hull set of points.
-    convex = grahamScan(pSet);
+    grahamScan(convex, pSet);
 
     // sort the convex hull set of points
     convex.sort(PIVOT_INDEX, convex.size());
     // print points in the convex hull.
     printConvex(convex);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 

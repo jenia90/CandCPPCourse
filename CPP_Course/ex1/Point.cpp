@@ -22,7 +22,6 @@ Point::Point(int x, int y): _x(x), _y(y), _isInit(true)
 
 Point::~Point()
 {
-	_isInit = false;
 }
 
 void Point::set(const int x, const int y)

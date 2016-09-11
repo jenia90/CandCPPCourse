@@ -44,7 +44,7 @@ class PointSet
      * @param pSet The other PointSet we want to compare
      * @return true if they are equal; false otherwise.
      */
-    bool isEqual(PointSet pSet);
+    bool isEqual(const PointSet& pSet);
 
 public:
     /**
