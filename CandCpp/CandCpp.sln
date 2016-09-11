@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CandCpp", "CandCpp\CandCpp.vcxproj", "{E40A1C36-83BC-42CA-B8CA-E52F1021A6F4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ex2", "ex2\ex2.vcxproj", "{AD46153A-9C51-40AB-97E7-BB70BA68627F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -27,6 +29,18 @@ Global
 		{E40A1C36-83BC-42CA-B8CA-E52F1021A6F4}.Release|x64.Build.0 = Release|x64
 		{E40A1C36-83BC-42CA-B8CA-E52F1021A6F4}.Release|x86.ActiveCfg = Release|x86
 		{E40A1C36-83BC-42CA-B8CA-E52F1021A6F4}.Release|x86.Build.0 = Release|x86
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Debug|ARM.ActiveCfg = Debug|ARM
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Debug|ARM.Build.0 = Debug|ARM
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Debug|x64.ActiveCfg = Debug|x64
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Debug|x64.Build.0 = Debug|x64
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Debug|x86.ActiveCfg = Debug|x86
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Debug|x86.Build.0 = Debug|x86
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Release|ARM.ActiveCfg = Release|ARM
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Release|ARM.Build.0 = Release|ARM
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Release|x64.ActiveCfg = Release|x64
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Release|x64.Build.0 = Release|x64
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Release|x86.ActiveCfg = Release|x86
+		{AD46153A-9C51-40AB-97E7-BB70BA68627F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

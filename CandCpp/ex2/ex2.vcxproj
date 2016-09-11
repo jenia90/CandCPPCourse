@@ -27,9 +27,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{e40a1c36-83bc-42ca-b8ca-e52f1021a6f4}</ProjectGuid>
+    <ProjectGuid>{ad46153a-9c51-40ab-97e7-bb70ba68627f}</ProjectGuid>
     <Keyword>Linux</Keyword>
-    <RootNamespace>CandCpp</RootNamespace>
+    <RootNamespace>ex2</RootNamespace>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <ApplicationType>Linux</ApplicationType>
     <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
@@ -61,18 +61,17 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClCompile Include="..\..\CPP_Course\ex1\ConvexHull.cpp" />
-    <ClCompile Include="..\..\CPP_Course\ex1\Point.cpp" />
-    <ClCompile Include="..\..\CPP_Course\ex1\PointSet.cpp" />
-    <ClCompile Include="..\..\CPP_Course\ex1\PointSetBinaryOperations.cpp" />
+    <ClInclude Include="..\..\CPP_Course\ex2\Defs.h" />
+    <ClInclude Include="..\..\CPP_Course\ex2\PrintOuts.h" />
+    <ClInclude Include="..\..\CPP_Course\ex2\Shape.h" />
+    <ClInclude Include="..\..\CPP_Course\ex2\Trapezoid.h" />
+    <ClInclude Include="..\..\CPP_Course\ex2\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\CPP_Course\ex1\Point.h">
-      <FileType>CppHeader</FileType>
-    </ClInclude>
-    <ClInclude Include="..\..\CPP_Course\ex1\PointSet.h">
-      <FileType>CppHeader</FileType>
-    </ClInclude>
+    <ClCompile Include="..\..\CPP_Course\ex2\PrintOuts.cpp" />
+    <ClCompile Include="..\..\CPP_Course\ex2\Shape.cpp" />
+    <ClCompile Include="..\..\CPP_Course\ex2\Trapezoid.cpp" />
+    <ClCompile Include="..\..\CPP_Course\ex2\Triangle.cpp" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
