@@ -4,12 +4,14 @@ project(CandCPPCourse)
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wextra -Wall -Wvla -std=c99")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wall -Wvla -std=gnu++11")
 
+#C_EX2
 #add_library(MyLinkedList ex2/MyLinkedList.c)
 #add_executable(ListExample ex2/ListExample.c)
 #target_link_libraries(ListExample MyLinkedList)
 #add_executable(CheckDependency ex2/CheckDependency.c)
 #add_executable(ReadDependency ex2/ReadDependency.c)
 
+#C_EX3
 #add_library(GenericHashTable C_Course/ex3/GenericHashTable.c)
 #add_library(MyStringFunctions C_Course/ex3/MyStringFunctions.c)
 #add_library(MyIntFunctions C_Course/ex3/MyIntFunctions.c)
@@ -19,9 +21,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wall -Wvla -std=gnu++11")
 #target_link_libraries(HashIntSearch GenericHashTable MyIntFunctions TableErrorHandle)
 #target_link_libraries(HashStrSearch GenericHashTable MyStringFunctions TableErrorHandle)
 
-add_library(PointSet CPP_Course/ex1/PointSet.cpp)
-add_library(Point CPP_Course/ex1/Point.cpp)
-add_executable(ConvexHull CPP_Course/ex1/ConvexHull.cpp )
-add_executable(PointSetBinaryOperations CPP_Course/ex1/PointSetBinaryOperations.cpp)
-target_link_libraries(ConvexHull PointSet Point)
-target_link_libraries(PointSetBinaryOperations PointSet Point)
+#CPP_EX1
+#add_library(PointSet CPP_Course/ex1/PointSet.cpp)
+#add_library(Point CPP_Course/ex1/Point.cpp)
+#add_executable(ConvexHull CPP_Course/ex1/ConvexHull.cpp )
+#add_executable(PointSetBinaryOperations CPP_Course/ex1/PointSetBinaryOperations.cpp)
+#target_link_libraries(ConvexHull PointSet Point)
+#target_link_libraries(PointSetBinaryOperations PointSet Point)
+
+add_library(PrintOuts CPP_Course/ex2/PrintOuts.cpp)
+add_library(Shape CPP_Course/ex2/Shape.cpp CPP_Course/ex2/Triangle.cpp CPP_Course/ex2/Triangle.h CPP_Course/ex2/Trapezoid.cpp CPP_Course/ex2/Trapezoid.h)

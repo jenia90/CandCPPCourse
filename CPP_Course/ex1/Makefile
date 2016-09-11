@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -Wextra -Wvla -std=c++11
+CFLAGS = -Wall -Wextra -Wvla -pthread -std=c++11
 
 default: ConvexHull PointSetBinaryOperations
 	./PointSetBinaryOperations
