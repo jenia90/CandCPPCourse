@@ -45,7 +45,7 @@ void PointSet::resizeSet(int newCapacity)
 {
 	Point *newSet = new Point[_capacity = newCapacity];
 	std::copy_n(_pointSet, _size, newSet);
-	delete[](_pointSet);
+	delete[] _pointSet;
 	_pointSet = newSet;
 }
 

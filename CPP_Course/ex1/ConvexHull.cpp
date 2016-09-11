@@ -39,7 +39,7 @@ Point p0;
  * @param convex array of Point objects
  * @param size number of points in the array.
  */
-void printConvex(PointSet convex)
+void printConvex(PointSet& convex)
 {
     std::cout << RESULT << std::endl << convex.toString();
 }
@@ -109,11 +109,9 @@ int compare(Point a, Point b)
 /**
  * @brief Implementation of graham scan algorithm to find the convex hull in a set of points.
  * @param pSet PointSet object reference containing all the points.
- * @param numOfPoints pointer to number of points integer which will be updated with the number
- * of points in the convex hull.
- * @return array of Point objects making the convex hull of the PointSet.
+ * @param cHull PointSet object reference which will hold the points creating the convex.
  */
-void grahamScan(PointSet& cHull, PointSet& pSet)
+void grahamScan(const PointSet& pSet, PointSet& cHull)
 {
     cHull.add(p0);
     cHull.add(pSet.getSet()[TOP]);
@@ -184,7 +182,7 @@ int main()
     pSet.sort(NEXT_TO_PIVOT, pSet.size(), compare);
 
     // get the convex hull set of points.
-    grahamScan(convex, pSet);
+    grahamScan(pSet, convex);
 
     // sort the convex hull set of points
     convex.sort(PIVOT_INDEX, convex.size());
