@@ -31,13 +31,13 @@
 #define MIN_SCAN 3
 #define NEXT_TO_PIVOT 1
 #define PIVOT_INDEX 0
+
 // Pivot point in respect to which we will do the comparisons and sorting.
 Point p0;
 
 /**
  * @brief Prints all the points which create the convex hull.
- * @param convex array of Point objects
- * @param size number of points in the array.
+ * @param convex PointSet object ref containing the convex to print.
  */
 void printConvex(PointSet& convex)
 {
@@ -92,7 +92,7 @@ int orientation(Point a, Point b, Point c)
  * 2 Points.
  * @param a Point 1
  * @param a Point 2
- * @return
+ * @return result of comparison
  */
 int compare(Point a, Point b)
 {
@@ -157,10 +157,9 @@ int main()
     Point p;
     PointSet convex, pSet;
 
+    // scan input until EOF reached
     while (std::cin >> p)
     {
-        if(p.getX()==-666)
-            break;
         pSet.add(p);
     }
 
@@ -176,9 +175,13 @@ int main()
     int minY = pSet.getSet()[PIVOT_INDEX].getY(), min = 0;
     getMin(pSet, &minY, &min);
 
+    // swaps the pivot and the temp pivot
     swap(pSet.getSet()[PIVOT_INDEX], pSet.getSet()[min]);
 
+    // assigns the pivot point to the global variable
     p0 = pSet.getSet()[PIVOT_INDEX];
+
+    // sorts the set according to the polar angle of the points.
     pSet.sort(NEXT_TO_PIVOT, pSet.size(), compare);
 
     // get the convex hull set of points.
