@@ -3,10 +3,13 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/PrintOuts.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Line.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Line.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Shape.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Trapezoid.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Triangle.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/PrintOuts.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Shapes.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Trapezoid.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Point.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Point.h" isTestSource="false" />

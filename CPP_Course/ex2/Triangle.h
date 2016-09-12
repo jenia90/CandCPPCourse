@@ -15,8 +15,8 @@ class Triangle : protected Shape
 {
 protected:
     Triangle(std::vector<Point> _points);
-    virtual bool validateShape(std::vector<Point> points);
-    virtual void printError();
+    bool validateShape(std::vector<Point> points);
+    void printError();
 };
 
 

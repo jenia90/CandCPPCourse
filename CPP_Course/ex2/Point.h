@@ -23,7 +23,7 @@
  */
 class Point
 {
-	int _x, _y;
+	double _x, _y;
 public:
     /**
      * @brief Empty constructor, sets the coordinates to 0 and init state to fasle.
@@ -34,7 +34,7 @@ public:
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 */
-	Point(int x, int y);
+	Point(double x, double y);
 
 	/**
 	 * Destructor
@@ -46,13 +46,13 @@ public:
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 */
-	void set(const int x, const int y);
+	void set(const double x, const double y);
 
     /**
      * @brief getter function for the X value
      * @return X value of the point
      */
-	int getX() const
+	double getX() const
 	{
 		return _x;
 	}
@@ -61,7 +61,7 @@ public:
      * @brief getter function for the Y value
      * @return Y value of the point
      */
-	int getY() const
+	double getY() const
 	{
 		return _y;
 	}
