@@ -60,27 +60,52 @@
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <SourcePath>C:\Users\jenia\Source\Repos\CandCPPCourse\CandCpp\ex2;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <SourcePath>C:\Users\jenia\Source\Repos\CandCPPCourse\CandCpp\ex2;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <SourcePath>C:\Users\jenia\Source\Repos\CandCPPCourse\CandCpp\ex2;$(SourcePath)</SourcePath>
+  </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CPP_Course\ex2\Defs.h" />
+    <ClInclude Include="..\..\CPP_Course\ex2\Point.h" />
     <ClInclude Include="..\..\CPP_Course\ex2\PrintOuts.h" />
     <ClInclude Include="..\..\CPP_Course\ex2\Shape.h" />
     <ClInclude Include="..\..\CPP_Course\ex2\Trapezoid.h" />
     <ClInclude Include="..\..\CPP_Course\ex2\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\CPP_Course\ex2\Point.cpp" />
     <ClCompile Include="..\..\CPP_Course\ex2\PrintOuts.cpp" />
     <ClCompile Include="..\..\CPP_Course\ex2\Shape.cpp" />
     <ClCompile Include="..\..\CPP_Course\ex2\Trapezoid.cpp" />
     <ClCompile Include="..\..\CPP_Course\ex2\Triangle.cpp" />
+    <ClCompile Include="Shapes.cpp" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <CLanguageStandard>gnu99</CLanguageStandard>
+      <CLanguageStandard>c99</CLanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <CppLanguageStandard>gnu++11</CppLanguageStandard>
+      <CppLanguageStandard>c++11</CppLanguageStandard>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile>
+      <CLanguageStandard>c99</CLanguageStandard>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ClCompile>
+      <CLanguageStandard>c99</CLanguageStandard>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

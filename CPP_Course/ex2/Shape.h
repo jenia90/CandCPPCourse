@@ -6,14 +6,14 @@
 #define SHAPE_H
 
 #include <vector>
-
-using namespace std;
+#include "Point.h"
 
 class Shape {
+	std::vector<Point> _points;
 	int _numOfSides;
-	vector<double> *_sides;
 public:
-    Shape(int numOfSides);
+	//Shape(std::strind shapeLine);
+    Shape(std::__cxx11::string shapeLine);
 	Shape(Shape& shape);
 	~Shape();
 };
