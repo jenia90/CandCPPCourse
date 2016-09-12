@@ -5,9 +5,11 @@
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/PrintOuts.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Shape.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Trapezoid.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Triangle.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Trapezoid.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Trapezoid.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Point.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Point.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Shape.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/PrintOuts.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CPP_Course/ex2/Triangle.h" isTestSource="false" />

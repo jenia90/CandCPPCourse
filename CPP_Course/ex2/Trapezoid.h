@@ -6,8 +6,12 @@
 #define TRAPEZOID_H
 
 
-class Trapezoid {
+#include "Shape.h"
 
+class Trapezoid : protected Shape
+{
+    Trapezoid(std::vector<Point> _points);
+    virtual bool validateShape(_points);
 };
 
 

@@ -30,4 +30,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wall -Wvla -std=gnu++11")
 #target_link_libraries(PointSetBinaryOperations PointSet Point)
 
 add_library(PrintOuts CPP_Course/ex2/PrintOuts.cpp)
-add_library(Shape CPP_Course/ex2/Shape.cpp CPP_Course/ex2/Triangle.cpp CPP_Course/ex2/Triangle.h CPP_Course/ex2/Trapezoid.cpp CPP_Course/ex2/Trapezoid.h)
+add_library(Shape CPP_Course/ex2/Shape.cpp CPP_Course/ex2/Triangle.cpp CPP_Course/ex2/Trapezoid.cpp CPP_Course/ex2/Point.cpp)
+add_executable(Shapes CPP_Course/ex2/Shape.cpp)
+target_link_libraries(Shapes Shape PrintOuts)
