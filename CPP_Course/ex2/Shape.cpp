@@ -6,13 +6,10 @@
 
 Shape::Shape(std::vector<Point> points) : _vertices(points)
 {
+    _edges = initEdges(points);
     if(!validateShape(_vertices))
     {
-        printError();
-    }
-
-    for (int i = 0; i < _vertices.size(); ++i) {
-        _edges[i] = Line(_vertices[i], _vertices[(i+1)%_vertices.size()]);
+        exitWithError();
     }
 }
 
@@ -20,7 +17,7 @@ Shape::Shape(Shape &shape)
 {
     if(!validateShape(_vertices = shape.getPoints()))
     {
-        printError();
+        exitWithError();
     }
 }
 
@@ -31,7 +28,7 @@ Shape::~Shape()
 
 int Shape::orientation(Point a, Point b, Point c)
 {
-    double val = (b.getY() - a.getY()) * (c.getX() - b.getX()) -
+    CordType val = (b.getY() - a.getY()) * (c.getX() - b.getX()) -
               (b.getX() - a.getX()) * (c.getY() - b.getY());
 
     if (val == COLLINEAR)
@@ -41,15 +38,34 @@ int Shape::orientation(Point a, Point b, Point c)
     return (val > COLLINEAR)? CLOCKWISE: COUNTERCLOCKWISE;
 }
 
-std::vector<Point> Shape::operator&(const Shape &shp) {
-    std::vector<Point> intersectVec;
-
+bool Shape::operator&(const Shape &shp)
+{
+    int j = 0;
     for(Point p : shp.getPoints())
     {
         for (int i = 0; i < _vertices.size(); ++i) {
-            if(orientation(_vertices[i], _vertices[i+1], p) == CLOCKWISE);
-
+            if(orientation(_vertices[i], _vertices[i+1], p) == CLOCKWISE)
+            {
+                return true;
+            }
         }
     }
 
+    return false;
+}
+
+std::vector<Line> Shape::initEdges(std::vector<Point> vertices)
+{
+    std::vector<Line> edges;
+    for (int i = 0; i < vertices.size(); ++i)
+    {
+        Line l = Line(vertices[i], vertices[(i + 1) % vertices.size()]);
+        if(l.getLength() == 0)
+        {
+            exitWithError();
+        }
+        edges[i] = l;
+    }
+
+    return edges;
 }

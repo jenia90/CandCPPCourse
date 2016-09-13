@@ -7,16 +7,15 @@
  * @brief Code file containing the definitions of the Point class and its members
  * @section DESCRIPTION:
  * This class represents a point in 2D space.
- * More thorough explanation about the class is in the README file attached to the project.
  */
 
 #include "Point.h"
 
-Point::Point() : _x(0), _y(0)
+Point::Point() : _x(0), _y(0), _isInit(false)
 {
 }
 
-Point::Point(double x, double y): _x(x), _y(y)
+Point::Point(CordType x, CordType y): _x(x), _y(y), _isInit(true)
 {
 }
 
@@ -24,10 +23,12 @@ Point::~Point()
 {
 }
 
-void Point::set(const double x, const double y)
+void Point::set(const CordType x, const CordType y)
 {
 	_x = x;
 	_y = y;
+
+	_isInit = true;
 }
 
 Point& Point::operator=(const Point& p)
@@ -37,6 +38,7 @@ Point& Point::operator=(const Point& p)
 	{
 		_x = p._x;
 		_y = p._y;
+		_isInit = p._isInit;
 	}
 	return *this;
 }
@@ -53,8 +55,12 @@ bool Point::operator !=(const Point& p) const
 
 Point& Point::operator -(const Point& p)
 {
-	_x -= p.getX();
-	_y -= p.getY();
+	if(isInit())
+	{
+		_x -= p.getX();
+		_y -= p.getY();
+		return *this;
+	}
 	return *this;
 }
 
@@ -82,7 +88,7 @@ std::istream& operator>>(std::istream& is, Point& point)
 		std::cerr << INVALID_INPUT << std::endl;
 	}
 
-    return is;
+	return is;
 }
 
 std::string Point::toString()

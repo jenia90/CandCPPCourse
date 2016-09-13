@@ -1,6 +1,4 @@
-//
-// Created by jenia on 11/09/2016.
-//
+
 
 #ifndef SHAPE_H
 #define SHAPE_H
@@ -16,7 +14,6 @@
 
 class Shape {
 private:
-    double calculateArea(std::vector<Point>& intersectPoints);
 protected:
 	std::vector<Point> _vertices;
     std::vector<Line> _edges;
@@ -29,6 +26,7 @@ protected:
      * @return 0 if collinear; 1 if clockwise; 2 if counterclockwise
      */
 	int orientation(Point a, Point b, Point c);
+    std::vector<Line> initEdges(std::vector<Point> vertices);
 
     /**
      * @brief A function used to validate a set of points and check if it's valid for a given shape
@@ -36,7 +34,8 @@ protected:
      * @return true if valid; false otherwise.
      */
     virtual bool validateShape(std::vector<Point> points) = 0;
-	virtual void printError() = 0;
+	virtual void exitWithError() = 0;
+    virtual double calculateArea(std::vector<Point>& intersectPoints) = 0;
 public:
     Shape(std::vector<Point> points);
 	Shape(Shape& shape);
@@ -47,7 +46,7 @@ public:
 		return _vertices;
 	}
 
-    std::vector<Point> operator&(const Shape& shp);
+    bool operator&(const Shape& shp);
 };
 
 

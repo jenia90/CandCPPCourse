@@ -1,6 +1,4 @@
-//
-// Created by jenia on 11/09/2016.
-//
+
 
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
@@ -16,7 +14,7 @@ class Triangle : protected Shape
 protected:
     Triangle(std::vector<Point> _points);
     bool validateShape(std::vector<Point> points);
-    void printError();
+    void exitWithError();
 };
 
 
