@@ -12,9 +12,16 @@
 class Triangle : protected Shape
 {
 protected:
+    virtual bool validateShape(std::vector<Point> points);
+    virtual void exitWithError();
+
+public:
     Triangle(std::vector<Point> _points);
-    bool validateShape(std::vector<Point> points);
-    void exitWithError();
+
+    const std::string name = "Triangle";
+
+    virtual CordType calculateArea();
+    virtual void printShape() final;
 };
 
 

@@ -10,19 +10,23 @@
 
 class Line {
     Point _points[2];
+
+    bool isEqual(const Line& l);
 public:
     Line(Point& a, Point& b);
     ~Line();
 
+    const std::string name = "Line";
+    
     Point *getPoints(){ return _points; }
     CordType getLength() const;
     CordType getSlope() const;
 
     bool operator||(const Line& l);
     Line&operator=(const Line& l);
-    bool Line::operator ==(const Line& l) const;
-    bool Line::operator !=(const Line& l) const;
-    //Point operator&(Line& l);
+    bool operator ==(const Line& l);
+    bool operator !=(const Line& l);
+    //Point operator&(const Line& l);
 };
 
 

@@ -1,5 +1,6 @@
 
 
+#include <cmath>
 #include "Triangle.h"
 
 
@@ -24,4 +25,18 @@ void Triangle::exitWithError()
 {
     std::cerr << TRIANGLE_VERT_ERROR << std::endl;
     exit(EXIT_FAILURE);
+}
+
+CordType Triangle::calculateArea()
+{
+    Point p1 = _vertices[0], p2 = _vertices[1], p3 = _vertices[2];
+
+    return fabs((p1.getX() * p2.getY() + p1.getY() * p3.getX() + p2.getX() * p3.getY() -
+            (p3.getX() * p2.getY() + p1.getY() * p2.getX() + p3.getY() * p1.getX())) / 2);
+}
+
+void Triangle::printShape()
+{
+    printTrig(_vertices[0].getX(), _vertices[0].getY(), _vertices[1].getX(), _vertices[1].getY
+            (), _vertices[2].getX(), _vertices[2].getY());
 }

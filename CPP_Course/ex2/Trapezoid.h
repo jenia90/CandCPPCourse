@@ -12,9 +12,16 @@
 
 class Trapezoid : protected Shape
 {
+protected:
+    virtual bool validateShape(std::vector<Point> points);
+    virtual void exitWithError();
+public:
     Trapezoid(std::vector<Point> _points);
-    bool validateShape(std::vector<Point> points);
-    void exitWithError();
+
+    const std::string name = "Trapezoid";
+
+    virtual CordType calculateArea();
+    virtual void printShape() final;
 };
 
 

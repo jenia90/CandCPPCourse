@@ -3,8 +3,10 @@
 //
 
 #include "Shape.h"
+#include "Triangle.h"
+#include "Trapezoid.h"
 
-Shape::Shape(std::vector<Point> points) : _vertices(points)
+Shape::Shape(std::vector<Point> &points) : _vertices(points)
 {
     _edges = initEdges(points);
     if(!validateShape(_vertices))
@@ -13,7 +15,7 @@ Shape::Shape(std::vector<Point> points) : _vertices(points)
     }
 }
 
-Shape::Shape(Shape &shape)
+Shape::Shape(const Shape &shape)
 {
     if(!validateShape(_vertices = shape.getPoints()))
     {
@@ -24,6 +26,7 @@ Shape::Shape(Shape &shape)
 Shape::~Shape()
 {
     _vertices.clear();
+    _edges.clear();
 }
 
 int Shape::orientation(Point a, Point b, Point c)
@@ -40,11 +43,10 @@ int Shape::orientation(Point a, Point b, Point c)
 
 bool Shape::operator&(const Shape &shp)
 {
-    int j = 0;
     for(Point p : shp.getPoints())
     {
         for (int i = 0; i < _vertices.size(); ++i) {
-            if(orientation(_vertices[i], _vertices[i+1], p) == CLOCKWISE)
+            if(orientation(_vertices[i], _vertices[i + 1], p) == CLOCKWISE)
             {
                 return true;
             }
@@ -54,18 +56,38 @@ bool Shape::operator&(const Shape &shp)
     return false;
 }
 
-std::vector<Line> Shape::initEdges(std::vector<Point> vertices)
+std::vector<Line> Shape::initEdges(std::vector<Point> &vertices)
 {
     std::vector<Line> edges;
-    for (int i = 0; i < vertices.size(); ++i)
+    for (size_t i = 0; i < vertices.size(); ++i)
     {
         Line l = Line(vertices[i], vertices[(i + 1) % vertices.size()]);
         if(l.getLength() == 0)
         {
             exitWithError();
         }
-        edges[i] = l;
+        edges.push_back(l);
     }
 
     return edges;
+}
+
+void Shape::exitWithError()
+{
+    std::cerr << TYPE_CHAR_ERROR << std::endl;
+    exit(EXIT_FAILURE);
+}
+
+Shape* Shape::createShape(char type, std::vector<Point> &points)
+{
+    switch (type)
+    {
+        case 't':
+            return new Triangle(points);
+        case 'T':
+            return new Trapezoid(points);
+        default:
+            exit(EXIT_FAILURE);
+            //exitWithError();
+    }
 }

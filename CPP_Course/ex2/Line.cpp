@@ -1,5 +1,6 @@
 
 
+#include <cmath>
 #include "Line.h"
 
 Line::Line(Point &a, Point &b)
@@ -10,14 +11,13 @@ Line::Line(Point &a, Point &b)
 
 Line::~Line()
 {
-    delete[] _points;
 }
 
 
 CordType Line::getLength() const
 {
     CordType len = SQUARE(_points[1].getX() - _points[0].getX()) +
-                 SQUARE(_points[1].getY() - _points[0].getY());
+                   SQUARE(_points[1].getY() - _points[0].getY());
     return len;
 }
 
@@ -28,7 +28,7 @@ CordType Line::getSlope() const
 
 bool Line::operator||(const Line &l)
 {
-    return this->getSlope() == l.getSlope();
+    return fabs(this->getSlope() - l.getSlope()) < EPSILON;
 }
 
 Line &Line::operator=(const Line &l)
@@ -44,19 +44,24 @@ Line &Line::operator=(const Line &l)
     return *this;
 }
 
-bool Line::operator==(const Line& l) const
+bool Line::isEqual(const Line& l)
 {
     return (_points[0] == l._points[0]) && (_points[1] == l._points[1]);
 }
 
-bool Line::operator !=(const Line& l) const
+bool Line::operator==(const Line& l)
 {
-    return (_points[0] != l._points[0]) || (_points[1] != l._points[1]);
+    return isEqual(l);
 }
 
-/*Point Line::operator&(Line &l)
+bool Line::operator !=(const Line& l)
 {
-    double s, t;
+    return !isEqual(l);
+}
+
+/*Point Line::operator&(const Line &l)
+{
+    CordType s, t;
     Point a = this->_points[0], b = this->_points[1], c = l.getPoints()[0], d = l.getPoints()[1];
     Point interP;
     Point s1, s2;

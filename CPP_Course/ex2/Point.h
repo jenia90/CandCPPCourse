@@ -11,9 +11,6 @@
 #ifndef POINT_H
 #define POINT_H
 
-#define DELMITER ","
-#define INVALID_INPUT "Invalid input!"
-
 #include <sstream>
 #include <iostream>
 #include "Defs.h"
@@ -25,6 +22,8 @@ class Point
 {
     CordType _x, _y;
 	bool _isInit;
+
+	bool isEqual(const Point& p) const;
 public:
     /**
      * @brief Empty constructor, sets the coordinates to 0 and init state to fasle.
@@ -97,35 +96,6 @@ public:
      * @return true if points are not equal; false otherwise
      */
 	bool operator !=(const Point& p) const;
-
-    /**
-     * @brief Subtraction operator overload, returns the updated object after subtracting X and Y
-     * value of the given point.
-     * @param p Point object
-     * @return Updated object reference
-     */
-	Point& operator -(const Point& p);
-
-    /**
-     * @brief Comparison operator overload, compares this point to the given point
-     * @param p Point to compare
-     * @return true if this point is smaller (On Y and X); false otherwise
-     */
-	bool operator<(const Point& p) const;
-
-    /**
-     * @brief input stream operator overload user for parsing the input from the user and
-     * assigning the received value to the point object.
-     * @param is Input stream
-     * @param point Point reference which will be updated with the parsed values.
-     * @return Input stream object.
-     */
-	friend std::istream& operator>>(std::istream& is, Point& point);
-
-	/**
-	 * @brief Prints the point in a specialized format
-	 */
-	std::string toString();
 };
 
 
