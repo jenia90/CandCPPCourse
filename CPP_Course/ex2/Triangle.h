@@ -9,10 +9,10 @@
 
 #include "Shape.h"
 
-class Triangle : protected Shape
+class Triangle : public Shape
 {
 protected:
-    virtual bool validateShape(std::vector<Point> points);
+    virtual bool validateShape(std::vector<Point> &points);
     virtual void exitWithError();
 
 public:

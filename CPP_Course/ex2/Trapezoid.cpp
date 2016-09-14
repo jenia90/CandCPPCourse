@@ -3,11 +3,15 @@
 #include <cmath>
 #include "Trapezoid.h"
 
-Trapezoid::Trapezoid(std::vector<Point> _points) : Shape(_points)
+Trapezoid::Trapezoid(std::vector<Point> &_points) : Shape(_points)
 {
+    if(!validateShape(_points))
+    {
+        exitWithError();
+    }
 }
 
-bool Trapezoid::validateShape(std::vector<Point> points)
+bool Trapezoid::validateShape(std::vector<Point> &points)
 {
 
     if(points.size() != 4)

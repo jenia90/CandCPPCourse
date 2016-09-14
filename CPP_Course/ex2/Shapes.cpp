@@ -51,19 +51,19 @@ void processShapes(std::vector<Shape *> shapes)
 {
     bool intersectFound = false;
     CordType area = 0;
-    for(int i = 0; i < shapes.size(); i++)
+    for(size_t i = 0; i < shapes.size(); i++)
     {
-        Shape s1 = *shapes[i];
+        Shape *s1 = shapes[i];
 
         // iterate over the rest of the shapes and check for intersects.
-        for (int j = i; j < shapes.size(); ++j)
+        for (size_t j = i; j < shapes.size(); ++j)
         {
-            Shape s2 = *shapes[j];
+            Shape *s2 = shapes[j];
             // Check for intersect
-            if(s1 & s2)
+            if(*s1 & *s2)
             {
-                s1.printShape();
-                s2.printShape();
+                s1->printShape();
+                s2->printShape();
                 reportDrawIntersect();
                 
                 intersectFound = true;
@@ -73,7 +73,7 @@ void processShapes(std::vector<Shape *> shapes)
         //if no intersects found so far, add the area to the overall area.
         if(!intersectFound)
         {
-            area += s1.calculateArea();
+            area += s1->calculateArea();
         }
     }
 

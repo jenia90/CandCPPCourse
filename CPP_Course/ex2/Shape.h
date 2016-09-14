@@ -16,9 +16,9 @@
 #define TYPE_CHAR_ERROR "Wrong type character passed!"
 
 class Shape {
-    std::vector<Point> _vertices;
-    std::vector<Line> _edges;
-protected:
+public:
+	std::vector<Point> _vertices;
+	std::vector<Line> _edges;
 
     /**
      * @brief Gets the orientation of 3 points in respect to each other
@@ -36,10 +36,8 @@ protected:
      * @param points Point object vector
      * @return true if valid; false otherwise.
      */
-    virtual bool validateShape(std::vector<Point> points) = 0;
-public:
+    virtual bool validateShape(std::vector<Point> &points) = 0;
     Shape(std::vector<Point> &points);
-	Shape(const Shape& shape);
 	~Shape();
 
     virtual CordType calculateArea() = 0;

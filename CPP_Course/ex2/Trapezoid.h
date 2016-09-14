@@ -10,13 +10,13 @@
 #define TRAPEZOID_ERROR "Invalid trapezoid! Trapezoid vertices cannot be on the same line or  be "\
                         "the same point.\n Also, make sure its bases are parallel to X axis."
 
-class Trapezoid : protected Shape
+class Trapezoid : public Shape
 {
 protected:
-    virtual bool validateShape(std::vector<Point> points);
+    virtual bool validateShape(std::vector<Point> &points);
     virtual void exitWithError();
 public:
-    Trapezoid(std::vector<Point> _points);
+    Trapezoid(std::vector<Point> &_points);
 
     const std::string name = "Trapezoid";
 

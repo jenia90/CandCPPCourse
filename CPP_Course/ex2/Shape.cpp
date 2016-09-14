@@ -9,18 +9,10 @@
 Shape::Shape(std::vector<Point> &points) : _vertices(points)
 {
     _edges = initEdges(points);
-    if(!validateShape(_vertices))
+    /*if(!validateShape(_vertices))
     {
         exitWithError();
-    }
-}
-
-Shape::Shape(const Shape &shape)
-{
-    if(!validateShape(_vertices = shape.getPoints()))
-    {
-        exitWithError();
-    }
+    }*/
 }
 
 Shape::~Shape()
@@ -45,7 +37,7 @@ bool Shape::operator&(const Shape &shp)
 {
     for(Point p : shp.getPoints())
     {
-        for (int i = 0; i < _vertices.size(); ++i) {
+        for (size_t i = 0; i < _vertices.size(); ++i) {
             if(orientation(_vertices[i], _vertices[i + 1], p) == CLOCKWISE)
             {
                 return true;

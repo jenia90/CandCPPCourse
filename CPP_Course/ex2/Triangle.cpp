@@ -6,9 +6,13 @@
 
 Triangle::Triangle(std::vector<Point> _points) : Shape(_points)
 {
+    if(!validateShape(_points))
+    {
+        exitWithError();
+    }
 }
 
-bool Triangle::validateShape(std::vector<Point> points)
+bool Triangle::validateShape(std::vector<Point> &points)
 {
     if(points.size() != 3)
     {
