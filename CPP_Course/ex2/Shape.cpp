@@ -33,12 +33,28 @@ int Shape::orientation(Point a, Point b, Point c)
     return (val > COLLINEAR)? CLOCKWISE: COUNTERCLOCKWISE;
 }
 
-bool Shape::operator&(const Shape &shp)
+/*bool Shape::operator&(const Shape &shp)
 {
     for(Point p : shp.getPoints())
     {
         for (size_t i = 0; i < _vertices.size(); ++i) {
-            if(orientation(_vertices[i], _vertices[i + 1], p) == CLOCKWISE)
+            if(orientation(_vertices[i], _vertices[(i + 1) % _vertices.size()], p) == COUNTERCLOCKWISE)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}*/
+
+bool Shape::operator&(const Shape &shp)
+{
+    for(Line &l1 : shp.getEdges())
+    {
+        for(Line &l2 : _edges)
+        {
+            if(l1 & l2)
             {
                 return true;
             }
@@ -64,21 +80,16 @@ std::vector<Line> Shape::initEdges(std::vector<Point> &vertices)
     return edges;
 }
 
-void Shape::exitWithError()
-{
-    std::cerr << TYPE_CHAR_ERROR << std::endl;
-    exit(EXIT_FAILURE);
-}
-
 Shape* Shape::createShape(char type, std::vector<Point> &points)
 {
     switch (type)
     {
-        case 't':
-            return new Triangle(points);
         case 'T':
+            return new Triangle(points);
+        case 't':
             return new Trapezoid(points);
         default:
+            std::cerr << TYPE_CHAR_ERROR << std::endl;
             exit(EXIT_FAILURE);
             //exitWithError();
     }

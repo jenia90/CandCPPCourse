@@ -29,7 +29,7 @@ public:
      */
 	int orientation(Point a, Point b, Point c);
     std::vector<Line> initEdges(std::vector<Point> &vertices);
-    virtual void exitWithError();
+    virtual void exitWithError() = 0;
 
     /**
      * @brief A function used to validate a set of points and check if it's valid for a given shape

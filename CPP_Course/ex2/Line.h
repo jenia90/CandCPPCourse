@@ -26,7 +26,7 @@ public:
     Line&operator=(const Line& l);
     bool operator ==(const Line& l);
     bool operator !=(const Line& l);
-    //Point operator&(const Line& l);
+    bool operator&(const Line& l);
 };
 
 

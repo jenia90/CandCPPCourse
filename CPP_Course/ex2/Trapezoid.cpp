@@ -18,7 +18,7 @@ bool Trapezoid::validateShape(std::vector<Point> &points)
     {
         return false;
     }
-    else if(_edges[0].getSlope() == 0 && _edges[2].getSlope() == 0)
+    else if(_edges[0].getSlope() >= EPSILON && _edges[2].getSlope() >= EPSILON)
     {
         return false;
     }

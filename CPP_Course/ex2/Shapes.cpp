@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include "PrintOuts.h"
 #include "Shape.h"
 
@@ -21,19 +22,14 @@ void initShapes(std::vector<Shape*> &shapes)
     char type;
     CordType x, y;
 
-    std::cin >> type;
-
-    while(!std::cin.eof())
+    while(std::cin >> type)
     {
         std::vector<Point> points;
         // init the point with the values from the file and add the point to the Point container
         do
         {
-            Point p;
-            std::cin >> x;
-            std::cin >> y;
-            p.set(x, y);
-            points.push_back(p);
+            std::cin >> x >> y;
+            points.push_back({x, y});
         } while (std::cin.get() != NEW_LINE_CHAR);
 
         // add the new shape
@@ -56,7 +52,7 @@ void processShapes(std::vector<Shape *> shapes)
         Shape *s1 = shapes[i];
 
         // iterate over the rest of the shapes and check for intersects.
-        for (size_t j = i; j < shapes.size(); ++j)
+        for (size_t j = i + 1; j < shapes.size(); j++)
         {
             Shape *s2 = shapes[j];
             // Check for intersect
@@ -96,6 +92,8 @@ int main(int argc, char **argv)
 
     std::ifstream ifs(argv[INPUT_FILE_INDEX]);
     std::cin.rdbuf(ifs.rdbuf());
+    std::cout << std::fixed;
+    std::cout << std::setprecision(2);
 
     if (argc == ARG_NUM_WITH_OFILE)
     {
