@@ -31,22 +31,20 @@ int Shape::orientation(Point a, Point b, Point c)
 
 bool Shape::pointIntersect(const Shape& shp)
 {
-    bool isClockWise = false;
     for(Point p : shp.getPoints())
     {
-        for (size_t i = 0; i < _vertices.size(); ++i)
+        int initOrientation = orientation(_vertices[0], _vertices[1], p);
+        for (size_t i = 1; i < _vertices.size(); ++i)
         {
-            isClockWise = orientation(_vertices[i], _vertices[(i + 1) % _vertices.size()], p)
-                          != COUNTERCLOCKWISE;
-        }
-
-        if(isClockWise)
-        {
-            return true;
+            if((orientation(_vertices[i], _vertices[(i + 1) % _vertices.size()], p)
+                              != initOrientation))
+            {
+                return false;
+            }
         }
     }
 
-    return false;
+    return true;
 }
 
 bool Shape::lineIntersect(const Shape &shp)
@@ -67,12 +65,7 @@ bool Shape::lineIntersect(const Shape &shp)
 
 bool Shape::operator&(const Shape &shp)
 {
-    if(pointIntersect(shp))
-    {
-        return true;
-    }
-
-    return lineIntersect(shp);
+    return pointIntersect(shp) || lineIntersect(shp);
 }
 
 std::vector<Line> Shape::initEdges(std::vector<Point> &vertices)
