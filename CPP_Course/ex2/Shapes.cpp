@@ -113,6 +113,7 @@ int main(int argc, char **argv)
     initShapes(shapes);
     processShapes(shapes);
 
+    shapes.clear();
     std::cout.rdbuf(coutBuf);
     std::cin.rdbuf(cinBuf);
 

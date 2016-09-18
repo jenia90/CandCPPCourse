@@ -17,8 +17,8 @@
  * @brief ctor. given an array of Point objects inits the shape
  * @param points Point object vector container
  */
-Shape::Shape(std::vector<Point> &_points, std::vector<Line> &_edges) : _vertices(_points), _edges
-        (_edges)
+Shape::Shape(std::vector<Point> &_points, std::vector<Line> &_edges) : _vertices(_points),
+                                                                       _edges(_edges)
 {
 }
 
