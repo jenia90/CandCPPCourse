@@ -3,6 +3,7 @@
 #ifndef LINE_H
 #define LINE_H
 
+#include <string>
 #include "Point.h"
 #include "Defs.h"
 

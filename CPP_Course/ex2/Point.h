@@ -11,8 +11,6 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include <sstream>
-#include <iostream>
 #include "Defs.h"
 
 /**
@@ -21,7 +19,6 @@
 class Point
 {
     CordType _x, _y;
-	bool _isInit;
 
     /**
      * @brief Helper method to check if 2 points are equal;
@@ -70,15 +67,6 @@ public:
 	{
 		return _y;
 	}
-
-    /**
-     * @brief getter function for the Init state of the point
-     * @return true if was initialized; false otherwise
-     */
-    bool isInit() const
-    {
-        return _isInit;
-    }
 
     /**
      * @brief assignment operator overload, assigns the coordinates of the passed in point to

@@ -5,42 +5,27 @@
 #include "Shape.h"
 #include "Triangle.h"
 #include "Trapezoid.h"
+#include "ShapeUtils.h"
 
-Shape::Shape()
+Shape::Shape(std::vector<Point> &_points, std::vector<Line> &_edges) : _vertices(_points), _edges
+        (_edges)
 {
 }
 
 Shape::~Shape()
 {
-    deleteShape();
-}
-
-void Shape::deleteShape()
-{
     _vertices.clear();
     _edges.clear();
-}
-
-int Shape::orientation(Point a, Point b, Point c)
-{
-    CordType val = (b.getY() - a.getY()) * (c.getX() - b.getX()) -
-              (b.getX() - a.getX()) * (c.getY() - b.getY());
-
-    if (val == COLLINEAR)
-    {
-        return COLLINEAR;
-    }
-    return (val > COLLINEAR)? CLOCKWISE: COUNTERCLOCKWISE;
 }
 
 bool Shape::pointIntersect(const Shape& shp)
 {
     for(Point p : shp.getPoints())
     {
-        int initOrientation = orientation(_vertices[0], _vertices[1], p);
+        int initOrientation = ShapeUtils::orientation(_vertices[0], _vertices[1], p);
         for (size_t i = 1; i < _vertices.size(); ++i)
         {
-            if((orientation(_vertices[i], _vertices[(i + 1) % _vertices.size()], p)
+            if((ShapeUtils::orientation(_vertices[i], _vertices[(i + 1) % _vertices.size()], p)
                               != initOrientation))
             {
                 return false;
@@ -72,31 +57,14 @@ bool Shape::operator&(const Shape &shp)
     return pointIntersect(shp) || lineIntersect(shp);
 }
 
-std::vector<Line> Shape::initEdges(std::vector<Point> &vertices)
-{
-    std::vector<Line> edges;
-    for (size_t i = 0; i < vertices.size(); ++i)
-    {
-        Line l = Line(vertices[i], vertices[(i + 1) % vertices.size()]);
-        if(l.getLength() == 0)
-        {
-            this->~Shape();
-            exitWithError();
-        }
-        edges.push_back(l);
-    }
-
-    return edges;
-}
-
 std::shared_ptr<Shape> Shape::createShape(char type, std::vector<Point> &points)
 {
     switch (type)
     {
         case 'T':
-            return std::make_shared<Triangle>(points);
+            return Triangle::createTriangle(points);
         case 't':
-            return std::make_shared<Trapezoid>(points);
+            return Trapezoid::createTrapezoid(points);
         default:
             std::cerr << TYPE_CHAR_ERROR << std::endl;
             exit(EXIT_FAILURE);

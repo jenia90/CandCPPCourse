@@ -11,11 +11,11 @@
 
 #include "Point.h"
 
-Point::Point() : _x(0), _y(0), _isInit(false)
+Point::Point() : _x(0), _y(0)
 {
 }
 
-Point::Point(CordType x, CordType y): _x(x), _y(y), _isInit(true)
+Point::Point(CordType x, CordType y): _x(x), _y(y)
 {
 }
 
@@ -27,8 +27,6 @@ void Point::set(const CordType x, const CordType y)
 {
 	_x = x;
 	_y = y;
-
-	_isInit = true;
 }
 
 Point& Point::operator=(const Point& p)
@@ -38,7 +36,6 @@ Point& Point::operator=(const Point& p)
 	{
 		_x = p._x;
 		_y = p._y;
-		_isInit = p._isInit;
 	}
 	return *this;
 }

@@ -14,20 +14,18 @@
 #define SHAPE_H
 
 #include <vector>
-#include "PrintOuts.h"
 #include <memory>
+#include <iostream>
+#include "PrintOuts.h"
 #include "Defs.h"
-#include "Point.h"
 #include "Line.h"
-
-#define COLLINEAR 0
-#define CLOCKWISE 1
-#define COUNTERCLOCKWISE 2
 
 #define TYPE_CHAR_ERROR "Wrong type character passed!"
 
 class Shape
 {
+    std::vector<Point> _vertices;
+    std::vector<Line> _edges;
 
     /**
      * @brief helper method to check for intersection of shapes using point orientation,
@@ -44,45 +42,17 @@ class Shape
     bool lineIntersect(const Shape& shp);
 
 protected:
-    std::vector<Point> _vertices;
-    std::vector<Line> _edges;
 public:
 
     /**
      * @brief ctor. given an array of Point objects inits the shape
      * @param points Point object vector container
      */
-    Shape();
+    Shape(std::vector<Point> &_points, std::vector<Line> &_edges);
     /**
      * dtor
      */
     ~Shape();
-
-    void deleteShape();
-
-    /**
-     * @brief given a vector container of Points returns a vector container of Lines created by
-     * these points.
-     * @param vertices vector container of Point objects
-     * @return vector container of Line objects
-     */
-    std::vector<Line> initEdges(std::vector<Point> &vertices);
-
-    /**
-     * @brief Gets the orientation of 3 points in respect to each other
-     * @param a Point object
-     * @param b Point object
-     * @param c Point object
-     * @return 0 if collinear; 1 if clockwise; 2 if counterclockwise
-     */
-	int orientation(Point a, Point b, Point c);
-
-    /**
-     * @brief A function used to validate a set of points and check if it's valid for a given shape
-     * @param points Point object vector
-     * @return true if valid; false otherwise.
-     */
-    virtual bool validateShape(std::vector<Point> &points) = 0;
 
     /**
      * Pure virtual method to calculate the area of a Shape.
@@ -93,12 +63,6 @@ public:
      * Pure virtual method which prints the shape
      */
     virtual void printShape() = 0;
-
-    /**
-     * Pure virtual method, if error occured, prints the error to std::cerr and exists with
-     * EXIT_FAILURE code
-     */
-    virtual void exitWithError() = 0;
 
     /**
      * @brief Getter for the shape vertices

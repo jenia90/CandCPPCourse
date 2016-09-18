@@ -6,17 +6,13 @@
 #define TRAPEZOID_H
 
 #include "Shape.h"
+#include "ShapeUtils.h"
 
 #define TRAPEZOID_ERROR "Invalid trapezoid! Trapezoid vertices cannot be on the same line or  be "\
                         "the same point.\n Also, make sure its bases are parallel to X axis."
 
 class Trapezoid : public Shape
 {
-protected:
-    /**
-     * Print an error message and exit with error code.
-     */
-    virtual void exitWithError();
 public:
     /**
      * Object name tag
@@ -28,14 +24,7 @@ public:
      * @param _points Point object container which contains array of Points from which we create
      * the trapezoid
      */
-    Trapezoid(std::vector<Point> &_points);
-
-    /**
-     * @brief Validates that the given set of points form a valid trapezoid
-     * @param points reference to a vector container of Point objects
-     * @return true if valid; false otherwise
-     */
-    virtual bool validateShape(std::vector<Point> &points);
+    Trapezoid(std::vector<Point> &_points, std::vector<Line> &_edges);
 
     /**
      * @brief Calculates the area of a Trapezoid
@@ -47,6 +36,8 @@ public:
      * Prints this trapezoid
      */
     virtual void printShape() final;
+
+    static std::shared_ptr<Trapezoid> createTrapezoid(std::vector<Point> &_points);
 };
 
 

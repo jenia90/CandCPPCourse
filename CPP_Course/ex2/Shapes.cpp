@@ -100,5 +100,6 @@ int main(int argc, char **argv)
 
     std::cin.rdbuf(cinBackup);
     std::cout.rdbuf(coutBackup);
+
     return EXIT_SUCCESS;
 }

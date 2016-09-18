@@ -4,38 +4,13 @@
 #include "Triangle.h"
 
 
-Triangle::Triangle(std::vector<Point> &_points)
+Triangle::Triangle(std::vector<Point> &_points, std::vector<Line> &_edges) : Shape(_points, _edges)
 {
-    _vertices = _points;
-    _edges = initEdges(_points);
-    if(!validateShape(_points))
-    {
-        exitWithError();
-    }
-}
-
-bool Triangle::validateShape(std::vector<Point> &points)
-{
-    if(points.size() != 3)
-    {
-        return false;
-    }
-    else if(orientation(points[0], points[1], points[2]) == COLLINEAR)
-    {
-        return false;
-    }
-    return true;
-}
-
-void Triangle::exitWithError()
-{
-    std::cerr << TRIANGLE_VERT_ERROR << std::endl;
-    exit(EXIT_FAILURE);
 }
 
 CordType Triangle::calculateArea()
 {
-    Point p1 = _vertices[0], p2 = _vertices[1], p3 = _vertices[2];
+    Point p1 = getPoints()[0], p2 = getPoints()[1], p3 = getPoints()[2];
 
     return fabs((p1.getX() * p2.getY() + p1.getY() * p3.getX() + p2.getX() * p3.getY() -
             (p3.getX() * p2.getY() + p1.getY() * p2.getX() + p3.getY() * p1.getX())) / 2);
@@ -43,6 +18,23 @@ CordType Triangle::calculateArea()
 
 void Triangle::printShape()
 {
-    printTrig(_vertices[0].getX(), _vertices[0].getY(), _vertices[1].getX(), _vertices[1].getY
-            (), _vertices[2].getX(), _vertices[2].getY());
+    printTrig(getPoints()[0].getX(), getPoints()[0].getY(), getPoints()[1].getX(),
+              getPoints()[1].getY(), getPoints()[2].getX(), getPoints()[2].getY());
+}
+
+std::shared_ptr<Triangle> Triangle::createTriangle(std::vector<Point> &_points)
+{
+    if(_points.size() != 3)
+    {
+        ShapeUtils::exitWithError(TRIANGLE_VERT_ERROR);
+    }
+    else if(ShapeUtils::orientation(_points[0], _points[1], _points[2]) == ShapeUtils::Collinear)
+    {
+        ShapeUtils::exitWithError(TRIANGLE_VERT_ERROR);
+    }
+
+    std::vector<Line> edges;
+    edges = ShapeUtils::createEdges(_points);
+
+    return std::make_shared<Triangle>(_points, edges);
 }

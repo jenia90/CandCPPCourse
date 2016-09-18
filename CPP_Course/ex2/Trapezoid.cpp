@@ -3,43 +3,13 @@
 #include <cmath>
 #include "Trapezoid.h"
 
-Trapezoid::Trapezoid(std::vector<Point> &_points)
+Trapezoid::Trapezoid(std::vector<Point> &_points, std::vector<Line> &_edges) : Shape(_points, _edges)
 {
-    _vertices = _points;
-    _edges = initEdges(_points);
-    if(!validateShape(_points))
-    {
-        exitWithError();
-    }
-}
-
-bool Trapezoid::validateShape(std::vector<Point> &points)
-{
-
-    if(points.size() != 4)
-    {
-        return false;
-    }
-    else if(_edges[0].getSlope() >= EPSILON && _edges[2].getSlope() >= EPSILON)
-    {
-        return false;
-    }
-    else if(_vertices[0].getY() == _vertices[2].getY())
-    {
-        return false;
-    }
-    return true;
-}
-
-void Trapezoid::exitWithError()
-{
-    std::cerr << TRAPEZOID_ERROR << std::endl;
-    exit(EXIT_FAILURE);
 }
 
 CordType Trapezoid::calculateArea()
 {
-    Line b1 = _edges[0], b2 = _edges[2];
+    Line b1 = getEdges()[0], b2 = getEdges()[2];
     CordType height = fabs(b1.getPoints()->getX() - b2.getPoints()->getX());
 
     return (b1.getLength() + b2.getLength()) * height / 2;
@@ -47,6 +17,30 @@ CordType Trapezoid::calculateArea()
 
 void Trapezoid::printShape()
 {
-    printTrapez(_vertices[0].getX(), _vertices[0].getY(), _vertices[1].getX(), _vertices[1].getY
-            (), _vertices[2].getX(), _vertices[2].getY(), _vertices[3].getX(), _vertices[3].getY());
+    printTrapez(getPoints()[0].getX(), getPoints()[0].getY(),
+                getPoints()[1].getX(), getPoints()[1].getY(),
+                getPoints()[2].getX(), getPoints()[2].getY(),
+                getPoints()[3].getX(), getPoints()[3].getY());
+}
+
+std::shared_ptr<Trapezoid> Trapezoid::createTrapezoid(std::vector<Point> &_points)
+{
+
+    if(_points.size() != 4)
+    {
+        return false;
+    }
+
+    std::vector<Line> edges;
+    edges = ShapeUtils::createEdges(_points);
+
+    if(edges[0].getSlope() >= EPSILON && edges[2].getSlope() >= EPSILON)
+    {
+        ShapeUtils::exitWithError(TRAPEZOID_ERROR);
+    }
+    else if(_points[0].getY() == _points[2].getY())
+    {
+        ShapeUtils::exitWithError(TRAPEZOID_ERROR);
+    }
+    return std::make_shared<Trapezoid>(_points, edges);
 }

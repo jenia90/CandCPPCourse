@@ -8,20 +8,18 @@
                             " the same point."
 
 #include "Shape.h"
+#include "ShapeUtils.h"
 
 class Triangle : public Shape
 {
-protected:
-    virtual void exitWithError();
-
 public:
-    Triangle(std::vector<Point> &_points);
-    virtual bool validateShape(std::vector<Point> &points);
-
     const std::string name = "Triangle";
+    Triangle(std::vector<Point> &_points, std::vector<Line> &_edges);
 
     virtual CordType calculateArea();
     virtual void printShape() final;
+
+    static std::shared_ptr<Triangle> createTriangle(std::vector<Point> &_points);
 };
 
 
