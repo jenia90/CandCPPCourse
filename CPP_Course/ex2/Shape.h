@@ -22,6 +22,11 @@
 
 #define TYPE_CHAR_ERROR "Wrong type character passed!"
 
+#define FST_POINT 0
+#define SEC_POINT 1
+#define TRD_POINT 2
+#define FOUR_POINT 3
+
 class Shape
 {
     std::vector<Point> _vertices;
@@ -41,7 +46,6 @@ class Shape
      */
     bool lineIntersect(const Shape& shp);
 
-protected:
 public:
 
     /**
@@ -49,6 +53,7 @@ public:
      * @param points Point object vector container
      */
     Shape(std::vector<Point> &_points, std::vector<Line> &_edges);
+
     /**
      * dtor
      */

@@ -1,10 +1,11 @@
 CC = g++
 CFLAGS = -Wall -Wextra -Wvla -pthread -std=c++11
+OBJECTS = ShapeUtils.o Shape.o Triangle.o Trapezoid.o Line.o Point.o PrintOuts.o
 
 all: Shapes
 
 Shapes: Shapes.cpp ShapeUtils.o Shape.o Triangle.o Trapezoid.o Line.o Point.o PrintOuts.o
-	$(CC) $(CFLAGS) $(ADDFLAGS) Shape.o ShapeUtils.o Trapezoid.o Triangle.o Line.o Point.o PrintOuts.o Shapes.cpp -o Shapes
+	$(CC) $(CFLAGS) $(ADDFLAGS) $(OBJECTS) Shapes.cpp -o Shapes
 
 Shape.o: Shape.cpp
 	$(CC) $(CFLAGS) $(ADDFLAGS) -c Shape.cpp

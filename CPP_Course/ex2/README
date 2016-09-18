@@ -1,1 +1,38 @@
-answers:
+=========================
+=   General Structure   =
+=========================
+The program constists of a few classes representing objects in 2D space:
+
+Point:
+This is the most basic object in this program. It represents a single point in 2D space and
+supports such operations as comparison and assignment.
+
+Line:
+This class represent a line between 2 points. It holds an array of size of Point objects and
+supports such operations as comparison of 2 lines, assignment, calculating the length and the
+slope of the line and also checking for intersects between 2 lines.
+
+Triangle and Trapezoid:
+These 2 classes represent a triangle and trapezoid which inherit from the Shape class. Each object
+has an array of points (its vertices) and array of Lines (its edges). Each of the classes has a
+static method which receives an array of Points, checks the validity of those Points for
+creating the said shape and if valid returns a new object created by those points.
+
+Shape:
+This is an abstract class which handles member field initialization and destruction and also
+checking for shape intersections. Also it has a static factory method which given a type char and
+an array of Points tries to create the wanted object.
+
+ShapeUtils:
+This is a utility class for handling such operations such as finding orientations of 3 points in
+2D space, creating array of edges for the shape and in case of fail in shape validation, exits
+the program after printing an error message to the std::cerr.
+
+================================
+=   Implementation decisions   =
+================================
+For the most part the program structure was pretty constant from the beginning. However, by the
+end i decided separate some utility functions into a separate class for a stricter division and
+also this allowed me to use static methods for checking validity of points and edges. Because at
+first i was thought implementing the validation check in the constructor but decided that it was
+a bad design decision and split it into separate methods.

@@ -13,6 +13,8 @@
 
 #define NEW_LINE_CHAR '\n'
 
+#define OPEN_FILE_ERROR "Unable to open specified file!"
+#define DEF_FLOAT_PRECISION 2
 using ShapeP = std::shared_ptr<Shape>;
 
 /**
@@ -83,23 +85,36 @@ int main(int argc, char **argv)
     }
 
     std::vector<ShapeP> shapes;
+    std::cout << std::setprecision(DEF_FLOAT_PRECISION) << std::fixed;
 
-    std::streambuf *coutBackup = std::cout.rdbuf(), *cinBackup = std::cin.rdbuf();
+    // redirect the cin so it would scan our file
+    std::streambuf *coutBuf = std::cout.rdbuf(), *cinBuf = std::cout.rdbuf();
     std::ifstream ifs(argv[INPUT_FILE_INDEX]);
-    std::cin.rdbuf(ifs.rdbuf());
-    std::cout << std::setprecision(2) << std::fixed;;
+    if(!ifs.is_open())
+    {
+        std::cerr << OPEN_FILE_ERROR << std::endl;
+        return EXIT_FAILURE;
+    }
 
+    std::cin.rdbuf(ifs.rdbuf());
+
+    // if third argument present redirect cout to the given file.
     if (argc == ARG_NUM_WITH_OFILE)
     {
         std::ofstream ofs(argv[OUTPUT_FILE_INDEX]);
+        if(!ofs.is_open())
+        {
+            std::cerr << OPEN_FILE_ERROR << std::endl;
+            return EXIT_FAILURE;
+        }
         std::cout.rdbuf(ofs.rdbuf());
     }
 
     initShapes(shapes);
     processShapes(shapes);
 
-    std::cin.rdbuf(cinBackup);
-    std::cout.rdbuf(coutBackup);
+    std::cout.rdbuf(coutBuf);
+    std::cin.rdbuf(cinBuf);
 
     return EXIT_SUCCESS;
 }

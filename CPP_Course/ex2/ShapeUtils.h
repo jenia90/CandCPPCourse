@@ -1,6 +1,13 @@
-//
-// Created by jenia on 18/09/2016.
-//
+/**
+ * @file Point.h
+ * @author jenia90
+ * @version 1.0
+ * @date 15 Sep 2016
+ *
+ * @brief Header file containg the declarations of the ShapeUtils class and its members
+ * @section DESCRIPTION:
+ * This is a static class which contains utility methods for other Shape related classes.
+ */
 
 #ifndef SHAPEUTILS_H
 #define SHAPEUTILS_H
@@ -13,12 +20,16 @@
 class ShapeUtils
 {
 public:
+    /**
+     * Point orientation enum
+     */
     enum Orientation
     {
         Collinear,
         Clockwise,
         Counterclockwise
     };
+
     /**
      * @brief given a vector container of Points returns a vector container of Lines created by
      * these points.
@@ -37,9 +48,11 @@ public:
     static int orientation(Point a, Point b, Point c);
 
     /**
-     * Pure virtual method, if error occured, prints the error to std::cerr and exists with
-     * EXIT_FAILURE code
+     * Prints an error message and exits the program
+     * @param msg Message to print
+     * @param _points Point object vector to clear before exit
+     * @param _edges Line object vector to clear before exit
      */
-    static void exitWithError(std::string msg);
+    static void exitWithError(std::string msg, std::vector<Point> &_points, std::vector<Line> &_edges);
 };
 #endif //CANDCPPCOURSE_SHAPEUTILS_H

@@ -12,12 +12,15 @@
 #define POINT_H
 
 #include "Defs.h"
+#include <string>
 
 /**
  * @brief a class representing a point
  */
 class Point
 {
+	const std::string name = "Point";
+
     CordType _x, _y;
 
     /**
@@ -42,13 +45,6 @@ public:
 	 * Destructor
 	 */
 	~Point();
-
-	/**
-	 * @brief Sets the (x,y) coordinates of the point
-	 * @param x the x coordinate
-	 * @param y the y coordinate
-	 */
-	void set(const CordType x, const CordType y);
 
     /**
      * @brief getter function for the X value
