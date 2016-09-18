@@ -67,10 +67,12 @@ bool Shape::lineIntersect(const Shape &shp)
 
 bool Shape::operator&(const Shape &shp)
 {
-    if(lineIntersect(shp))
+    if(pointIntersect(shp))
+    {
         return true;
+    }
 
-    return pointIntersect(shp);
+    return lineIntersect(shp);
 }
 
 std::vector<Line> Shape::initEdges(std::vector<Point> &vertices)
@@ -89,14 +91,14 @@ std::vector<Line> Shape::initEdges(std::vector<Point> &vertices)
     return edges;
 }
 
-Shape* Shape::createShape(char type, std::vector<Point> &points)
+std::shared_ptr<Shape> Shape::createShape(char type, std::vector<Point> &points)
 {
     switch (type)
     {
         case 'T':
-            return new Triangle(points);
+            return std::make_shared<Triangle>(points);
         case 't':
-            return new Trapezoid(points);
+            return std::make_shared<Trapezoid>(points);
         default:
             std::cerr << TYPE_CHAR_ERROR << std::endl;
             exit(EXIT_FAILURE);

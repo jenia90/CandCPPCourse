@@ -15,6 +15,7 @@
 
 #include <vector>
 #include "PrintOuts.h"
+#include <memory>
 #include "Defs.h"
 #include "Point.h"
 #include "Line.h"
@@ -26,6 +27,7 @@
 #define TYPE_CHAR_ERROR "Wrong type character passed!"
 
 class Shape {
+
     /**
      * @brief given a vector container of Points returns a vector container of Lines created by
      * these points.
@@ -48,7 +50,9 @@ class Shape {
      */
     bool lineIntersect(const Shape& shp);
 public:
-	std::vector<Point> _vertices;
+
+
+    std::vector<Point> _vertices;
 	std::vector<Line> _edges;
 
     /**
@@ -125,7 +129,7 @@ public:
      * @param points vector container of Point objects which create the shape
      * @return Shape object pointer.
      */
-    static Shape* createShape(char type, std::vector<Point> &points);
+    static std::shared_ptr<Shape> createShape(char type, std::vector<Point> &points);
 };
 
 
