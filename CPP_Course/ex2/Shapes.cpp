@@ -22,7 +22,7 @@ using ShapeP = std::shared_ptr<Shape>;
  * @brief Scans the file and adds shapes to the Shape container.
  * @param shapes Shapes vector container reference
  */
-void initShapes(std::vector<ShapeP> &shapes)
+bool initShapes(std::vector<ShapeP> &shapes)
 {
     char type;
     CordType x, y;
@@ -43,10 +43,12 @@ void initShapes(std::vector<ShapeP> &shapes)
         {
             shapes.clear();
             std::cerr << SHAPE_ERROR << std::endl;
+            return false;
         }
-        
+
         shapes.push_back(shapeP);
     }
+    return true;
 }
 
 /**
@@ -118,7 +120,10 @@ int main(int argc, char **argv)
         std::cout.rdbuf(ofs.rdbuf());
     }
 
-    initShapes(shapes);
+    if(!initShapes(shapes))
+    {
+        return EXIT_FAILURE;
+    }
     processShapes(shapes);
 
     shapes.clear();
