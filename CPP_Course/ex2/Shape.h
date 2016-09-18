@@ -20,8 +20,6 @@
 #include "Defs.h"
 #include "Line.h"
 
-#define TYPE_CHAR_ERROR "Wrong type character passed!"
-
 #define FST_POINT 0
 #define SEC_POINT 1
 #define TRD_POINT 2
@@ -101,7 +99,7 @@ public:
      * @param points vector container of Point objects which create the shape
      * @return Shape object pointer.
      */
-    static std::shared_ptr<Shape> createShape(char type, std::vector<Point> &points);
+    static std::shared_ptr<Shape> getShape(char type, std::vector<Point> &points);
 };
 
 

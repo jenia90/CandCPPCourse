@@ -48,7 +48,7 @@ public:
      * @param _points vector container of Point objects
      * @return new Triangle shared_ptr object if successful; otherwise exists the program.
      */
-    static std::shared_ptr<Triangle> createTriangle(std::vector<Point> &_points);
+    static std::shared_ptr<Triangle> getTriangle(std::vector<Point> &_points);
 };
 
 

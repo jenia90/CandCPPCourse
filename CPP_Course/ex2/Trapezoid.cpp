@@ -41,7 +41,7 @@ void Trapezoid::printShape()
  * @param _points vector container of Point objects
  * @return new Trapezoid shared_ptr object if successful; otherwise exists the program.
  */
-std::shared_ptr<Trapezoid> Trapezoid::createTrapezoid(std::vector<Point> &_points)
+std::shared_ptr<Trapezoid> Trapezoid::getTrapezoid(std::vector<Point> &_points)
 {
 
     if(_points.size() != DEF_NUM_POINT_TRAP)
@@ -55,10 +55,12 @@ std::shared_ptr<Trapezoid> Trapezoid::createTrapezoid(std::vector<Point> &_point
     if(edges[FST_BASE].getSlope() >= EPSILON && edges[SEC_BASE].getSlope() >= EPSILON)
     {
         ShapeUtils::exitWithError(TRAPEZOID_ERROR, _points, edges);
+        return nullptr;
     }
     else if(_points[FST_BASE].getY() == _points[SEC_BASE].getY())
     {
         ShapeUtils::exitWithError(TRAPEZOID_ERROR, _points, edges);
+        return nullptr;
     }
     return std::make_shared<Trapezoid>(_points, edges);
 }

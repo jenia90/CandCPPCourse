@@ -41,17 +41,19 @@ void Triangle::printShape()
  * @param _points vector container of Point objects
  * @return new Triangle shared_ptr object if successful; otherwise exists the program.
  */
-std::shared_ptr<Triangle> Triangle::createTriangle(std::vector<Point> &_points)
+std::shared_ptr<Triangle> Triangle::getTriangle(std::vector<Point> &_points)
 {
     std::vector<Line> edges;
     if(_points.size() != DEF_NUM_POINTS_TRI)
     {
         ShapeUtils::exitWithError(TRIANGLE_VERT_ERROR, _points, edges);
+        return nullptr;
     }
     else if(ShapeUtils::orientation(_points[FST_POINT], _points[SEC_POINT], _points[TRD_POINT]) ==
             ShapeUtils::Collinear)
     {
         ShapeUtils::exitWithError(TRIANGLE_VERT_ERROR, _points, edges);
+        return nullptr;
     }
 
     edges = ShapeUtils::createEdges(_points);

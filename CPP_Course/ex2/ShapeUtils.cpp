@@ -58,5 +58,4 @@ void ShapeUtils::exitWithError(std::string msg, std::vector<Point> &_points, std
     _points.clear();
     _edges.clear();
     std::cerr << msg << std::endl;
-    exit(EXIT_FAILURE);
 }

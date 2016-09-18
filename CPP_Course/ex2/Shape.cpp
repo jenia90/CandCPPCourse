@@ -93,16 +93,15 @@ bool Shape::operator&(const Shape &shp)
  * @param points vector container of Point objects which create the shape
  * @return Shape object pointer.
  */
-std::shared_ptr<Shape> Shape::createShape(char type, std::vector<Point> &points)
+std::shared_ptr<Shape> Shape::getShape(char type, std::vector<Point> &points)
 {
     switch (type)
     {
         case 'T':
-            return Triangle::createTriangle(points);
+            return Triangle::getTriangle(points);
         case 't':
-            return Trapezoid::createTrapezoid(points);
+            return Trapezoid::getTrapezoid(points);
         default:
-            std::cerr << TYPE_CHAR_ERROR << std::endl;
-            exit(EXIT_FAILURE);
+            return nullptr;
     }
 }

@@ -54,7 +54,7 @@ public:
      * @param _points vector container of Point objects
      * @return new Trapezoid shared_ptr object if successful; otherwise exists the program.
      */
-    static std::shared_ptr<Trapezoid> createTrapezoid(std::vector<Point> &_points);
+    static std::shared_ptr<Trapezoid> getTrapezoid(std::vector<Point> &_points);
 };
 
 

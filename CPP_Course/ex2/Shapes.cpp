@@ -15,6 +15,7 @@
 
 #define OPEN_FILE_ERROR "Unable to open specified file!"
 #define DEF_FLOAT_PRECISION 2
+#define SHAPE_ERROR "Error creating shapes. Please check your input and try again."
 using ShapeP = std::shared_ptr<Shape>;
 
 /**
@@ -37,7 +38,14 @@ void initShapes(std::vector<ShapeP> &shapes)
         } while (std::cin.get() != NEW_LINE_CHAR);
 
         // add the new shape
-        shapes.push_back(Shape::createShape(type, points));
+        ShapeP shapeP = Shape::getShape(type, points);
+        if(!shapeP)
+        {
+            shapes.clear();
+            std::cerr << SHAPE_ERROR << std::endl;
+        }
+        
+        shapes.push_back(shapeP);
     }
 }
 
