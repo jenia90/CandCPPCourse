@@ -9,10 +9,6 @@
 Shape::Shape(std::vector<Point> &points) : _vertices(points)
 {
     _edges = initEdges(points);
-    /*if(!validateShape(_vertices))
-    {
-        exitWithError();
-    }*/
 }
 
 Shape::~Shape()
@@ -33,22 +29,27 @@ int Shape::orientation(Point a, Point b, Point c)
     return (val > COLLINEAR)? CLOCKWISE: COUNTERCLOCKWISE;
 }
 
-/*bool Shape::operator&(const Shape &shp)
+bool Shape::pointIntersect(const Shape& shp)
 {
+    bool isClockWise = false;
     for(Point p : shp.getPoints())
     {
-        for (size_t i = 0; i < _vertices.size(); ++i) {
-            if(orientation(_vertices[i], _vertices[(i + 1) % _vertices.size()], p) == COUNTERCLOCKWISE)
-            {
-                return true;
-            }
+        for (size_t i = 0; i < _vertices.size(); ++i)
+        {
+            isClockWise = orientation(_vertices[i], _vertices[(i + 1) % _vertices.size()], p)
+                          < COUNTERCLOCKWISE;
+        }
+
+        if(isClockWise)
+        {
+            return true;
         }
     }
 
     return false;
-}*/
+}
 
-bool Shape::operator&(const Shape &shp)
+bool Shape::lineIntersect(const Shape &shp)
 {
     for(Line &l1 : shp.getEdges())
     {
@@ -62,6 +63,14 @@ bool Shape::operator&(const Shape &shp)
     }
 
     return false;
+}
+
+bool Shape::operator&(const Shape &shp)
+{
+    if(lineIntersect(shp))
+        return true;
+
+    return pointIntersect(shp);
 }
 
 std::vector<Line> Shape::initEdges(std::vector<Point> &vertices)
@@ -91,6 +100,5 @@ Shape* Shape::createShape(char type, std::vector<Point> &points)
         default:
             std::cerr << TYPE_CHAR_ERROR << std::endl;
             exit(EXIT_FAILURE);
-            //exitWithError();
     }
 }

@@ -22,6 +22,10 @@ bool Trapezoid::validateShape(std::vector<Point> &points)
     {
         return false;
     }
+    else if(_vertices[0].getY() == _vertices[2].getY())
+    {
+        return false;
+    }
     return true;
 }
 

@@ -43,9 +43,8 @@ void initShapes(std::vector<Shape*> &shapes)
  * shapes and prints it.
  * @param shapes Shape vector container.
  */
-void processShapes(std::vector<Shape *> shapes)
+void processShapes(std::vector<Shape *> &shapes)
 {
-    bool intersectFound = false;
     CordType area = 0;
     for(size_t i = 0; i < shapes.size(); i++)
     {
@@ -61,23 +60,16 @@ void processShapes(std::vector<Shape *> shapes)
                 s1->printShape();
                 s2->printShape();
                 reportDrawIntersect();
-                
-                intersectFound = true;
+                return;
             }
         }
 
         //if no intersects found so far, add the area to the overall area.
-        if(!intersectFound)
-        {
-            area += s1->calculateArea();
-        }
+        area += s1->calculateArea();
     }
 
     // if no intersects found, print the calculated overall area.
-    if(!intersectFound)
-    {
-        printArea(area);
-    }
+    printArea(area);
 }
 
 int main(int argc, char **argv)

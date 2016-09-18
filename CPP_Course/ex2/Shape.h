@@ -55,6 +55,9 @@ public:
 
     bool operator&(const Shape& shp);
 
+    bool pointIntersect(const Shape& shp);
+    bool lineIntersect(const Shape& shp);
+
     static Shape* createShape(char type, std::vector<Point> &points);
 };
 

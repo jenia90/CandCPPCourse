@@ -16,7 +16,7 @@ protected:
     virtual void exitWithError();
 
 public:
-    Triangle(std::vector<Point> _points);
+    Triangle(std::vector<Point> &_points);
 
     const std::string name = "Triangle";
 

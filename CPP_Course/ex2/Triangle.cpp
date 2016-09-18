@@ -4,7 +4,7 @@
 #include "Triangle.h"
 
 
-Triangle::Triangle(std::vector<Point> _points) : Shape(_points)
+Triangle::Triangle(std::vector<Point> &_points) : Shape(_points)
 {
     if(!validateShape(_points))
     {

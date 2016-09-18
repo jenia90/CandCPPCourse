@@ -61,21 +61,16 @@ bool Line::operator !=(const Line& l)
 
 bool Line::operator&(const Line &l)
 {
-    CordType s, t;
     Point a = this->_points[0], b = this->_points[1], c = l._points[0], d = l._points[1];
-    //Point interP;
-    Point s1, s2;
+    CordType s, t;
+    CordType s1_x = b.getX() - a.getX(), s1_y = b.getY() - a.getY(),
+             s2_x = d.getX() - c.getX(), s2_y = d.getY() - c.getY();
 
-    s1.set(b.getX() - a.getX(), b.getY() - a.getY());
-    s2.set(d.getX() - c.getX(), d.getY() - c.getY());
+    s = (-s1_y * (a.getX() - c.getX()) + s1_x * (a.getY() - c.getY())) /
+        (-s2_x * s1_y + s1_x * s2_y);
 
-    s = (-s1.getY() * (a.getX() - c.getX()) + s1.getX() * (a.getY() - c.getY())) /
-        (-s2.getX() * s1.getY() + s1.getX() * s2.getY());
-
-    t = ( s2.getX() * (a.getY() - c.getY()) - s2.getY() * (a.getX() - c.getX())) /
-        (-s2.getX() * s1.getY() + s1.getX() * s2.getY());
+    t = ( s2_x * (a.getY() - c.getY()) - s2_y * (a.getX() - c.getX())) /
+        (-s2_x * s1_y + s1_x * s2_y);
 
     return s >= 0 && s <= 1 && t >= 0 && t <= 1;
-
-    // No intersect
 }
