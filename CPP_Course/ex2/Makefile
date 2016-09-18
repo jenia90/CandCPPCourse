@@ -3,8 +3,8 @@ CFLAGS = -Wall -Wextra -Wvla -pthread -std=c++11
 
 all: Shapes
 
-Shapes: Shapes.cpp Shape.o Triangle.o Trapezoid.o Line.o Point.o PrintOuts.o
-	$(CC) $(CFLAGS) $(ADDFLAGS) Shape.o Trapezoid.o Triangle.o Line.o Point.o PrintOuts.o Shapes.cpp -o Shapes
+Shapes: Shapes.cpp ShapeUtils.o Shape.o Triangle.o Trapezoid.o Line.o Point.o PrintOuts.o
+	$(CC) $(CFLAGS) $(ADDFLAGS) Shape.o ShapeUtils.o Trapezoid.o Triangle.o Line.o Point.o PrintOuts.o Shapes.cpp -o Shapes
 
 Shape.o: Shape.cpp
 	$(CC) $(CFLAGS) $(ADDFLAGS) -c Shape.cpp
@@ -24,9 +24,12 @@ Point.o: Point.cpp
 PrintOuts.o: PrintOuts.cpp
 	$(CC) $(CFLAGS) $(ADDFLAGS) -c PrintOuts.cpp
 
+ShapeUtils.o: ShapeUtils.cpp
+	$(CC) $(CFLAGS) $(ADDFLAGS) -c ShapeUtils.cpp
+
 
 tar:
-	tar cvf ex2.tar Defs.h Shapes.cpp Shape.* Triangle.* Trapezoid.* Point.* Line.* PrintOuts.* README Makefile
+	tar cvf ex2.tar Defs.h Shapes.cpp Shape.* ShapeUtils.* Triangle.* Trapezoid.* Point.* Line.* PrintOuts.* README Makefile
 
 clean:
 	rm -f *.o *.tar Shapes
