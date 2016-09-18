@@ -13,6 +13,11 @@ Shape::Shape(std::vector<Point> &points) : _vertices(points)
 
 Shape::~Shape()
 {
+    deleteShape();
+}
+
+void Shape::deleteShape()
+{
     _vertices.clear();
     _edges.clear();
 }
@@ -76,6 +81,7 @@ std::vector<Line> Shape::initEdges(std::vector<Point> &vertices)
         Line l = Line(vertices[i], vertices[(i + 1) % vertices.size()]);
         if(l.getLength() == 0)
         {
+            this->~Shape();
             exitWithError();
         }
         edges.push_back(l);

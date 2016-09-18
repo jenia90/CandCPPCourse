@@ -65,6 +65,8 @@ public:
      */
     ~Shape();
 
+    void deleteShape();
+
     /**
      * @brief Gets the orientation of 3 points in respect to each other
      * @param a Point object

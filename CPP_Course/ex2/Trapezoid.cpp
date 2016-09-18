@@ -7,6 +7,7 @@ Trapezoid::Trapezoid(std::vector<Point> &_points) : Shape(_points)
 {
     if(!validateShape(_points))
     {
+        this->~Shape();
         exitWithError();
     }
 }

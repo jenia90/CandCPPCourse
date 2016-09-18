@@ -13,11 +13,13 @@
 
 #define NEW_LINE_CHAR '\n'
 
+using ShapeP = std::shared_ptr<Shape>;
+
 /**
  * @brief Scans the file and adds shapes to the Shape container.
  * @param shapes Shapes vector container reference
  */
-void initShapes(std::vector<std::shared_ptr<Shape>> &shapes)
+void initShapes(std::vector<ShapeP> &shapes)
 {
     char type;
     CordType x, y;
@@ -43,17 +45,17 @@ void initShapes(std::vector<std::shared_ptr<Shape>> &shapes)
  * shapes and prints it.
  * @param shapes Shape vector container.
  */
-void processShapes(std::vector<std::shared_ptr<Shape>> &shapes)
+void processShapes(std::vector<ShapeP> &shapes)
 {
     CordType area = 0;
     for(size_t i = 0; i < shapes.size(); i++)
     {
-        std::shared_ptr<Shape> s1 = shapes[i];
+        ShapeP s1 = shapes[i];
 
         // iterate over the rest of the shapes and check for intersects.
         for (size_t j = i + 1; j < shapes.size(); j++)
         {
-            std::shared_ptr<Shape> s2 = shapes[j];
+            ShapeP s2 = shapes[j];
             // Check for intersect
             if(*s1 & *s2)
             {
@@ -80,7 +82,7 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    std::vector<std::shared_ptr<Shape>> shapes;
+    std::vector<ShapeP> shapes;
 
     std::streambuf *coutBackup = std::cout.rdbuf(), *cinBackup = std::cin.rdbuf();
     std::ifstream ifs(argv[INPUT_FILE_INDEX]);
