@@ -39,7 +39,7 @@ public:
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 */
-	Point(CordType x, CordType y);
+	Point(const CordType x, const CordType y);
 
 	/**
 	 * Destructor

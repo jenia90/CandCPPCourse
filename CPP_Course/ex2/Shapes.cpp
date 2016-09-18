@@ -34,7 +34,7 @@ bool initShapes(std::vector<ShapeP> &shapes)
         do
         {
             std::cin >> x >> y;
-            points.push_back({x, y});
+            points.push_back(Point(x, y));
         } while (std::cin.get() != NEW_LINE_CHAR);
 
         // add the new shape
@@ -52,8 +52,8 @@ bool initShapes(std::vector<ShapeP> &shapes)
 }
 
 /**
- * @brief Iterates over the Shapes container and checks for interesects. If any interesects
- * found, prints shape descritption and a message; otherwise calculates the overall area of the
+ * @brief Iterates over the Shapes container and checks for intersects. If any intersects
+ * found, prints shape description and a message; otherwise calculates the overall area of the
  * shapes and prints it.
  * @param shapes Shape vector container.
  */

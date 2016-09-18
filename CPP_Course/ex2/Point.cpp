@@ -23,7 +23,7 @@ Point::Point() : _x(0), _y(0)
  * @param x the x coordinate
  * @param y the y coordinate
  */
-Point::Point(CordType x, CordType y): _x(x), _y(y)
+Point::Point(const CordType x, const CordType y): _x(x), _y(y)
 {
 }
 
