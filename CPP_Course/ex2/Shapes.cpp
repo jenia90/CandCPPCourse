@@ -86,6 +86,30 @@ void processShapes(std::vector<ShapeP> &shapes)
     printArea(area);
 }
 
+bool redirectStreams(char **argv, bool toFile)
+{
+    std::ifstream ifs(argv[INPUT_FILE_INDEX]);
+    if(!ifs.is_open())
+    {
+        std::cerr << OPEN_FILE_ERROR << std::endl;
+        return false;
+    }
+
+    std::cin.rdbuf(ifs.rdbuf());
+
+    // if third argument present redirect cout to the given file.
+    if (toFile)
+    {
+        std::ofstream ofs(argv[OUTPUT_FILE_INDEX]);
+        if(!ofs.is_open())
+        {
+            std::cerr << OPEN_FILE_ERROR << std::endl;
+            return false;
+        }
+        std::cout.rdbuf(ofs.rdbuf());
+    }
+}
+
 int main(int argc, char **argv)
 {
     if(argc < DEFAULT_ARG_NUM)
@@ -99,31 +123,19 @@ int main(int argc, char **argv)
 
     // redirect the cin so it would scan our file
     std::streambuf *coutBuf = std::cout.rdbuf(), *cinBuf = std::cout.rdbuf();
-    std::ifstream ifs(argv[INPUT_FILE_INDEX]);
-    if(!ifs.is_open())
+
+    // try redirecting streams to relevant files
+    if(!redirectStreams(argv, argc == ARG_NUM_WITH_OFILE))
     {
-        std::cerr << OPEN_FILE_ERROR << std::endl;
         return EXIT_FAILURE;
     }
 
-    std::cin.rdbuf(ifs.rdbuf());
-
-    // if third argument present redirect cout to the given file.
-    if (argc == ARG_NUM_WITH_OFILE)
-    {
-        std::ofstream ofs(argv[OUTPUT_FILE_INDEX]);
-        if(!ofs.is_open())
-        {
-            std::cerr << OPEN_FILE_ERROR << std::endl;
-            return EXIT_FAILURE;
-        }
-        std::cout.rdbuf(ofs.rdbuf());
-    }
-
+    // try initializing shapes
     if(!initShapes(shapes))
     {
         return EXIT_FAILURE;
     }
+
     processShapes(shapes);
 
     shapes.clear();
