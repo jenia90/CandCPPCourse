@@ -12,11 +12,11 @@
 class Triangle : public Shape
 {
 protected:
-    virtual bool validateShape(std::vector<Point> &points);
     virtual void exitWithError();
 
 public:
     Triangle(std::vector<Point> &_points);
+    virtual bool validateShape(std::vector<Point> &points);
 
     const std::string name = "Triangle";
 

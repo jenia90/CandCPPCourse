@@ -3,11 +3,12 @@
 #include <cmath>
 #include "Trapezoid.h"
 
-Trapezoid::Trapezoid(std::vector<Point> &_points) : Shape(_points)
+Trapezoid::Trapezoid(std::vector<Point> &_points)
 {
+    _vertices = _points;
+    _edges = initEdges(_points);
     if(!validateShape(_points))
     {
-        this->~Shape();
         exitWithError();
     }
 }

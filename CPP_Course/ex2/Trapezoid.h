@@ -13,14 +13,39 @@
 class Trapezoid : public Shape
 {
 protected:
-    virtual bool validateShape(std::vector<Point> &points);
+    /**
+     * Print an error message and exit with error code.
+     */
     virtual void exitWithError();
 public:
-    Trapezoid(std::vector<Point> &_points);
-
+    /**
+     * Object name tag
+     */
     const std::string name = "Trapezoid";
 
-    virtual CordType calculateArea();
+    /**
+     * @brief ctor
+     * @param _points Point object container which contains array of Points from which we create
+     * the trapezoid
+     */
+    Trapezoid(std::vector<Point> &_points);
+
+    /**
+     * @brief Validates that the given set of points form a valid trapezoid
+     * @param points reference to a vector container of Point objects
+     * @return true if valid; false otherwise
+     */
+    virtual bool validateShape(std::vector<Point> &points);
+
+    /**
+     * @brief Calculates the area of a Trapezoid
+     * @return area of this trapezoid.
+     */
+    virtual CordType calculateArea() final;
+
+    /**
+     * Prints this trapezoid
+     */
     virtual void printShape() final;
 };
 

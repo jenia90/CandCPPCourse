@@ -4,11 +4,12 @@
 #include "Triangle.h"
 
 
-Triangle::Triangle(std::vector<Point> &_points) : Shape(_points)
+Triangle::Triangle(std::vector<Point> &_points)
 {
+    _vertices = _points;
+    _edges = initEdges(_points);
     if(!validateShape(_points))
     {
-        deleteShape();
         exitWithError();
     }
 }

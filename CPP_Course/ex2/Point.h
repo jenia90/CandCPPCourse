@@ -23,6 +23,11 @@ class Point
     CordType _x, _y;
 	bool _isInit;
 
+    /**
+     * @brief Helper method to check if 2 points are equal;
+     * @param p the second Point object reference
+     * @return true if equal; false otherwise.
+     */
 	bool isEqual(const Point& p) const;
 public:
     /**

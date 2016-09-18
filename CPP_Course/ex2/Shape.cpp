@@ -6,9 +6,8 @@
 #include "Triangle.h"
 #include "Trapezoid.h"
 
-Shape::Shape(std::vector<Point> &points) : _vertices(points)
+Shape::Shape()
 {
-    _edges = initEdges(points);
 }
 
 Shape::~Shape()

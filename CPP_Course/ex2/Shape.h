@@ -26,15 +26,8 @@
 
 #define TYPE_CHAR_ERROR "Wrong type character passed!"
 
-class Shape {
-
-    /**
-     * @brief given a vector container of Points returns a vector container of Lines created by
-     * these points.
-     * @param vertices vector container of Point objects
-     * @return vector container of Line objects
-     */
-    std::vector<Line> initEdges(std::vector<Point> &vertices);
+class Shape
+{
 
     /**
      * @brief helper method to check for intersection of shapes using point orientation,
@@ -49,23 +42,31 @@ class Shape {
      * @return true if shapes intersect; false otherwise.
      */
     bool lineIntersect(const Shape& shp);
-public:
 
-
+protected:
     std::vector<Point> _vertices;
-	std::vector<Line> _edges;
+    std::vector<Line> _edges;
+public:
 
     /**
      * @brief ctor. given an array of Point objects inits the shape
      * @param points Point object vector container
      */
-    Shape(std::vector<Point> &points);
+    Shape();
     /**
      * dtor
      */
     ~Shape();
 
     void deleteShape();
+
+    /**
+     * @brief given a vector container of Points returns a vector container of Lines created by
+     * these points.
+     * @param vertices vector container of Point objects
+     * @return vector container of Line objects
+     */
+    std::vector<Line> initEdges(std::vector<Point> &vertices);
 
     /**
      * @brief Gets the orientation of 3 points in respect to each other
