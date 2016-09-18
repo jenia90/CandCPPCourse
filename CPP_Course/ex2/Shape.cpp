@@ -37,7 +37,7 @@ bool Shape::pointIntersect(const Shape& shp)
         for (size_t i = 0; i < _vertices.size(); ++i)
         {
             isClockWise = orientation(_vertices[i], _vertices[(i + 1) % _vertices.size()], p)
-                          < COUNTERCLOCKWISE;
+                          != COUNTERCLOCKWISE;
         }
 
         if(isClockWise)

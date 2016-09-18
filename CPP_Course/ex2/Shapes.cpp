@@ -72,6 +72,14 @@ void processShapes(std::vector<Shape *> &shapes)
     printArea(area);
 }
 
+void freeShapes(std::vector<Shape *> &shapes)
+{
+    for(Shape *s : shapes)
+    {
+        free(s);
+    }
+}
+
 int main(int argc, char **argv)
 {
     if(argc < DEFAULT_ARG_NUM)
@@ -82,10 +90,10 @@ int main(int argc, char **argv)
 
     std::vector<Shape*> shapes;
 
+    std::streambuf *coutBackup = std::cout.rdbuf(), *cinBackup = std::cin.rdbuf();
     std::ifstream ifs(argv[INPUT_FILE_INDEX]);
     std::cin.rdbuf(ifs.rdbuf());
-    std::cout << std::fixed;
-    std::cout << std::setprecision(2);
+    std::cout << std::setprecision(2) << std::fixed;;
 
     if (argc == ARG_NUM_WITH_OFILE)
     {
@@ -96,6 +104,10 @@ int main(int argc, char **argv)
     initShapes(shapes);
     processShapes(shapes);
 
-
+    std::cin.rdbuf(cinBackup);
+    std::cout.rdbuf(coutBackup);
+    free(cinBackup);
+    free(coutBackup);
+    freeShapes(shapes);
     return EXIT_SUCCESS;
 }
