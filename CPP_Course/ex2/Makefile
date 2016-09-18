@@ -26,7 +26,8 @@ PrintOuts.o: PrintOuts.cpp
 
 
 tar:
-	tar cvf ex2.tar Shapes.cpp Shape.* Triangle.* Trapezoid.* Point.* Line.* PrintOuts.* README
+	tar cvf ex2.tar Defs.h Shapes.cpp Shape.* Triangle.* Trapezoid.* Point.* Line.* PrintOuts.*
+	README Makefile
 
 clean:
 	rm -f *.o *.tar Shapes
