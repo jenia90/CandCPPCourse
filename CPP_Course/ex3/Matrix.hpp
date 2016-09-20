@@ -3,13 +3,15 @@
 //
 
 #include <vector>
+#include <utility>
 #include <algorithm>
 #include <sstream>
+#include "Complex.h"
 
 #define CELL_DELIM "\t"
 
-template <typename T>
-class Matrix<>
+template <class T>
+class Matrix
 {
     size_t _rows, _cols;
     std::vector<T> _cells;
@@ -19,7 +21,7 @@ class Matrix<>
      * @param matrix Matrix object ref
      * @return true if all cells are equal; false otherwise
      */
-    bool isEqual(const Matrix & matrix)
+    bool isEqual(const Matrix<T>& matrix)
     {
         if(matrix.cols() != _cols || matrix.rows() != _rows)
         {
@@ -36,11 +38,13 @@ class Matrix<>
         return true;
     }
 public:
+    typedef typename std::vector<T>::const_iterator const_iterator;
+
     /**
      * @brief Default ctor. Creates a 1x1 Matrix with 0 in its only cell.
      * @return
      */
-    Matrix<>() : _rows(1), _cols(1), _cells(1, 0)
+    Matrix() : _rows(1), _cols(1), _cells(1, T())
     {
     }
 
@@ -50,7 +54,7 @@ public:
      * @param cols number of cols
      * @return
      */
-    Matrix<>(size_t rows, size_t cols) : _rows(rows), _cols(cols), _cells(rows * cols, 0)
+    Matrix(size_t rows, size_t cols) : _rows(rows), _cols(cols), _cells(rows * cols, T())
     {
     }
 
@@ -61,7 +65,7 @@ public:
      * @param cells cells data vector
      * @return
      */
-    Matrix<>(size_t rows, size_t cols, const std::vector<T>& cells) : _rows(rows), _cols(cols),
+    Matrix(size_t rows, size_t cols, const std::vector<T>& cells) : _rows(rows), _cols(cols),
                                                                                  _cells(cells)
     {
     }
@@ -71,7 +75,7 @@ public:
      * @param matrix matrix to copy the data from
      * @return
      */
-    Matrix<>(const Matrix &matrix) : _rows(matrix._rows), _cols(matrix._cols), _cells(matrix._cells)
+    Matrix(const Matrix<T> &matrix): _rows(matrix._rows), _cols(matrix._cols), _cells(matrix._cells)
     {
     }
 
@@ -80,10 +84,10 @@ public:
      * @param matrix the matrix to move the data from
      * @return
      */
-    Matrix<>(Matrix &&matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
+    /*Matrix(Matrix<T> &&matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
                               _cells(std::move(matrix._cells))
     {
-    }
+    }*/
 
     /**
      * @brief dtor
@@ -120,8 +124,22 @@ public:
         return _cols;
     }
 
+    Matrix trans()
+    {
+        Matrix<T> tMatrix = Matrix<T>(_cols, _rows);
+        for (size_t r = 0; r < _cols; ++r)
+        {
+            for (size_t c = 0; c < _rows; ++c)
+            {
+                tMatrix(r, c) = _cells[_cols * c + r];
+            }
+        }
 
-    Matrix&operator=(const Matrix & matrix)
+        return tMatrix;
+    }
+
+
+    Matrix&operator=(const Matrix<T>& matrix)
     {
         if(this != &matrix)
         {
@@ -133,13 +151,13 @@ public:
         return *this;
     }
 
-    Matrix operator+(const Matrix& matrix)
+    Matrix operator+(const Matrix<T>& matrix)
     {
         if(_rows != matrix.rows() || _cols != matrix.cols())
         {
             // TODO: exception
         }
-        Matrix m = Matrix(_rows, _cols);
+        Matrix<T> m = Matrix(_rows, _cols);
         for (int i = 0; i < _cells.size(); ++i)
         {
             m._cells[i] = _cells[i] + matrix._cells[i];
@@ -148,13 +166,13 @@ public:
         return m;
     }
 
-    Matrix operator-(const Matrix& matrix)
+    Matrix operator-(const Matrix<T>& matrix)
     {
         if(_rows != matrix.rows() || _cols != matrix.cols())
         {
             // TODO: exception
         }
-        Matrix m = Matrix(_rows, _cols);
+        Matrix<T> m = Matrix(_rows, _cols);
         for (int i = 0; i < _cells.size(); ++i)
         {
             m._cells[i] = _cells[i] - matrix._cells[i];
@@ -163,10 +181,10 @@ public:
         return m;
     }
 
-    Matrix operator*(const Matrix& matrix)
+    Matrix operator*(const Matrix<T>& matrix)
     {
-        int sum;
-        Matrix m = Matrix(_rows, matrix._cols);
+        T sum;
+        Matrix<T> m = Matrix<T>(_rows, matrix._cols);
 
         for (size_t i = 0; i < _rows; ++i)
         {
@@ -175,7 +193,7 @@ public:
                 sum = 0;
                 for (size_t k = 0; k < _cols; ++k)
                 {
-                    sum += (*this)(i, k) * matrix(k, j);
+                    sum = sum + (*this)(i, k) * matrix(k, j);
                 }
                 m(i, j) = sum;
             }
@@ -184,17 +202,17 @@ public:
         return m;
     }
 
-    bool operator==(const Matrix& matrix)
+    bool operator==(const Matrix<T>& matrix)
     {
         return isEqual(matrix);
     }
 
-    bool operator!=(const Matrix& matrix)
+    bool operator!=(const Matrix<T>& matrix)
     {
         return !isEqual(matrix);
     }
 
-    friend std::ostream& operator<<(std::ostream &os, const Matrix& matrix)
+    friend std::ostream& operator<<(std::ostream &os, const Matrix<T>& matrix)
     {
         for (size_t r = 0; r < matrix._rows; ++r)
         {
@@ -208,22 +226,38 @@ public:
         return os;
     }
 
-    T operator()(const unsigned int r, const unsigned int c) const
+    T operator()(const size_t r, const size_t c) const
     {
         return _cells[_cols * r + c];
     }
 
-    T& operator()(const unsigned int r, const unsigned int c)
+    T& operator()(const size_t r, const size_t c)
     {
         return _cells[_cols * r + c];
     }
 
-    T begin()
+    const_iterator begin()
     {
         return _cells.begin();
     }
-    T end()
+
+    const_iterator end()
     {
         return _cells.end();
     }
 };
+
+template <>
+Matrix<Complex> Matrix<Complex>::trans()
+{
+    Matrix<Complex> tMatrix = Matrix<Complex>(_cols, _rows);
+    for (size_t r = 0; r < _cols; ++r)
+    {
+        for (size_t c = 0; c < _rows; ++c)
+        {
+            tMatrix(r, c) = _cells[_cols * c + r].conj();
+        }
+    }
+
+    return tMatrix;
+}
