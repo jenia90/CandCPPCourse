@@ -10,6 +10,8 @@
 
 #define CELL_DELIM "\t"
 
+#define DIF_SIZE_ERROR "Cannot perform the operation on matrices of different sizes!"
+
 template <class T>
 class Matrix
 {
@@ -84,10 +86,10 @@ public:
      * @param matrix the matrix to move the data from
      * @return
      */
-    /*Matrix(Matrix<T> &&matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
+    Matrix(Matrix<T> &&matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
                               _cells(std::move(matrix._cells))
     {
-    }*/
+    }
 
     /**
      * @brief dtor
@@ -124,6 +126,10 @@ public:
         return _cols;
     }
 
+    /**
+     * @brief finds the transpose of the matrix
+     * @return transposed Matrix
+     */
     Matrix trans()
     {
         Matrix<T> tMatrix = Matrix<T>(_cols, _rows);
@@ -131,14 +137,18 @@ public:
         {
             for (size_t c = 0; c < _rows; ++c)
             {
-                tMatrix(r, c) = _cells[_cols * c + r];
+                tMatrix(r, c) =  (*this)(c, r);
             }
         }
 
         return tMatrix;
     }
 
-
+    /**
+     * @brief Assignment operator overload
+     * @param matrix Matrix object ref
+     * @return updated Matrix object
+     */
     Matrix&operator=(const Matrix<T>& matrix)
     {
         if(this != &matrix)
@@ -151,11 +161,16 @@ public:
         return *this;
     }
 
+    /**
+     * @brief Plus operator overload to sum 2 matrices of same size
+     * @param matrix Matrix object ref
+     * @return new Matrix object which is the sum of 2 matrices
+     */
     Matrix operator+(const Matrix<T>& matrix)
     {
         if(_rows != matrix.rows() || _cols != matrix.cols())
         {
-            // TODO: exception
+            throw DIF_SIZE_ERROR;
         }
         Matrix<T> m = Matrix(_rows, _cols);
         for (int i = 0; i < _cells.size(); ++i)
@@ -166,11 +181,16 @@ public:
         return m;
     }
 
+    /**
+     * @brief Minus operator overload to sum 2 matrices of same size
+     * @param matrix Matrix object ref
+     * @return new Matrix object which is the difference of 2 matrices
+     */
     Matrix operator-(const Matrix<T>& matrix)
     {
         if(_rows != matrix.rows() || _cols != matrix.cols())
         {
-            // TODO: exception
+            throw DIF_SIZE_ERROR;
         }
         Matrix<T> m = Matrix(_rows, _cols);
         for (int i = 0; i < _cells.size(); ++i)
@@ -181,6 +201,11 @@ public:
         return m;
     }
 
+    /**
+     * @brief Multiplication operator overload to multiply 2 matrices
+     * @param matrix Matrix object ref
+     * @return new Matrix object which is the multiplication result of 2 matrices
+     */
     Matrix operator*(const Matrix<T>& matrix)
     {
         T sum;
@@ -202,16 +227,32 @@ public:
         return m;
     }
 
+    /**
+     * @brief Equality operator overload to check if 2 matrices are equal
+     * @param matrix Matrix object ref
+     * @return true if equal; false otherwise
+     */
     bool operator==(const Matrix<T>& matrix)
     {
         return isEqual(matrix);
     }
 
+    /**
+     * @brief Non-equality operator overload to check if 2 matrices are not equal
+     * @param matrix Matrix object ref
+     * @return true if not equal; false otherwise
+     */
     bool operator!=(const Matrix<T>& matrix)
     {
         return !isEqual(matrix);
     }
 
+    /**
+     * Out stream operator overload to get a stream representation of the matrix
+     * @param os Ostream object ref
+     * @param matrix Matrix object ref
+     * @return updated stream of the Matrix's cells
+     */
     friend std::ostream& operator<<(std::ostream &os, const Matrix<T>& matrix)
     {
         for (size_t r = 0; r < matrix._rows; ++r)
@@ -226,27 +267,53 @@ public:
         return os;
     }
 
+    /**
+     * @brief Direct a access operator given a row and column returns the data stored in that cell
+     * @param r Row number
+     * @param c Column number
+     * @return value stored in the requested cell
+     */
     T operator()(const size_t r, const size_t c) const
     {
         return _cells[_cols * r + c];
     }
 
+    /**
+     * @brief Direct a access operator. Given a row and column returns the reference to the data
+     * stored in that cell
+     * @param r Row number
+     * @param c Column number
+     * @return reference to the data stored in the requested cell
+     */
     T& operator()(const size_t r, const size_t c)
     {
         return _cells[_cols * r + c];
     }
 
+    /**
+     * @brief Const iterator begin function.
+     * @return Const iterator begin
+     */
     const_iterator begin()
     {
         return _cells.begin();
     }
 
+    /**
+     * @brief Const iterator end function.
+     * @return Const iterator end
+     */
     const_iterator end()
     {
         return _cells.end();
     }
 };
 
+/**
+ * @brief Specialization of the transpose method for the case where the matrix is filled with
+ * Complex values
+ * @return transposed Matrix object
+ */
 template <>
 Matrix<Complex> Matrix<Complex>::trans()
 {
