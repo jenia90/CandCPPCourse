@@ -6,17 +6,23 @@
 #include <utility>
 #include <algorithm>
 #include <sstream>
+#include <thread>
 #include "Complex.h"
 
 #define CELL_DELIM "\t"
-
 #define DIF_SIZE_ERROR "Cannot perform the operation on matrices of different sizes!"
+#define MODE_CHANGE_MSG "Generic Matrix mode changed to"
+#define PARALLEL " Parallel "
+#define NON_PARALLEL " non-Parallel "
+#define MODE "mode"
 
 template <class T>
 class Matrix
 {
+    using Cells = std::vector<T>;
+    static bool _isParallel = false;
     size_t _rows, _cols;
-    std::vector<T> _cells;
+    Cells _cells;
 
     /**
      * @brief Helper method to check equality of two matrices
@@ -39,16 +45,28 @@ class Matrix
         }
         return true;
     }
+
+    void sumRows(size_t row, const Matrix &matrix)
+    {
+        for (size_t c = 0; c < _cols; ++c)
+        {
+            (*this)(row, c) += matrix(row, c);
+        }
+    }
+
+    void multRows(size_t row, const Matrix& matrix)
+    {
+
+    }
 public:
-    typedef typename std::vector<T>::const_iterator const_iterator;
+    typedef typename Cells::const_iterator const_iterator;
 
     /**
      * @brief Default ctor. Creates a 1x1 Matrix with 0 in its only cell.
      * @return
      */
     Matrix() : _rows(1), _cols(1), _cells(1, T())
-    {
-    }
+    {}
 
     /**
      * @brief Ctor to init a matrix of size rows x cols with 0 in all its cells
@@ -57,8 +75,7 @@ public:
      * @return
      */
     Matrix(size_t rows, size_t cols) : _rows(rows), _cols(cols), _cells(rows * cols, T())
-    {
-    }
+    {}
 
     /**
      * @brief Ctor to init a matrix of size rows x cols with data contained in the cells vector
@@ -67,10 +84,9 @@ public:
      * @param cells cells data vector
      * @return
      */
-    Matrix(size_t rows, size_t cols, const std::vector<T>& cells) : _rows(rows), _cols(cols),
+    Matrix(size_t rows, size_t cols, const Cells& cells) : _rows(rows), _cols(cols),
                                                                                  _cells(cells)
-    {
-    }
+    {}
 
     /**
      * @brief copy ctor. copies data from one matrix to the other
@@ -78,8 +94,7 @@ public:
      * @return
      */
     Matrix(const Matrix<T> &matrix): _rows(matrix._rows), _cols(matrix._cols), _cells(matrix._cells)
-    {
-    }
+    {}
 
     /**
      * @brief move ctor. moves the data from one matrix to the other
@@ -88,8 +103,7 @@ public:
      */
     Matrix(Matrix<T> &&matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
                               _cells(std::move(matrix._cells))
-    {
-    }
+    {}
 
     /**
      * @brief dtor
@@ -106,6 +120,16 @@ public:
     bool isSquareMatrix()
     {
         return _rows == _cols;
+    }
+
+    static void setParallel(bool isParallel)
+    {
+        if(_isParallel != isParallel)
+        {
+            _isParallel = isParallel;
+            std::cout << MODE_CHANGE_MSG; 
+            std::cout << (_isParallel ? PARALLEL : NON_PARALLEL) << MODE << std::endl;
+        }
     }
 
     /**
@@ -149,7 +173,7 @@ public:
      * @param matrix Matrix object ref
      * @return updated Matrix object
      */
-    Matrix&operator=(const Matrix<T>& matrix)
+    Matrix& operator=(const Matrix<T>& matrix)
     {
         if(this != &matrix)
         {
@@ -173,9 +197,18 @@ public:
             throw DIF_SIZE_ERROR;
         }
         Matrix<T> m = Matrix(_rows, _cols);
-        for (int i = 0; i < _cells.size(); ++i)
+
+        if(_isParallel)
         {
-            m._cells[i] = _cells[i] + matrix._cells[i];
+            std::vector<std::thread> threads;
+
+        }
+        else
+        {
+            for (int i = 0; i < _cells.size(); ++i)
+            {
+                m._cells[i] = _cells[i] + matrix._cells[i];
+            }
         }
 
         return m;
@@ -218,7 +251,7 @@ public:
                 sum = 0;
                 for (size_t k = 0; k < _cols; ++k)
                 {
-                    sum = sum + (*this)(i, k) * matrix(k, j);
+                    sum += (*this)(i, k) * matrix(k, j);
                 }
                 m(i, j) = sum;
             }
@@ -248,26 +281,6 @@ public:
     }
 
     /**
-     * Out stream operator overload to get a stream representation of the matrix
-     * @param os Ostream object ref
-     * @param matrix Matrix object ref
-     * @return updated stream of the Matrix's cells
-     */
-    friend std::ostream& operator<<(std::ostream &os, const Matrix<T>& matrix)
-    {
-        for (size_t r = 0; r < matrix._rows; ++r)
-        {
-            for (size_t c = 0; c < matrix._cols; ++c)
-            {
-                os << matrix(r, c) << CELL_DELIM;
-            }
-            os << std::endl;
-        }
-
-        return os;
-    }
-
-    /**
      * @brief Direct a access operator given a row and column returns the data stored in that cell
      * @param r Row number
      * @param c Column number
@@ -288,6 +301,26 @@ public:
     T& operator()(const size_t r, const size_t c)
     {
         return _cells[_cols * r + c];
+    }
+
+    /**
+     * Out stream operator overload to get a stream representation of the matrix
+     * @param os Ostream object ref
+     * @param matrix Matrix object ref
+     * @return updated stream of the Matrix's cells
+     */
+    friend std::ostream& operator<<(std::ostream &os, const Matrix<T>& matrix)
+    {
+        for (size_t r = 0; r < matrix._rows; ++r)
+        {
+            for (size_t c = 0; c < matrix._cols; ++c)
+            {
+                os << matrix(r, c) << CELL_DELIM;
+            }
+            os << std::endl;
+        }
+
+        return os;
     }
 
     /**
