@@ -16,11 +16,12 @@
 #define NON_PARALLEL " non-Parallel "
 #define MODE "mode"
 
+static bool _isParallel = false;
+
 template <class T>
 class Matrix
 {
-    using Cells = std::vector<T>;
-    static bool _isParallel = false;
+    typedef std::vector<T> Cells;
     size_t _rows, _cols;
     Cells _cells;
 
@@ -46,17 +47,52 @@ class Matrix
         return true;
     }
 
-    void sumRows(size_t row, const Matrix &matrix)
+    void applyOperator(void(*oper)(size_t, Matrix&, const Matrix&),
+                         Matrix &newMatrix, const Matrix &matrix)
     {
-        for (size_t c = 0; c < _cols; ++c)
+        if(_isParallel)
         {
-            (*this)(row, c) += matrix(row, c);
+            /*
+            std::vector<std::thread> threads;
+            for (size_t row = 0; row < _rows; ++row)
+            {
+                threads.push_back(std::thread(oper(row, newMatrix, matrix)));
+            }
+
+            for (std::thread t : threads)
+            {
+                t.join();
+            }*/
+        }
+        else
+        {
+            for (size_t row = 0; row < _cells.size(); ++row)
+            {
+                oper(row, newMatrix, matrix);
+            }
         }
     }
 
-    void multRows(size_t row, const Matrix& matrix)
+    void sumRows(size_t row, Matrix &newMatrix, const Matrix &matrix)
     {
+        for (size_t c = 0; c < _cols; ++c)
+        {
+            newMatrix(row, c) = (*this)(row, c) + matrix(row, c);
+        }
+    }
 
+    void multRows(size_t row, Matrix& newMatrix, const Matrix& matrix)
+    {
+        T sum;
+        for (size_t j = 0; j < matrix._cols; ++j)
+        {
+            sum = 0;
+            for (size_t k = 0; k < _cols; ++k)
+            {
+                sum += (*this)(row, k) * matrix(k, j);
+            }
+            newMatrix(row, j) = sum;
+        }
     }
 public:
     typedef typename Cells::const_iterator const_iterator;
@@ -101,9 +137,9 @@ public:
      * @param matrix the matrix to move the data from
      * @return
      */
-    Matrix(Matrix<T> &&matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
+    /*Matrix(Matrix<T> &&matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
                               _cells(std::move(matrix._cells))
-    {}
+    {}*/
 
     /**
      * @brief dtor
@@ -185,39 +221,20 @@ public:
         return *this;
     }
 
-    /**
-     * @brief Plus operator overload to sum 2 matrices of same size
-     * @param matrix Matrix object ref
-     * @return new Matrix object which is the sum of 2 matrices
-     */
+/**
+         * @brief Plus operator overload to sum 2 matrices of same size
+         * @param matrix Matrix object ref
+         * @return new Matrix object which is the sum of 2 matrices
+         */
     Matrix operator+(const Matrix<T>& matrix)
     {
         if(_rows != matrix.rows() || _cols != matrix.cols())
         {
             throw DIF_SIZE_ERROR;
         }
+
         Matrix<T> m = Matrix(_rows, _cols);
-
-        if(_isParallel)
-        {
-            std::vector<std::thread> threads;
-            for (int row = 0; row < _rows; ++row)
-            {
-                threads.push_back(std::thread(sumRows(row, matrix)));
-            }
-
-            for (std::thread thread : threads)
-            {
-                thread.join();
-            }
-        }
-        else
-        {
-            for (int i = 0; i < _cells.size(); ++i)
-            {
-                m._cells[i] = _cells[i] + matrix._cells[i];
-            }
-        }
+        applyOperator(sumRows, m, matrix);
 
         return m;
     }
@@ -252,18 +269,7 @@ public:
         T sum;
         Matrix<T> m = Matrix<T>(_rows, matrix._cols);
 
-        for (size_t i = 0; i < _rows; ++i)
-        {
-            for (size_t j = 0; j < matrix._cols; ++j)
-            {
-                sum = 0;
-                for (size_t k = 0; k < _cols; ++k)
-                {
-                    sum += (*this)(i, k) * matrix(k, j);
-                }
-                m(i, j) = sum;
-            }
-        }
+        applyOperator(multRows, m, matrix);
 
         return m;
     }
