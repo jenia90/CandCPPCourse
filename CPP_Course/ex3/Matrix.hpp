@@ -201,7 +201,15 @@ public:
         if(_isParallel)
         {
             std::vector<std::thread> threads;
+            for (int row = 0; row < _rows; ++row)
+            {
+                threads.push_back(std::thread(sumRows(row, matrix)));
+            }
 
+            for (std::thread thread : threads)
+            {
+                thread.join();
+            }
         }
         else
         {
