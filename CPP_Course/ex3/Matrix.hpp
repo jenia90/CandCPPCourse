@@ -47,14 +47,14 @@ class Matrix
         return true;
     }
 
-    void applyOperator(void(*oper)(size_t, Matrix&, const Matrix&),
-                         Matrix &newMatrix, const Matrix &matrix)
+    template <typename Func>
+    void applyOperator(Func oper, Matrix &newMatrix, const Matrix &matrix)
     {
         if(_isParallel)
         {
-            /*
             std::vector<std::thread> threads;
-            for (size_t row = 0; row < _rows; ++row)
+            threads.reserve(newMatrix._rows);
+            for (size_t row = 0; row < newMatrix._rows; ++row)
             {
                 threads.push_back(std::thread(oper(row, newMatrix, matrix)));
             }
@@ -62,7 +62,7 @@ class Matrix
             for (std::thread t : threads)
             {
                 t.join();
-            }*/
+            }
         }
         else
         {
@@ -137,9 +137,9 @@ public:
      * @param matrix the matrix to move the data from
      * @return
      */
-    /*Matrix(Matrix<T> &&matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
+    Matrix(Matrix<T> &&matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
                               _cells(std::move(matrix._cells))
-    {}*/
+    {}
 
     /**
      * @brief dtor
