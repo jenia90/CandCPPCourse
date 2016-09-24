@@ -48,7 +48,7 @@ class Matrix
     }
 
     template <typename Func>
-    void applyOperator(Func oper, Matrix<T> &newMatrix, const Matrix<T> &matrix)
+    void applyOperator(Func oper, Matrix<T> &newMatrix, const Matrix<T> &matrix) const
     {
         if(_isParallel)
         {
@@ -56,40 +56,43 @@ class Matrix
             threads.reserve(newMatrix._rows);
             for (size_t row = 0; row < newMatrix._rows; ++row)
             {
-                threads.push_back(std::thread(oper(row, newMatrix, matrix)));
+                threads.push_back(std::thread(oper, this, std::ref(row), std::ref(newMatrix),
+                                              std::ref(matrix)));
             }
 
-            for (std::thread t : threads)
+            for (std::thread &t : threads)
             {
                 t.join();
             }
+
+            threads.clear();
         }
         else
         {
             for (size_t row = 0; row < _cells.size(); ++row)
             {
-                oper(row, newMatrix, matrix);
+                (this->*oper)(row, newMatrix, matrix);
             }
         }
     }
 
-    void sumRows(size_t row, Matrix<T> &newMatrix, const Matrix<T> &matrix)
+    void sumRows(size_t row, Matrix<T> &newMatrix, const Matrix<T> &matrix2) const
     {
         for (size_t c = 0; c < _cols; ++c)
         {
-            newMatrix(row, c) = (*this)(row, c) + matrix(row, c);
+            newMatrix(row, c) = (*this)(row, c) + matrix2(row, c);
         }
     }
 
-    void multRows(size_t row, Matrix<T>& newMatrix, const Matrix<T>& matrix)
+    void multRows(size_t row, Matrix<T> &newMatrix, const Matrix<T> &matrix2) const
     {
         T sum;
-        for (size_t j = 0; j < matrix._cols; ++j)
+        for (size_t j = 0; j < matrix2._cols; ++j)
         {
             sum = 0;
             for (size_t k = 0; k < _cols; ++k)
             {
-                sum += (*this)(row, k) * matrix(k, j);
+                sum += (*this)(row, k) * matrix2(k, j);
             }
             newMatrix(row, j) = sum;
         }
@@ -226,7 +229,7 @@ public:
          * @param matrix Matrix object ref
          * @return new Matrix object which is the sum of 2 matrices
          */
-    Matrix operator+(const Matrix<T>& matrix)
+    Matrix operator+(const Matrix<T> &matrix) const
     {
         if(_rows != matrix.rows() || _cols != matrix.cols())
         {
@@ -234,7 +237,7 @@ public:
         }
 
         Matrix<T> m = Matrix(_rows, _cols);
-        applyOperator(sumRows, m, matrix);
+        applyOperator(&Matrix<T>::sumRows, m, std::ref(matrix));
 
         return m;
     }
@@ -244,7 +247,7 @@ public:
      * @param matrix Matrix object ref
      * @return new Matrix object which is the difference of 2 matrices
      */
-    Matrix operator-(const Matrix<T>& matrix)
+    Matrix operator-(const Matrix<T> &matrix) const
     {
         if(_rows != matrix.rows() || _cols != matrix.cols())
         {
@@ -264,12 +267,11 @@ public:
      * @param matrix Matrix object ref
      * @return new Matrix object which is the multiplication result of 2 matrices
      */
-    Matrix operator*(const Matrix<T>& matrix)
+    Matrix operator*(const Matrix<T> &matrix) const
     {
-        T sum;
         Matrix<T> m = Matrix<T>(_rows, matrix._cols);
 
-        applyOperator(multRows, m, matrix);
+        applyOperator(&Matrix::multRows, m, std::ref(matrix));
 
         return m;
     }

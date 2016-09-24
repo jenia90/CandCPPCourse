@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -Wextra -Wvla -pthread -std=c++11
+CFLAGS = -Wall -Wextra -Wvla -pthread -std=gnu++11
 
 default: GenericMatrixDriver BonusParallelChecker
 
@@ -19,4 +19,4 @@ tar:
 	tar cvf ex3.tar Matrix.hpp Makefile README
 
 clean:
-	rm -f *.o *.exe *.tar *.gch
+	rm -f *.o *.tar *.gch
