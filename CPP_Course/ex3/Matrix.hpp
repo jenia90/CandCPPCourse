@@ -48,7 +48,7 @@ class Matrix
     }
 
     template <typename Func>
-    void applyOperator(Func oper, Matrix &newMatrix, const Matrix &matrix)
+    void applyOperator(Func oper, Matrix<T> &newMatrix, const Matrix<T> &matrix)
     {
         if(_isParallel)
         {
@@ -73,7 +73,7 @@ class Matrix
         }
     }
 
-    void sumRows(size_t row, Matrix &newMatrix, const Matrix &matrix)
+    void sumRows(size_t row, Matrix<T> &newMatrix, const Matrix<T> &matrix)
     {
         for (size_t c = 0; c < _cols; ++c)
         {
@@ -81,7 +81,7 @@ class Matrix
         }
     }
 
-    void multRows(size_t row, Matrix& newMatrix, const Matrix& matrix)
+    void multRows(size_t row, Matrix<T>& newMatrix, const Matrix<T>& matrix)
     {
         T sum;
         for (size_t j = 0; j < matrix._cols; ++j)
