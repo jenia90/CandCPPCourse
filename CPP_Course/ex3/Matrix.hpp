@@ -44,7 +44,7 @@ class Matrix
      * @param matrix Matrix object ref
      * @return true if all cells are equal; false otherwise
      */
-    bool isEqual(const Matrix<T>& matrix)
+    bool isEqual(const Matrix<T>& matrix) const
     {
         if(matrix.cols() != _cols || matrix.rows() != _rows)
         {
@@ -140,7 +140,6 @@ public:
 
     /**
      * @brief Default ctor. Creates a 1x1 Matrix with 0 in its only cell.
-     * @return
      */
     Matrix() : _rows(1), _cols(1), _cells(1, T())
     {}
@@ -149,7 +148,6 @@ public:
      * @brief Ctor to init a matrix of size rows x cols with 0 in all its cells
      * @param rows number of rows
      * @param cols number of cols
-     * @return
      */
     Matrix(size_t rows, size_t cols) : _rows(rows), _cols(cols), _cells(rows * cols, T())
     {}
@@ -159,16 +157,13 @@ public:
      * @param rows number of rows
      * @param cols number of columns
      * @param cells cells data vector
-     * @return
      */
-    Matrix(size_t rows, size_t cols, const Cells& cells) : _rows(rows), _cols(cols),
-                                                                                 _cells(cells)
+    Matrix(size_t rows, size_t cols, const Cells& cells) : _rows(rows), _cols(cols), _cells(cells)
     {}
 
     /**
      * @brief copy ctor. copies data from one matrix to the other
      * @param matrix matrix to copy the data from
-     * @return
      */
     Matrix(const Matrix<T>& matrix): _rows(matrix._rows), _cols(matrix._cols), _cells(matrix._cells)
     {}
@@ -176,7 +171,6 @@ public:
     /**
      * @brief move ctor. moves the data from one matrix to the other
      * @param matrix the matrix to move the data from
-     * @return
      */
     Matrix(Matrix<T> && matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
                               _cells(std::move(matrix._cells))
@@ -280,7 +274,7 @@ public:
         }
 
         Matrix<T> m = Matrix(_rows, _cols);
-        applyOperator(&Matrix<T>::sumRows, m, std::ref(matrix));
+        applyOperator(&Matrix<T>::sumRows, m, matrix);
 
         return m;
     }
@@ -316,7 +310,7 @@ public:
     {
         Matrix<T> m = Matrix<T>(_rows, matrix._cols);
 
-        applyOperator(&Matrix::multRows, m, std::ref(matrix));
+        applyOperator(&Matrix::multRows, m, matrix);
 
         return m;
     }
@@ -326,7 +320,7 @@ public:
      * @param matrix Matrix object ref
      * @return true if equal; false otherwise
      */
-    bool operator==(const Matrix<T>& matrix)
+    bool operator==(const Matrix<T>& matrix) const
     {
         return isEqual(matrix);
     }
@@ -336,7 +330,7 @@ public:
      * @param matrix Matrix object ref
      * @return true if not equal; false otherwise
      */
-    bool operator!=(const Matrix<T>& matrix)
+    bool operator!=(const Matrix<T>& matrix) const
     {
         return !isEqual(matrix);
     }
