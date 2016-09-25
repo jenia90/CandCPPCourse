@@ -1,13 +1,11 @@
 CC = g++
 CFLAGS = -Wall -Wextra -Wvla -O -pthread -std=gnu++11
 
-default: GenericMatrixDriver BonusParallelChecker
+default: GenericMatrixDriver
+	./GenericMatrixDriver
 
 GenericMatrixDriver: Complex.o Matrix
 	$(CC) $(CFLAGS) $(ADDFLAGS) Complex.o GenericMatrixDriver.cpp -o GenericMatrixDriver
-
-BonusParallelChecker: Complex.o Matrix
-	$(CC) $(CFLAGS) $(ADDFLAGS) Complex.o BonusParallelChecker.cpp -o BonusParallelChecker
 
 Complex.o: Complex.cpp
 	$(CC) $(CFLAGS) $(ADDFLAGS) -c Complex.cpp

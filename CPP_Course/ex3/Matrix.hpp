@@ -29,6 +29,9 @@
 
 static bool _isParallel = false;
 
+/**
+ * @brief This class represents a Generic Matrix
+ */
 template <class T>
 class Matrix
 {
@@ -67,7 +70,7 @@ class Matrix
      */
     template <typename Func>
     void applyOperator(Func oper, std::reference_wrapper<Matrix<T>> newMatrix,
-                            const std::reference_wrapper<const Matrix<T>> matrix) const
+                       const std::reference_wrapper<const Matrix<T>> matrix) const
     {
         // Check if parallel calculation was enabled
         if(_isParallel)
@@ -167,7 +170,7 @@ public:
      * @param matrix matrix to copy the data from
      * @return
      */
-    Matrix(const Matrix<T> &matrix): _rows(matrix._rows), _cols(matrix._cols), _cells(matrix._cells)
+    Matrix(const Matrix<T>& matrix): _rows(matrix._rows), _cols(matrix._cols), _cells(matrix._cells)
     {}
 
     /**
@@ -175,7 +178,7 @@ public:
      * @param matrix the matrix to move the data from
      * @return
      */
-    Matrix(Matrix<T> &&matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
+    Matrix(Matrix<T> && matrix) : _rows(std::move(matrix._rows)), _cols(std::move(matrix._cols)),
                               _cells(std::move(matrix._cells))
     {}
 
