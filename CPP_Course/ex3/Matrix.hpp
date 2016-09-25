@@ -1,6 +1,17 @@
-//
-// Created by jenia on 19/09/2016.
-//
+/**
+ * @file Matrix.hpp
+ * @author jenia90
+ * @version 1.0
+ * @date 22 Sep 2016
+ *
+ * @brief Header file containg the definition of generic Matrix class
+ * @section DESCRIPTION:
+ * This class represents a Matrix object which supports operations like adding, multiplying and
+ * subtracting 2 matrices. Also, it supports getting the transpose of a Matrix, both real and
+ * complex numbers.
+ * This Matrix object supports both sequential and parallel computation for the addition and
+ * multiplication operators.
+ */
 
 #include <vector>
 #include <utility>
@@ -47,52 +58,76 @@ class Matrix
         return true;
     }
 
+    /**
+     * @brief Template function which applies a given operator method to this matrix and another
+     * matrix to update the third matrix
+     * @param oper relevant operator method s.a. addition/multiplication
+     * @param newMatrix the result matrix object
+     * @param matrix other matrix object
+     */
     template <typename Func>
-    void applyOperator(Func oper, Matrix<T> &newMatrix, const Matrix<T> &matrix) const
+    void applyOperator(Func oper, std::reference_wrapper<Matrix<T>> newMatrix,
+                            const std::reference_wrapper<const Matrix<T>> matrix) const
     {
+        // Check if parallel calculation was enabled
         if(_isParallel)
         {
+            // get number of rows and allocate enough threads in the vector
+            size_t rows = newMatrix.get()._rows;
             std::vector<std::thread> threads;
-            threads.reserve(newMatrix._rows);
-            for (size_t row = 0; row < newMatrix._rows; ++row)
+            threads.reserve(rows);
+
+            // for each row create a new thread with the given operation on that row
+            for (size_t row = 0; row < newMatrix.get()._rows; ++row)
             {
-                threads.push_back(std::thread(oper, this, std::ref(row), std::ref(newMatrix),
-                                              std::ref(matrix)));
+                threads.push_back(std::thread(oper, this, row, newMatrix, matrix));
             }
 
+            // wait for all threads to finish their jobs
             for (std::thread &t : threads)
             {
                 t.join();
             }
-
-            threads.clear();
         }
         else
         {
-            for (size_t row = 0; row < _cells.size(); ++row)
+            // if parallel calculation wasn't enabled, perform the given operation row by row
+            for (size_t row = 0; row < _rows; ++row)
             {
                 (this->*oper)(row, newMatrix, matrix);
             }
         }
     }
 
-    void sumRows(size_t row, Matrix<T> &newMatrix, const Matrix<T> &matrix2) const
+    /**
+     * @brief Sums cells in each column of the given row
+     * @param row row in which to sum the columns
+     * @param newMatrix the result matrix object ref
+     * @param matrix other matrix obj ref
+     */
+    void sumRows(const size_t row, Matrix<T> &newMatrix, const Matrix<T> &matrix) const
     {
         for (size_t c = 0; c < _cols; ++c)
         {
-            newMatrix(row, c) = (*this)(row, c) + matrix2(row, c);
+            newMatrix(row, c) = (*this)(row, c) + matrix(row, c);
         }
     }
 
-    void multRows(size_t row, Matrix<T> &newMatrix, const Matrix<T> &matrix2) const
+    /**
+     * @brief Multiplies cells in each column of the given row
+     * @param row row in which to sum the columns
+     * @param newMatrix the result matrix object ref
+     * @param matrix other matrix obj ref
+     */
+    void multRows(size_t row, Matrix<T> &newMatrix, const Matrix<T> &matrix) const
     {
         T sum;
-        for (size_t j = 0; j < matrix2._cols; ++j)
+        for (size_t j = 0; j < matrix._cols; ++j)
         {
             sum = 0;
             for (size_t k = 0; k < _cols; ++k)
             {
-                sum += (*this)(row, k) * matrix2(k, j);
+                sum += (*this)(row, k) * matrix(k, j);
             }
             newMatrix(row, j) = sum;
         }
@@ -161,6 +196,10 @@ public:
         return _rows == _cols;
     }
 
+    /**
+     * @brief Sets the calculation mode of the matrix.
+     * @param isParallel true for parallel; false otherwise
+     */
     static void setParallel(bool isParallel)
     {
         if(_isParallel != isParallel)
@@ -224,13 +263,14 @@ public:
         return *this;
     }
 
-/**
-         * @brief Plus operator overload to sum 2 matrices of same size
-         * @param matrix Matrix object ref
-         * @return new Matrix object which is the sum of 2 matrices
-         */
+    /**
+     * @brief Plus operator overload to sum 2 matrices of same size
+     * @param matrix Matrix object ref
+     * @return new Matrix object which is the sum of 2 matrices
+     */
     Matrix operator+(const Matrix<T> &matrix) const
     {
+        // if matrices of different sizes, throws an exception
         if(_rows != matrix.rows() || _cols != matrix.cols())
         {
             throw DIF_SIZE_ERROR;
@@ -249,10 +289,12 @@ public:
      */
     Matrix operator-(const Matrix<T> &matrix) const
     {
+        // if matrices of different sizes, throws an exception
         if(_rows != matrix.rows() || _cols != matrix.cols())
         {
             throw DIF_SIZE_ERROR;
         }
+
         Matrix<T> m = Matrix(_rows, _cols);
         for (int i = 0; i < _cells.size(); ++i)
         {

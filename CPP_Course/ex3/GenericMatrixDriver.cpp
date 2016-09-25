@@ -291,7 +291,7 @@ void getNumFromString(const std::string &str, Complex *num)
 	 std::istringstream iss(str);
 	 double r,i=0;
 	 iss>>r;
-	 bool b=(iss>>i);
+	 std::basic_istream<char, std::char_traits<char>>::__istream_type &b=(iss >> i);
 	 if (!b ){
 	 	i=0;
 	 };

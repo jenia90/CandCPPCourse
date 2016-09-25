@@ -20,7 +20,7 @@ project(CandCPPCourse)
 #target_link_libraries(HashIntSearch GenericHashTable MyIntFunctions TableErrorHandle)
 #target_link_libraries(HashStrSearch GenericHashTable MyStringFunctions TableErrorHandle)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wall -Wvla -std=gnu++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wall -Wvla -O -lpthread -std=gnu++11")
 
 #CPP_EX1
 #add_library(PointSet CPP_Course/ex1/PointSet.cpp)
