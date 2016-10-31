@@ -1,11 +1,10 @@
 CC = g++
-CFLAGS = -Wall -Wextra -Wvla -O -pthread -std=gnu++11
+CFLAGS = -Wall -Wextra -Wvla -pthread -std=c++11
 
-default: GenericMatrixDriver
-	./GenericMatrixDriver
+default: GenericMatrixDriver.exe
 
-GenericMatrixDriver: Complex.o Matrix
-	$(CC) $(CFLAGS) $(ADDFLAGS) Complex.o GenericMatrixDriver.cpp -o GenericMatrixDriver
+GenericMatrixDriver.exe: Complex.o Matrix
+	$(CC) $(CFLAGS) $(ADDFLAGS) Complex.o GenericMatrixDriver.cpp -o GenericMatrixDriver.exe
 
 Complex.o: Complex.cpp
 	$(CC) $(CFLAGS) $(ADDFLAGS) -c Complex.cpp
@@ -17,4 +16,4 @@ tar:
 	tar cvf ex3.tar Matrix.hpp Makefile README
 
 clean:
-	rm -f *.o *.tar *.gch GenericMatrixDriver BonusParallelChecker
+	rm -f *.o *.exe *.tar *.gch
