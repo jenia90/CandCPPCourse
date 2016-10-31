@@ -3,7 +3,7 @@ import random
 import subprocess
 from subprocess import PIPE, STDOUT
 
-PROCESS_NAME = "GenericMatrixDriver.exe"
+PROCESS_NAME = "GenericMatrixDriver"
 INTS = 1
 DOUBLE = 2
 COMPLEX = 3

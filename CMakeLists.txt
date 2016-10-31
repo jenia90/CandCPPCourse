@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.3.2)
 project(CandCPPCourse)
 
-#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wextra -Wall -Wvla -std=c99")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wextra -Wall -Wvla -std=c99")
 
 #C_EX2
-#add_library(MyLinkedList ex2/MyLinkedList.c)
-#add_executable(ListExample ex2/ListExample.c)
-#target_link_libraries(ListExample MyLinkedList)
-#add_executable(CheckDependency ex2/CheckDependency.c)
-#add_executable(ReadDependency ex2/ReadDependency.c)
+add_library(MyLinkedList C_Course/ex2/MyLinkedList.c)
+add_executable(ListExample C_Course/ex2/ListExample.c)
+target_link_libraries(ListExample MyLinkedList)
+add_executable(CheckDependency C_Course/ex2/CheckDependency.c)
+add_executable(ReadDependency C_Course/ex2/ReadDirectory.c)
 
 #C_EX3
 #add_library(GenericHashTable C_Course/ex3/GenericHashTable.c)
@@ -20,7 +20,7 @@ project(CandCPPCourse)
 #target_link_libraries(HashIntSearch GenericHashTable MyIntFunctions TableErrorHandle)
 #target_link_libraries(HashStrSearch GenericHashTable MyStringFunctions TableErrorHandle)
 
-set(CMAKE_CPP_FLAGS "${CMAKE_CPP_FLAGS} -Wextra -Wall -Wvla -std=gnu++11")
+#set(CMAKE_CPP_FLAGS "${CMAKE_CPP_FLAGS} -Wextra -Wall -Wvla -std=gnu++11")
 
 #CPP_EX1
 #add_library(PointSet CPP_Course/ex1/PointSet.cpp)
@@ -41,9 +41,10 @@ set(CMAKE_CPP_FLAGS "${CMAKE_CPP_FLAGS} -Wextra -Wall -Wvla -std=gnu++11")
 #add_executable(Shapes CPP_Course/ex2/Shapes.cpp)
 #target_link_libraries(Shapes Shape ShapeUtils Triangle Trapezoid Point Line PrintOuts)
 
-add_library(Complex CPP_Course/ex3/Complex.cpp)
-add_executable(BonusParallelChecker CPP_Course/ex3/BonusParallelChecker.cpp)
-add_executable(GenericMatrixDriver CPP_Course/ex3/GenericMatrixDriver.cpp)
-add_library(Matrix CPP_Course/ex3/Matrix.hpp)
-target_link_libraries(Matrix Complex)
-target_link_libraries(GenericMatrixDriver Matrix)
+#CPP_EX3
+#add_library(Complex CPP_Course/ex3/Complex.cpp)
+#add_executable(BonusParallelChecker CPP_Course/ex3/BonusParallelChecker.cpp)
+#add_executable(GenericMatrixDriver CPP_Course/ex3/GenericMatrixDriver.cpp)
+#add_library(Matrix CPP_Course/ex3/Matrix.hpp)
+#target_link_libraries(Matrix Complex)
+#target_link_libraries(GenericMatrixDriver Matrix)
