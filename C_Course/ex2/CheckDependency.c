@@ -12,7 +12,7 @@
  * Process: using DFS algorithm checks if it contains circular dependencies
  * Output: result of the check "Cyclic Dependency" or "No Cyclic Dependency"
  */
-#define NDEBUG
+#define DEBUG
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,6 +35,10 @@
 #define DELIMITER ","
 #define LINE_PARSE_STRING "%[^:]: %s%*[\n]"
 
+#define FILE_NAME_IDX 1
+#define FILE_READ_ACCESS "r"
+
+#define MATCHING 0
 typedef struct _Dependency
 {
     char fileName[MAX_FILENAME];
@@ -88,6 +92,28 @@ int indexOf(DependencyP dp[], char *fileName, int lineCount)
 }
 
 /**
+ * Checks if the given filename is already among the connected filenames
+ * @param dp Dependency struct pointer
+ * @param fileName filename to check
+ * @return index of the file if found; -1 otherwise.
+ */
+int isInConnectedFiles(DependencyP dp, char *fileName)
+{
+    assert(dp && fileName);
+
+    int i;
+    for (i = 0; i < dp->connectedFileCount; ++i)
+    {
+        if(strcmp(dp->connectedFileNames[i], fileName) == MATCHING)
+        {
+            return i;
+        }
+    }
+
+    return INDEX_NOT_FOUND;
+}
+
+/**
  * @brief Updates the list of connected files at the given index.
  * @param dp dependency struct array.
  * @param index index of the fileName we want to update its connected file list.
@@ -100,7 +126,11 @@ void updateConnectedFiles(DependencyP dp[], int index, char *connectedFiles)
     char *token = strtok(connectedFiles, DELIMITER);
     while (token)
     {
-        strcpy(dp[index]->connectedFileNames[dp[index]->connectedFileCount++], token);
+        if(isInConnectedFiles(dp[index], token) == INDEX_NOT_FOUND)
+        {
+            strcpy(dp[index]->connectedFileNames[dp[index]->connectedFileCount++], token);
+        }
+
         token = strtok(NULL, DELIMITER);
     }
 }
@@ -124,7 +154,7 @@ int parseFile(FILE* fp, DependencyP dp[])
         assert(lineCount <= MAX_LINES); // check that we don't exceed array size.
 
         // if this file already exists in the list we merge their arrays; create new one otherwise
-        if((index = indexOf(dp, fileName, lineCount)) == -1)
+        if((index = indexOf(dp, fileName, lineCount)) == INDEX_NOT_FOUND)
         {
             strcpy(dp[lineCount]->fileName, fileName);
             updateConnectedFiles(dp, lineCount, connectedFiles);
@@ -209,7 +239,7 @@ char *dfs(DependencyP dp[], DependencyP curr, int visited[], int visArrSize, int
     for (i = 0; i < curr->connectedFileCount; i++)
     {
         // iterate over every index in visited array skipping the ones with -1
-        for(j = 0; j < visArrSize && curr->connectedFilesIndexes[i] != -1; j++)
+        for(j = 0; j < visArrSize && curr->connectedFilesIndexes[i] != INDEX_NOT_FOUND; j++)
         {
             // if the specified index wasn't visited yet, we visit it recursively.
             if(curr->connectedFilesIndexes[i] != visited[j])
@@ -242,7 +272,7 @@ int main(int argc, char* argv[])
 
     // open the file and init file pointer
     FILE* fp;
-    fp = fopen(argv[1], "r");
+    fp = fopen(argv[FILE_NAME_IDX], FILE_READ_ACCESS);
     if (!fp)
     {
         fprintf(stderr, NO_FILE_ERROR);
