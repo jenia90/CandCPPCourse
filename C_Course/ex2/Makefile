@@ -23,7 +23,7 @@ ReadDirectory: ReadDirectory.o
 	gcc -Wall -Wextra -Wvla -std=c99 $(ADDFLAGS) ReadDirectory.o -o ReadDirectory
 
 tar:
-	tar cvf ex2_late.tar CheckDependency.c ReadDirectory.c MyLinkedList.c Makefile README extension.pdf
+	tar cvf ex2_late.tar CheckDependency.c ReadDirectory.c MyLinkedList.c Makefile README extension.pdf valdbg_check_dependency.out valdbg_list_example.out
 
 clean:
 	rm -f ListExample ListExample.o MyLinkedList.o CheckDependency CheckDependency.o ReadDirectory ReadDirectory.o ex2_late.tar

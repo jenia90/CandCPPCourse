@@ -168,7 +168,7 @@ void allocateDependencyRange(DependencyP dp[], int size)
     int i;
     for (i = 0; i < size; i++)
     {
-        dp[i] = (DependencyP)malloc(sizeof(struct _Dependency));
+        dp[i] = (DependencyP)malloc(sizeof(*dp[i]));
         dp[i]->connectedFileCount = 0;
     }
 }
@@ -184,7 +184,7 @@ void freeDependencyRange(DependencyP *dp, int startIndex, int endIndex)
     int i;
     for (i = startIndex; i < endIndex; i++)
     {
-        free(dp[startIndex]);
+        free(dp[i]);
     }
 }
 
@@ -251,8 +251,6 @@ int main(int argc, char* argv[])
 
     // parse file and get the number of lines in the file
     lineCount = parseFile(fp, dependencies);
-    // free memory of unused dependency struct range
-    freeDependencyRange(dependencies, lineCount, MAX_LINES);
     fclose(fp);
 
     // update the indexes of connected files for each dependency struct
@@ -267,6 +265,6 @@ int main(int argc, char* argv[])
     puts(dfs(dependencies, dependencies[0], visited, 0, lineCount));
 
     // free the rest of allocated memory
-    freeDependencyRange(dependencies, 0, lineCount);
+    freeDependencyRange(dependencies, 0, MAX_LINES);
     return EXIT_SUCCESS;
 }
