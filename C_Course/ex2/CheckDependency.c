@@ -12,7 +12,7 @@
  * Process: using DFS algorithm checks if it contains circular dependencies
  * Output: result of the check "Cyclic Dependency" or "No Cyclic Dependency"
  */
-#define DEBUG
+#define NDEBUG
 
 #include <stdio.h>
 #include <stdlib.h>
