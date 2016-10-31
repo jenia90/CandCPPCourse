@@ -1,0 +1,15 @@
+╔══════════════════════╦══════════════════════════╦════════════╗
+║                  Big ║                    Small ║            ║
+╠══════════╦═══════════╬════════════╦═════════════╣            ║
+║     *    ║     +     ║      *     ║      +      ║            ║
+╠══════════╬═══════════╬════════════╬═════════════╬════════════╣
+║ 0.498276 ║ 0.0441811 ║ 8.0643e-05 ║ 0.000158302 ║   Parallel ║
+╠══════════╬═══════════╬════════════╬═════════════╬════════════╣
+║  8.77755 ║  0.018038 ║  7.53e-07  ║   8.78e-07  ║ Sequential ║
+╚══════════╩═══════════╩════════════╩═════════════╩════════════╝
+
+Answers:
+1) The difference in times is the result of the time it takes the program to create a new thread, make calculation and close the thread. So, as we can see for smaller tables it takes more time to perform parallel calculations rather than sequential. 
+However, with big tables with lots of rows it takes much less time to split the calculation to multiple threads.
+
+2) The difference in times between addition and multiplication is because multiplication has much more calculations to perform for each row. It has to multiply the values of each cells in row/column combination and add it to a single cell. 

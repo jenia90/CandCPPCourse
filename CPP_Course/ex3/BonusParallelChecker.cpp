@@ -52,7 +52,7 @@ Matrix<Complex> readComplexMatrix(const std::string &FileName)
 	{
 		instream >> real >> img;
 		if (!instream.eof()) {
-			//        	std::cout << real << "," << img << std::endl;
+			        	//std::cout << real << "," << img << std::endl;
 			if (i >= cells.size()) {
 				break;
 			}
@@ -91,7 +91,8 @@ int main(int argc, char *argv[])
 
 	// REG
 
-	std::cout << "regular timing:" << std::endl << std::flush;tic();
+	std::cout << "regular timing:" << std::endl << std::flush;
+    tic();
 	
 	tic();
 	Ra = doPlus(A,A);
@@ -114,8 +115,8 @@ int main(int argc, char *argv[])
 
 	std::cout << "plus (parl==reg) = " << std::boolalpha << (Pa==Ra) << std::endl;
 	std::cout << "mult (parl==reg) = " << std::boolalpha << (Pm==Rm) << std::endl;
-	//    std::cout << "plus:\n" << Ra << std::endl;
-	//    std::cout << "mult:\n" << Rm << std::endl;
+    //std::cout << "plus:\n" << Ra << std::endl;
+    //std::cout << "mult:\n" << Rm << std::endl;
 
 	return 0;
 }
