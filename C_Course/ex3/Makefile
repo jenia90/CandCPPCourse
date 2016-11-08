@@ -25,18 +25,6 @@ MyIntFunctions.o: MyIntFunctions.c
 MyStringFunctions.o: MyStringFunctions.c
 	$(CC) $(CFLAGS) $(ADDFLAGS) -c MyStringFunctions.c
 
-debug:
-	make 'ADDFLAGS=-g'
-
-valgrind: 
-	make debug
-	@echo
-	@echo Running int valgrind check:
-	valgrind --leak-check=full --show-possibly-lost=yes --show-reachable=yes --undef-value-errors=yes ./HashIntSearch $(ARGS_INT)
-	@echo
-	@echo Running string valgrind check:
-	valgrind --leak-check=full --show-possibly-lost=yes --show-reachable=yes --undef-value-errors=yes ./HashStrSearch $(ARGS_STR)
-
 tar:
 	tar cvf ex3_late.tar Makefile GenericHashTable.c MyIntFunctions.c MyStringFunctions.c MyStringFunctions.h MyIntFunctions.h Key.h extension.pdf
 
